@@ -27,32 +27,20 @@ const App = () => {
          
          <div>
         <Routes>
-          <Route path="/" element= {<Home />} />
-          <Route path="/login" element={<Login/>}/>
+  <Route path="/" element={<Home />} />
+  <Route path="/login" element={<Login />} />
+  <Route path="/register" element={<Register />} />
+  
 
-          <Route path="/register" element={<Register/>}/>
-           <Route path="/dashboard" element={<UserDashboard />} />
-        <Route path="/dashboard" element={<DashboardLayout />} />
-        <Route index element={<DashboardHome />} />
-         <Route path="profile" element={<Profile />} />
-
-  <Route path="classes" element={<Classes />} />
-
-  <Route path="bookings" element={<MyBookings />} />
-
-  <Route path="payments" element={<Payments />} />
-
-  <Route path="feedback" element={<Feedback />} />
-
-      
-
-          {/* <Route path="/register" element={<Register />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/reset-Password/:id/:token" element={<ResetPassword  />} />
-          <Route path="/forget_Password" element={<ForgotPassword/>} />
-          <Route path="*" element={<NotFound />} />
-          <Route path="/admin" element={<AdminPage />} /> */}
-        </Routes>
+  <Route path="/dashboard" element={<DashboardLayout />}>
+    <Route index element={<DashboardHome />} />
+    <Route path="profile" element={<Profile />} />
+    <Route path="classes" element={<Classes />} />
+    <Route path="bookings" element={<MyBookings />} />
+    <Route path="payments" element={<Payments />} />
+    <Route path="feedback" element={<Feedback />} />
+  </Route>
+</Routes>
         </div>
 
        <div>  
