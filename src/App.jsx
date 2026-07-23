@@ -5,7 +5,6 @@ import Navbar from './Components/Navbar';
 import Footer from './Components/Footer';
 import Login from './Pages/Login';
 import Register from './Pages/Register';
-import UserDashboard from "./Pages/UserDashboard";
 import DashboardLayout from './Pages/dashboard/DashboardLayout';
 import DashboardHome from './Pages/dashboard/DashboardHome';
 import Profile from './Pages/dashboard/Profile';
@@ -32,14 +31,14 @@ const App = () => {
   <Route path="/register" element={<Register />} />
   
 
-  <Route path="/dashboard" element={<DashboardLayout />}>
-    <Route index element={<DashboardHome />} />
-    <Route path="profile" element={<Profile />} />
-    <Route path="classes" element={<Classes />} />
-    <Route path="bookings" element={<MyBookings />} />
-    <Route path="payments" element={<Payments />} />
-    <Route path="feedback" element={<Feedback />} />
-  </Route>
+ <Route path="/dashboard" element={<DashboardLayout />}>
+  <Route index element={<DashboardHome />} />
+  <Route path="profile" element={<Profile />} />
+  <Route path="classes" element={<Classes />} />
+  <Route path="bookings" element={<MyBookings />} />
+  <Route path="payments" element={<Payments />} />
+  <Route path="feedback" element={<Feedback />} />
+</Route>
 </Routes>
         </div>
 
