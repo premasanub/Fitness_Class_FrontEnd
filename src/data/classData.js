@@ -3,10 +3,10 @@ import zumba from "../assets/zumba.jpg";
 import cardio from "../assets/cardio.jpg";
 import strength from "../assets/strength.jpg";
 
-const classes = [
+const classData = [
   {
     id: 1,
-    title: "Yoga",
+    className: "Yoga",
     trainer: "Sarah Williams",
     category: "Beginner",
     day: "Monday",
@@ -14,10 +14,12 @@ const classes = [
     price: 500,
     seats: 10,
     image: yoga,
+    description:
+    "Improve flexibility, posture, breathing and reduce stress through guided yoga sessions.",
   },
   {
     id: 2,
-    title: "Zumba",
+   className: "Zumba",
     trainer: "Emily Johnson",
     category: "Intermediate",
     day: "Tuesday",
@@ -25,10 +27,12 @@ const classes = [
     price: 700,
     seats: 8,
     image: zumba,
+    description:
+    "Improve flexibility, posture, breathing and reduce stress through guided yoga sessions.",
   },
   {
     id: 3,
-    title: "Cardio",
+    className: "Cardio",
     trainer: "David Miller",
     category: "Advanced",
     day: "Wednesday",
@@ -36,10 +40,12 @@ const classes = [
     price: 800,
     seats: 12,
     image: cardio,
+    description:
+    "Improve flexibility, posture, breathing and reduce stress through guided yoga sessions.",
   },
   {
     id: 4,
-    title: "Strength Training",
+    className: "Strength Training",
     trainer: "John Carter",
     category: "Advanced",
     day: "Friday",
@@ -47,7 +53,9 @@ const classes = [
     price: 900,
     seats: 6,
     image: strength,
+    description:
+    "Improve flexibility, posture, breathing and reduce stress through guided yoga sessions.",
   },
 ];
 
-export default classes;
+export default classData;

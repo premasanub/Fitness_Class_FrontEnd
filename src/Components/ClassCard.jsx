@@ -1,6 +1,8 @@
 import { FaClock, FaSignal } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 function ClassCard({ item }) {
+  const navigate = useNavigate();
   console.log(item);
   return (
     <div className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl duration-300">
@@ -38,11 +40,21 @@ function ClassCard({ item }) {
         </p>
 
         <div className="flex gap-3 mt-5">
+        
 
-          <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
-            View Details
-          </button>
 
+
+      <button
+  type="button"
+  onClick={() => {
+    console.log("VIEW DETAILS CLICKED", item.id);
+    alert("Button clicked");
+    navigate(`/dashboard/classes/${item.id}`);
+  }}
+  className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+>
+  View Details
+</button>
           <button className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700">
             Book Now
           </button>

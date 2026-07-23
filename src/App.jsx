@@ -9,10 +9,10 @@ import DashboardLayout from './Pages/dashboard/DashboardLayout';
 import DashboardHome from './Pages/dashboard/DashboardHome';
 import Profile from './Pages/dashboard/Profile';
 import Classes from './Pages/dashboard/Classes';
-import MyBookings from './Pages/dashboard/MyBookings';
+import MyBookings from './Pages/dashboard/Bookings';
 import Payments from './Pages/dashboard/Payments';
 import Feedback from './Pages/dashboard/Feedback';
-
+import ClassDetails from "./Pages/dashboard/ClassDetails";
 const App = () => {
   return (
     <div>
@@ -35,6 +35,7 @@ const App = () => {
   <Route index element={<DashboardHome />} />
   <Route path="profile" element={<Profile />} />
   <Route path="classes" element={<Classes />} />
+  <Route path="classes/:id" element={<ClassDetails />} />
   <Route path="bookings" element={<MyBookings />} />
   <Route path="payments" element={<Payments />} />
   <Route path="feedback" element={<Feedback />} />
