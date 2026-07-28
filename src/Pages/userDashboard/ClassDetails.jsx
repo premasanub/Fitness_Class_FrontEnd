@@ -1,5 +1,5 @@
-import { useParams } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import classData from "../../data/classData";
 
 function ClassDetails() {
@@ -7,6 +7,10 @@ function ClassDetails() {
     const { id } = useParams();
 
     const navigate = useNavigate();
+    const location = useLocation();
+
+    const fromBookings = location.state?.fromBookings || false;
+    console.log(fromBookings);
 
     const selectedClass = classData.find(
         (item) => item.id === Number(id)
@@ -65,12 +69,17 @@ function ClassDetails() {
                 {selectedClass.description}
             </p>
 
-            <button
-                onClick={() => navigate("/dashboard/bookings")}
-                className="mt-8 bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700"
-            >
-                Book Now
-            </button>
+          {!fromBookings && (
+  <button
+    type="button"
+    onClick={() =>
+      navigate(`/dashboard/booking/${selectedClass.id}`)
+    }
+    className="mt-8 bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700"
+  >
+    Book Now
+  </button>
+)}
 
         </div>
     );

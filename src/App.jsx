@@ -1,18 +1,30 @@
 import React  from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import ProtectedRoute from "./Components/ProtectedRoute";
 import Home from './Pages/Home';
 import Navbar from './Components/Navbar';
 import Footer from './Components/Footer';
 import Login from './Pages/Login';
 import Register from './Pages/Register';
-import DashboardLayout from './Pages/dashboard/DashboardLayout';
-import DashboardHome from './Pages/dashboard/DashboardHome';
-import Profile from './Pages/dashboard/Profile';
-import Classes from './Pages/dashboard/Classes';
-import MyBookings from './Pages/dashboard/Bookings';
-import Payments from './Pages/dashboard/Payments';
-import Feedback from './Pages/dashboard/Feedback';
-import ClassDetails from "./Pages/dashboard/ClassDetails";
+import DashboardLayout from './Pages/userDashboard/DashboardLayout';
+import DashboardHome from './Pages/userDashboard/DashboardHome';
+import Profile from './Pages/userDashboard/Profile';
+import Classes from './Pages/userDashboard/Classes';
+import MyBookings from './Pages/userDashboard/MyBookings';
+import Payments from './Pages/userDashboard/Payments';
+import Feedback from './Pages/userDashboard/Feedback';
+import ClassDetails from "./Pages/userDashboard/ClassDetails";
+import Booking from "./Pages/userDashboard/Booking";
+import Schedule from "./Pages/userDashboard/Schedule";
+import Trainers from "./Pages/Trainers";
+import TrainerDetails from "./Pages/TrainerDetails";
+import TrainerDashboardLayout from "./Pages/trainer/TrainerDashBoardLayout";
+import TrainerHome from "./Pages/trainer/TrainerHome";
+import TrainerProfile from "./Pages/trainer/TrainerProfile";
+import TrainerSchedule from "./Pages/trainer/TrainerSchedule";
+import TrainerBookings from "./Pages/trainer/TrainerBookings";
+import TrainerStudents from "./Pages/trainer/TrainerStudents";
+import TrainerReviews from "./Pages/trainer/TrainerReviews";
 const App = () => {
   return (
     <div>
@@ -29,14 +41,51 @@ const App = () => {
   <Route path="/" element={<Home />} />
   <Route path="/login" element={<Login />} />
   <Route path="/register" element={<Register />} />
+<Route path="/trainers" element={<Trainers />} />
+<Route path="/trainers/:id" element={<TrainerDetails />} />
+
+
+<Route
+  path="/trainer"
+  element={
+    <ProtectedRoute role="trainer">
+      <TrainerDashboardLayout />
+    </ProtectedRoute>
+  }
+>
+
+  <Route index element={<TrainerHome />} />
+
+  <Route path="profile" element={<TrainerProfile />} />
+
+  <Route path="schedule" element={<TrainerSchedule />} />
+
+  <Route path="bookings" element={<TrainerBookings />} />
+
+  <Route path="students" element={<TrainerStudents/>}/>
+
+  <Route path="reviews" element={<TrainerReviews />} />
+
+</Route>
+  
+  
   
 
- <Route path="/dashboard" element={<DashboardLayout />}>
+ <Route
+  path="/dashboard"
+  element={
+    <ProtectedRoute role="user">
+      <DashboardLayout />
+    </ProtectedRoute>
+  }
+>
   <Route index element={<DashboardHome />} />
   <Route path="profile" element={<Profile />} />
   <Route path="classes" element={<Classes />} />
   <Route path="classes/:id" element={<ClassDetails />} />
+  <Route path="booking/:id" element={<Booking />} />
   <Route path="bookings" element={<MyBookings />} />
+  <Route path="schedule" element={<Schedule />} />
   <Route path="payments" element={<Payments />} />
   <Route path="feedback" element={<Feedback />} />
 </Route>

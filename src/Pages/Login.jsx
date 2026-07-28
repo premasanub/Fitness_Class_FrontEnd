@@ -1,19 +1,53 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 function Login() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const navigate = useNavigate();
+  const { login } = useAuth();
+
   const handleSubmit = (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    console.log({
+  let userData;
+
+  if (email === "admin@gmail.com") {
+    userData = {
+      name: "Admin",
       email,
-      password,
-    });
-  };
+      role: "admin",
+    };
 
+    login(userData);
+    navigate("/admin");
+  }
+
+  else if (email === "trainer@gmail.com") {
+    userData = {
+      name: "Trainer",
+      email,
+      role: "trainer",
+    };
+
+    login(userData);
+    navigate("/trainer");
+  }
+
+  else {
+    userData = {
+      name: "User",
+      email,
+      role: "user",
+    };
+
+    login(userData);
+    navigate("/dashboard");
+  }
+};
   return (
 
     <div className="min-h-screen flex justify-center items-center bg-gray-100">
@@ -32,7 +66,7 @@ function Login() {
           placeholder="Enter Email"
           className="w-full border p-3 rounded mb-4"
           value={email}
-          onChange={(e)=>setEmail(e.target.value)}
+          onChange={(e) => setEmail(e.target.value)}
         />
 
         <input
@@ -40,10 +74,10 @@ function Login() {
           placeholder="Enter Password"
           className="w-full border p-3 rounded mb-6"
           value={password}
-          onChange={(e)=>setPassword(e.target.value)}
+          onChange={(e) => setPassword(e.target.value)}
         />
 
-        <button className="w-full bg-blue-600 text-white py-3 rounded">
+        <button className="w-full bg-blue-600 text-white py-3 rounded hover:bg-blue-700">
           Login
         </button>
 

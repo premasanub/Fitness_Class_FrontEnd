@@ -11,7 +11,7 @@ import Pricing from "../Components/Pricing";
 function Home() {
   return (
     <>
-      {/* <Navbar /> */}
+      
       <Hero />
       <PopularClasses />
       <TopTrainers />
@@ -19,7 +19,7 @@ function Home() {
      <StatsCounter />
      <Testimonials />
      <Pricing />
-     {/* <Footer /> */}
+    
 
     </>
   );

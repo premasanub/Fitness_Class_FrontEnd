@@ -44,6 +44,10 @@ function Sidebar() {
   </li>
 </NavLink>
 
+<NavLink to="/dashboard/schedule">
+  Class Schedule
+</NavLink>
+
 <NavLink to="/dashboard/payments">
   <li className="flex items-center gap-3 cursor-pointer hover:text-blue-400">
     <FaCreditCard />

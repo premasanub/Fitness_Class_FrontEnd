@@ -1,7 +1,17 @@
 import { FaDumbbell } from "react-icons/fa";
+import { useAuth } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
-
 function Navbar() {
+
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
+
+ const handleLogout = () => {
+    logout();
+    navigate("/");
+  };
+
   return (
     <nav className="bg-black text-white px-10 py-4 flex justify-between items-center">
 
@@ -13,24 +23,42 @@ function Navbar() {
       </div>
 
       <ul className="hidden md:flex gap-8">
-        <li className="cursor-pointer hover:text-blue-500">Home</li>
+        <Link to="/"> <li className="cursor-pointer hover:text-blue-500">Home</li> </Link>
         <li className="cursor-pointer hover:text-blue-500">Classes</li>
-        <li className="cursor-pointer hover:text-blue-500">Trainers</li>
+       <Link to="/trainers"> <li className="cursor-pointer hover:text-blue-500">Trainers</li></Link>
         <li className="cursor-pointer hover:text-blue-500">About</li>
         <li className="cursor-pointer hover:text-blue-500">Contact</li>
       </ul>
-      
-      <Link to="/login">
-<button className="border border-white px-5 py-2 rounded-lg">
-Login
-</button>
-</Link>
 
-<Link to="/register">
-<button className="bg-blue-600 px-5 py-2 rounded-lg">
-Register
-</button>
-</Link>
+     
+      
+      <div className="flex gap-4">
+
+ {
+  user ? (
+    <button
+      onClick={handleLogout}
+      className="bg-red-600 px-5 py-2 rounded-lg"
+    >
+      Logout
+    </button>
+  ) : (
+    <>
+      <Link to="/login">
+        <button className="border border-white px-5 py-2 rounded-lg">
+          Login
+        </button>
+      </Link>
+
+      <Link to="/register">
+        <button className="bg-blue-600 px-5 py-2 rounded-lg">
+          Register
+        </button>
+      </Link>
+    </>
+  )
+}
+      </div>
     </nav>
   );
 }
