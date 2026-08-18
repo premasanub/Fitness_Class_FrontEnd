@@ -8,6 +8,7 @@ import {
   FaSignOutAlt,
 } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
+
 function Sidebar() {
   return (
     <div className="w-64 min-h-screen bg-gray-900 text-white p-6">
