@@ -30,12 +30,12 @@ import TrainerStudents from "./Pages/trainer/TrainerStudents";
 import TrainerReviews from "./Pages/trainer/TrainerReviews";
 import AddClass from "./Pages/trainer/AddClass";
 import ChangeSlot from './Pages/userDashboard/ChangeSlot';
-import AdminDashboard from "./Pages/Admin/AdminDashboard";
-import AdminLayout from './Pages/Admin/AdminLayout';
-import AdminUsers from "./pages/Admin/AdminUsers";
-import AdminTrainers from "./pages/Admin/AdminTrainers";
-import AdminClasses from "./pages/Admin/AdminClasses";
-import AdminBookings from "./pages/Admin/AdminBookings";
+import AdminDashboard from "./Pages/admin/AdminDashboard";
+import AdminLayout from './Pages/admin/AdminLayout';
+import AdminUsers from "./Pages/admin/AdminUsers";
+import AdminTrainers from "./Pages/admin/AdminTrainers";
+import AdminClasses from "./Pages/admin/AdminClasses";
+import AdminBookings from "./Pages/admin/AdminBookings";
 const App = () => {
   return (
     <div>
