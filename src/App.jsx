@@ -30,6 +30,7 @@ import TrainerStudents from "./Pages/trainer/TrainerStudents";
 import TrainerReviews from "./Pages/trainer/TrainerReviews";
 import AddClass from "./Pages/trainer/AddClass";
 import ChangeSlot from './Pages/userDashboard/ChangeSlot';
+
 import AdminDashboard from "./Pages/admin/AdminDashboard";
 import AdminLayout from './Pages/admin/AdminLayout';
 import AdminUsers from "./Pages/admin/AdminUsers";
