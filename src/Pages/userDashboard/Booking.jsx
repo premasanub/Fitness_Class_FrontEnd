@@ -1,78 +1,141 @@
 import { useParams, useNavigate } from "react-router-dom";
-import classData from "../../data/classData";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import api from "../../Service/api";
 
+import yoga from "../../assets/yoga.jpg";
+import zumba from "../../assets/zumba.jpg";
+import cardio from "../../assets/cardio.jpg";
+import strength from "../../assets/strength.jpg";
 
 function Booking() {
-  const [selectedSlot, setSelectedSlot] = useState("");
   const { id } = useParams();
-
   const navigate = useNavigate();
 
-  const selectedClass = classData.find(
-    (item) => item.id === Number(id)
-  );
+  const [selectedClass, setSelectedClass] = useState(null);
+  const [selectedSlot, setSelectedSlot] = useState("");
+  const [loading, setLoading] = useState(true);
 
-  if (!selectedClass) {
+  // Images
+  const classImages = {
+    "yoga.jpg": yoga,
+    "zumba.jpg": zumba,
+    "cardio.jpg": cardio,
+    "strength.jpg": strength,
+  };
+
+  // Fetch class from backend
+  useEffect(() => {
+    fetchClass();
+  }, [id]);
+
+  const fetchClass = async () => {
+    try {
+      setLoading(true);
+
+      const response = await api.get(`/classes/${id}`);
+
+      console.log("CLASS API RESPONSE:", response.data);
+
+      // Supports both:
+      // { class: {...} }
+      // OR
+      // {...}
+      const trainerClass =
+        response.data.class || response.data;
+
+      setSelectedClass(trainerClass);
+
+    } catch (error) {
+      console.log(
+        "FETCH CLASS ERROR:",
+        error.response?.data || error.message
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Loading
+  if (loading) {
     return (
-      <div className="p-6">
+      <div className="p-6 text-center">
         <h2 className="text-2xl font-bold">
-          Class Not Found
+          Loading...
         </h2>
       </div>
     );
   }
 
-  const handleBooking=()=>{
+  // Class not found
+  if (!selectedClass) {
+    return (
+      <div className="p-6 text-center">
 
-alert(
+        <h2 className="text-2xl font-bold text-red-500">
+          Class not found
+        </h2>
 
-`Booking Confirmed!
+        <button
+          onClick={() => navigate("/dashboard/classes")}
+          className="mt-4 bg-blue-600 text-white px-5 py-2 rounded-lg"
+        >
+          Back to Classes
+        </button>
 
-Class : ${selectedClass.className}
+      </div>
+    );
+  }
 
-Trainer : ${selectedClass.trainer}
+  // ⭐ Trainer created slots from backend
+  const timeSlots = selectedClass.timeSlots || [];
 
-Slot : ${selectedSlot}`
+  // Proceed to payment
+  const handleBooking = () => {
+    if (!selectedSlot) {
+      return;
+    }
 
-);
-
-navigate("/dashboard/bookings");
-
-}
-
-  // const handleBooking = () => {
-  //   alert("Class booked successfully!");
-
-  //   navigate("/dashboard/bookings");
-  // };
+    navigate("/dashboard/payments", {
+      state: {
+        classData: selectedClass,
+        selectedSlot: selectedSlot,
+      },
+    });
+  };
 
   return (
     <div className="max-w-4xl mx-auto p-6">
 
+      {/* Page Title */}
       <h1 className="text-3xl font-bold mb-6">
         Book Your Class
       </h1>
 
+      {/* Class Card */}
       <div className="bg-white rounded-xl shadow-lg overflow-hidden">
 
+        {/* Class Image */}
         <img
-          src={selectedClass.image}
-          alt={selectedClass.className}
+          src={
+            classImages[selectedClass.image] || strength
+          }
+          alt={selectedClass.title}
           className="w-full h-64 object-cover"
         />
 
         <div className="p-6">
 
+          {/* Class Name */}
           <h2 className="text-3xl font-bold mb-4">
-            {selectedClass.className}
+            {selectedClass.title}
           </h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-700">
+          {/* Class Details */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 
             <p>
               <strong>Trainer:</strong>{" "}
-              {selectedClass.trainer}
+              {selectedClass.trainer?.name || "Not Assigned"}
             </p>
 
             <p>
@@ -81,18 +144,13 @@ navigate("/dashboard/bookings");
             </p>
 
             <p>
-              <strong>Day:</strong>{" "}
-              {selectedClass.day}
-            </p>
-
-            <p>
-              <strong>Time:</strong>{" "}
-              {selectedClass.time}
+              <strong>Date:</strong>{" "}
+              {selectedClass.date}
             </p>
 
             <p>
               <strong>Duration:</strong>{" "}
-              {selectedClass.duration}
+              {selectedClass.duration} mins
             </p>
 
             <p>
@@ -100,77 +158,78 @@ navigate("/dashboard/bookings");
               ₹{selectedClass.price}
             </p>
 
-            <h2 className="text-xl font-bold mt-8 mb-4">
-
-Available Time Slots
-
-</h2>
-
-<div className="space-y-3">
-
-{selectedClass.timeSlots.map((slot,index)=>(
-
-<label
-key={index}
-className="flex items-center gap-3 border p-3 rounded-lg cursor-pointer hover:bg-gray-100"
->
-
-<input
-type="radio"
-name="slot"
-value={slot}
-onChange={(e)=>setSelectedSlot(e.target.value)}
-/>
-
-{slot}
-
-</label>
-
-))}
-
-</div>
-
-
+            <p>
+              <strong>Seats:</strong>{" "}
+              {selectedClass.seats}
+            </p>
 
           </div>
 
-         <button
+          {/* Available Time Slots */}
+          <h2 className="text-xl font-bold mt-8 mb-4">
+            Available Time Slots
+          </h2>
 
-disabled={!selectedSlot}
+          {timeSlots.length === 0 ? (
 
-onClick={handleBooking}
+            <p className="text-red-500 border p-4 rounded-lg">
+              No time slots available for this class.
+            </p>
 
-className={`
+          ) : (
 
-mt-8
+            <div className="space-y-3">
 
-px-6
+              {timeSlots.map((slot, index) => (
 
-py-3
+                <label
+                  key={index}
+                  className={`flex items-center gap-3 border p-4 rounded-lg cursor-pointer transition ${
+                    selectedSlot === slot
+                      ? "border-green-500 bg-green-50"
+                      : "hover:bg-gray-100"
+                  }`}
+                >
 
-rounded-lg
+                  <input
+                    type="radio"
+                    name="slot"
+                    value={slot}
+                    checked={selectedSlot === slot}
+                    onChange={(e) =>
+                      setSelectedSlot(e.target.value)
+                    }
+                  />
 
-text-white
+                  <span className="font-medium">
+                    {slot}
+                  </span>
 
-${selectedSlot
+                </label>
 
-?"bg-green-600 hover:bg-green-700"
+              ))}
 
-:"bg-gray-400 cursor-not-allowed"
+            </div>
 
-}
+          )}
 
-`}
+          {/* Payment Button */}
+          <button
+            disabled={
+              !selectedSlot || timeSlots.length === 0
+            }
+            onClick={handleBooking}
+            className={`mt-8 px-6 py-3 rounded-lg text-white ${
+              selectedSlot && timeSlots.length > 0
+                ? "bg-green-600 hover:bg-green-700"
+                : "bg-gray-400 cursor-not-allowed"
+            }`}
+          >
+            Proceed to Payment
+          </button>
 
->
-
-Confirm Booking
-
-</button>
         </div>
-
       </div>
-
     </div>
   );
 }

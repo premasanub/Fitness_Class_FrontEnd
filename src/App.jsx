@@ -1,11 +1,14 @@
 import React  from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { ToastContainer } from "react-toastify";
 import ProtectedRoute from "./Components/ProtectedRoute";
 import Home from './Pages/Home';
 import Navbar from './Components/Navbar';
 import Footer from './Components/Footer';
 import Login from './Pages/Login';
 import Register from './Pages/Register';
+import ForgotPassword from './Pages/ForgotPassword';
+import ResetPassword from './Pages/ResetPassword';
 import DashboardLayout from './Pages/userDashboard/DashboardLayout';
 import DashboardHome from './Pages/userDashboard/DashboardHome';
 import Profile from './Pages/userDashboard/Profile';
@@ -25,10 +28,22 @@ import TrainerSchedule from "./Pages/trainer/TrainerSchedule";
 import TrainerBookings from "./Pages/trainer/TrainerBookings";
 import TrainerStudents from "./Pages/trainer/TrainerStudents";
 import TrainerReviews from "./Pages/trainer/TrainerReviews";
+import AddClass from "./Pages/trainer/AddClass";
+import ChangeSlot from './Pages/userDashboard/ChangeSlot';
+import AdminDashboard from "./Pages/Admin/AdminDashboard";
+import AdminLayout from './Pages/Admin/AdminLayout';
+import AdminUsers from "./pages/Admin/AdminUsers";
+import AdminTrainers from "./pages/Admin/AdminTrainers";
+import AdminClasses from "./pages/Admin/AdminClasses";
+import AdminBookings from "./pages/Admin/AdminBookings";
 const App = () => {
   return (
     <div>
      
+ <div>
+        <ToastContainer />
+      </div>
+
       <div>
         <BrowserRouter>
           
@@ -40,6 +55,11 @@ const App = () => {
         <Routes>
   <Route path="/" element={<Home />} />
   <Route path="/login" element={<Login />} />
+   <Route path="/forgot-password" element={<ForgotPassword />} />
+    <Route
+            path="/reset-password/:id/:token"
+            element={<ResetPassword />}
+          />
   <Route path="/register" element={<Register />} />
 <Route path="/trainers" element={<Trainers />} />
 <Route path="/trainers/:id" element={<TrainerDetails />} />
@@ -57,6 +77,8 @@ const App = () => {
   <Route index element={<TrainerHome />} />
 
   <Route path="profile" element={<TrainerProfile />} />
+
+  <Route path="add-class" element={<AddClass />} />
 
   <Route path="schedule" element={<TrainerSchedule />} />
 
@@ -87,9 +109,47 @@ const App = () => {
   <Route path="bookings" element={<MyBookings />} />
   <Route path="schedule" element={<Schedule />} />
   <Route path="payments" element={<Payments />} />
+   <Route path="change-slot/:id" element={<ChangeSlot />} />
   <Route path="feedback" element={<Feedback />} />
+  
 </Route>
+
+<Route
+  path="/admin"
+  element={<AdminLayout />}
+>
+
+  <Route
+    index
+    element={<AdminDashboard />}
+  />
+
+  <Route
+    path="users"
+    element={<AdminUsers />}
+  />
+
+  <Route
+    path="trainers"
+    element={<AdminTrainers />}
+  />
+
+  <Route
+    path="classes"
+    element={<AdminClasses />}
+  />
+
+  <Route
+    path="bookings"
+    element={<AdminBookings />}
+  />
+
+</Route>
+
 </Routes>
+
+
+
         </div>
 
        <div>  

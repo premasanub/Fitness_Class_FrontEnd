@@ -71,6 +71,12 @@ function TrainerDashboardLayout() {
             Reviews
           </NavLink>
 
+         <NavLink to="/trainer/add-class"
+         className="flex items-center gap-3 hover:text-yellow-400"
+           >
+         Add Class
+             </NavLink>
+
         </nav>
 
       </div>

@@ -2,47 +2,44 @@ import { FaStar } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
 function TrainerCard({ trainer }) {
-console.log(trainer);
-  const navigate = useNavigate();
 
   return (
-    <div className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl duration-300">
+    <div className="bg-white rounded-xl shadow-lg overflow-hidden">
 
       <img
-        src={trainer.image}
+        src={
+          trainer.profileImage ||
+          "/default-trainer.jpg"
+        }
         alt={trainer.name}
-        className="w-full h-72 object-cover"
+        className="w-full h-64 object-cover"
       />
 
       <div className="p-5">
 
-        <h2 className="text-2xl font-bold">
+        <h2 className="text-xl font-bold">
           {trainer.name}
         </h2>
 
         <p className="text-gray-600 mt-2">
-          {trainer.qualification}
+          {trainer.specialization}
         </p>
 
-        <p>
-          Experience : {trainer.experience}
+        <p className="mt-2">
+          Experience: {trainer.experience} years
         </p>
 
-        <p>
-          Specialization : {trainer.specialization}
+        <p className="mt-2">
+          Qualification: {trainer.qualification}
         </p>
 
-        <p className="flex items-center gap-2 mt-2 text-yellow-500">
-          <FaStar />
-          {trainer.rating} ({trainer.reviews} Reviews)
+        <p className="mt-2">
+          ⭐ {trainer.rating || 0}
         </p>
 
-        <button
-          onClick={() => navigate(`/trainers/${trainer.id}`)}
-          className="mt-5 w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700"
-        >
-          View Profile
-        </button>
+        <p className="text-gray-600 mt-3">
+          {trainer.bio}
+        </p>
 
       </div>
 
