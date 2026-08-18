@@ -1,5 +1,5 @@
 // import Navbar from "../components/Navbar";
-import Hero from "../components/Hero";
+import Hero from "../Components/Hero";
 import PopularClasses from   "../Components/PopularClasses";
 import TopTrainers from "../Components/TopTrainers";
 import WhyChooseUs from "../Components/WhyChooseUs";
