@@ -31,12 +31,12 @@ import TrainerReviews from "./Pages/trainer/TrainerReviews";
 import AddClass from "./Pages/trainer/AddClass";
 import ChangeSlot from './Pages/userDashboard/ChangeSlot';
 
-import AdminDashboard from "./Pages/admin/AdminDashboard";
-import AdminLayout from './Pages/admin/AdminLayout';
-import AdminUsers from "./Pages/admin/AdminUsers";
-import AdminTrainers from "./Pages/admin/AdminTrainers";
-import AdminClasses from "./Pages/admin/AdminClasses";
-import AdminBookings from "./Pages/admin/AdminBookings";
+import AdminDashboard from "./Pages/adminPerson/AdminDashboard";
+import AdminLayout from './Pages/adminPerson/AdminLayout';
+import AdminUsers from "./Pages/adminPerson/AdminUsers";
+import AdminTrainers from "./Pages/adminPerson/AdminTrainers";
+import AdminClasses from "./Pages/adminPerson/AdminClasses";
+import AdminBookings from "./Pages/adminPerson/AdminBookings";
 const App = () => {
   return (
     <div>
