@@ -2,7 +2,6 @@ import { FaDumbbell } from "react-icons/fa";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
-import { NavLink } from "react-router-dom";
 function Navbar() {
 
   const { user, logout } = useAuth();
@@ -27,14 +26,9 @@ function Navbar() {
         <Link to="/"> <li className="cursor-pointer hover:text-blue-500">Home</li> </Link>
 
 
-        <NavLink to="/dashboard/classes">
-  <li className="flex items-center gap-3 cursor-pointer hover:text-blue-400">
-    <FaDumbbell />
-    Classes
-  </li>
-</NavLink>
         
-      {/* <Link to="/dashboard/classes"> <li className="cursor-pointer hover:text-blue-500">Classes</li> </Link> */}
+        
+      <Link to="/dashboard/classes"> <li className="cursor-pointer hover:text-blue-500">Classes</li> </Link>
 
        <Link to="/trainers"> <li className="cursor-pointer hover:text-blue-500">Trainers</li></Link>
         <li className="cursor-pointer hover:text-blue-500">About</li>

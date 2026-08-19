@@ -9,6 +9,8 @@ import Login from './Pages/Login';
 import Register from './Pages/Register';
 import ForgotPassword from './Pages/ForgotPassword';
 import ResetPassword from './Pages/ResetPassword';
+
+import PopularClasses from '../src/Components/PopularClasses';
 import DashboardLayout from './Pages/userDashboard/DashboardLayout';
 import DashboardHome from './Pages/userDashboard/DashboardHome';
 import Profile from './Pages/userDashboard/Profile';
@@ -57,12 +59,11 @@ const App = () => {
   <Route path="/" element={<Home />} />
   <Route path="/login" element={<Login />} />
    <Route path="/forgot-password" element={<ForgotPassword />} />
-    <Route
-            path="/reset-password/:id/:token"
-            element={<ResetPassword />}
-          />
+    <Route path="/reset-password/:id/:token" element={<ResetPassword />}  />
   <Route path="/register" element={<Register />} />
 <Route path="/trainers" element={<Trainers />} />
+<Route path="/classes" element={<PopularClasses />} />
+
 <Route path="/trainers/:id" element={<TrainerDetails />} />
 
 
