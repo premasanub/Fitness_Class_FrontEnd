@@ -119,5 +119,5 @@ frontend/
 ├── vite.config.js
 └── README.md
 
-deployment Link:
-                https://flourishing-fox-2d5ff0.netlify.app/
+deployment Link:https://flourishing-fox-2d5ff0.netlify.app/
+                
