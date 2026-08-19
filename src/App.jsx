@@ -57,12 +57,14 @@ const App = () => {
          <div>
         <Routes>
   <Route path="/" element={<Home />} />
+<Route path="/classes" element={<PopularClasses />} />
+
   <Route path="/login" element={<Login />} />
    <Route path="/forgot-password" element={<ForgotPassword />} />
     <Route path="/reset-password/:id/:token" element={<ResetPassword />}  />
   <Route path="/register" element={<Register />} />
 <Route path="/trainers" element={<Trainers />} />
-<Route path="/classes" element={<PopularClasses />} />
+
 
 <Route path="/trainers/:id" element={<TrainerDetails />} />
 
