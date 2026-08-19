@@ -25,7 +25,7 @@ function Navbar() {
       <ul className="hidden md:flex gap-8">
         <Link to="/"> <li className="cursor-pointer hover:text-blue-500">Home</li> </Link>
         
-       <li className="cursor-pointer hover:text-blue-500">Classes</li> 
+      <Link to="/dashboard/classes"> <li className="cursor-pointer hover:text-blue-500">Classes</li> </Link>
 
        <Link to="/trainers"> <li className="cursor-pointer hover:text-blue-500">Trainers</li></Link>
         <li className="cursor-pointer hover:text-blue-500">About</li>
