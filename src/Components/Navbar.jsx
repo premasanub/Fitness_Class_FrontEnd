@@ -23,17 +23,32 @@ function Navbar() {
       </div>
 
       <ul className="hidden md:flex gap-8">
-        <Link to="/"> <li className="cursor-pointer hover:text-blue-500">Home</li> </Link>
+  <li>
+    <Link to="/" className="cursor-pointer hover:text-blue-500">
+      Home
+    </Link>
+  </li>
 
+  <li>
+    <Link to="/classes" className="cursor-pointer hover:text-blue-500">
+      Classes
+    </Link>
+  </li>
 
-        
-        
-      <Link to="/classes"> <li className="cursor-pointer hover:text-blue-500">Classes</li> </Link>
+  <li>
+    <Link to="/trainers" className="cursor-pointer hover:text-blue-500">
+      Trainers
+    </Link>
+  </li>
 
-       <Link to="/trainers"> <li className="cursor-pointer hover:text-blue-500">Trainers</li></Link>
-        <li className="cursor-pointer hover:text-blue-500">About</li>
-        <li className="cursor-pointer hover:text-blue-500">Contact</li>
-      </ul>
+  <li className="cursor-pointer hover:text-blue-500">
+    About
+  </li>
+
+  <li className="cursor-pointer hover:text-blue-500">
+    Contact
+  </li>
+</ul>
 
      
       
