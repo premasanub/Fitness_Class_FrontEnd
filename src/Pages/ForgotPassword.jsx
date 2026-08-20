@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { toast } from "react-toastify";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import api from "../Service/api";
 
 const ForgotPassword = () => {
+  const navigate = useNavigate();
+
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -13,7 +15,6 @@ const ForgotPassword = () => {
 
     setError("");
 
-    // Email validation
     if (!email.trim()) {
       setError("Please enter your email");
       toast.error("Please enter your email");
@@ -35,10 +36,10 @@ const ForgotPassword = () => {
 
       setEmail("");
 
-      // Navigate only after successful API response
+      // Go to login after successful response
       navigate("/login");
     } catch (error) {
-      console.log("Forgot password error:", error);
+      console.error("Forgot password error:", error);
 
       const message =
         error.response?.data?.message ||
@@ -54,8 +55,8 @@ const ForgotPassword = () => {
   return (
     <div className="container mx-auto mt-8">
       <form
-        className="max-w-md mx-auto bg-white p-8 shadow-lg rounded"
         onSubmit={handleSubmit}
+        className="max-w-md mx-auto bg-white p-8 shadow-lg rounded"
       >
         <h2 className="text-2xl mb-4 font-bold font-serif text-center">
           Forgot Password
@@ -69,14 +70,13 @@ const ForgotPassword = () => {
 
         <div>
           <label
-            className="block font-bold mb-2 font-serif"
             htmlFor="email"
+            className="block font-bold mb-2 font-serif"
           >
             Email
           </label>
 
           <input
-            className="w-full p-2 border border-gray-300 mb-4 rounded"
             type="email"
             id="email"
             name="email"
@@ -84,6 +84,7 @@ const ForgotPassword = () => {
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Enter Your Email"
             required
+            className="w-full p-2 border border-gray-300 mb-4 rounded"
           />
         </div>
 
@@ -99,7 +100,7 @@ const ForgotPassword = () => {
           {loading ? "Sending..." : "Submit"}
         </button>
 
-        <div className="bg-red-100 p-2 mb-4 text-red-600 font-bold font-serif rounded mt-4">
+        <div className="bg-red-100 p-2 mt-4 text-red-600 font-bold font-serif rounded">
           Password Remembered?{" "}
           <Link to="/login" className="underline">
             Login
