@@ -9,41 +9,21 @@ const ForgotPassword = () => {
    const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
+  
 
-  const handleSubmit = async (e) => {
+ const handleSubmit = async (e) => {
     e.preventDefault();
-
-    setError("");
-
-    if (!email.trim()) {
-      setError("Please enter your email address.");
-      return;
-    }
-
     try {
-      setLoading(true);
-
-      const response = await api.post(
-        "/auth/forgot-password",
-        { email }
-      );
-
-       toast.success(response.data.message);
+      const response = await api.post("/auth/forgot-password", { email});
+      toast.success(response.data.message);
       setError(null);
       navigate("/login");
-
     } catch (error) {
-      const message =
-        error.response?.data?.message ||
-        "Unable to process your request.";
-
-      setError(message);
-      toast.error(message);
-
-    } finally {
-      setLoading(false);
+      setError(error.response.data.message);
+      toast.error(error.response.data.message);
     }
+
+    setEmail("");
   };
 
   return (
