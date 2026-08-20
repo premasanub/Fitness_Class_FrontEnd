@@ -2,10 +2,11 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { FaEnvelope, FaDumbbell } from "react-icons/fa";
-
+import { useNavigate } from "react-router-dom";
 import api from "../Service/api";
 
 const ForgotPassword = () => {
+   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -28,12 +29,9 @@ const ForgotPassword = () => {
         { email }
       );
 
-      toast.success(
-        response.data.message ||
-          "Password reset instructions sent."
-      );
-
-      setEmail("");
+       toast.success(response.data.message);
+      setError(null);
+      navigate("/login");
 
     } catch (error) {
       const message =
