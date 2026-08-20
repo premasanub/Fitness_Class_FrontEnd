@@ -1,77 +1,141 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { FaEnvelope, FaDumbbell } from "react-icons/fa";
+
 import api from "../Service/api";
 
 const ForgotPassword = () => {
-  const navigate = useNavigate();
   const [email, setEmail] = useState("");
-  const [error, setError] = useState(null);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
- console.log("Email:", email);
+
+    setError("");
+
+    if (!email.trim()) {
+      setError("Please enter your email address.");
+      return;
+    }
 
     try {
-      const response = await api.post("/auth/forgot-password", { email});
-      toast.success(response.data.message);
-      setError(null);
-      navigate("/login");
+      setLoading(true);
+
+      const response = await api.post(
+        "/auth/forgot-password",
+        { email }
+      );
+
+      toast.success(
+        response.data.message ||
+          "Password reset instructions sent."
+      );
+
+      setEmail("");
+
     } catch (error) {
-  console.log(error);
+      const message =
+        error.response?.data?.message ||
+        "Unable to process your request.";
 
-  const message =
-    error.response?.data?.message ||
-    error.message ||
-    "Something went wrong";
+      setError(message);
+      toast.error(message);
 
-  setError(message);
-  toast.error(message);
-}
-
-    setEmail("");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <div className="container mx-auto mt-8">
-      <form
-        className="max-w-md mx-auto bg-white p-8 shadow-lg"
-        onSubmit={handleSubmit}
-      >
-        <h2 className="text-2xl mb-4 font-bold font-serif text-center">
-          Forgot Password
-        </h2>
-        {error && (
-          <div className="bg-red-100 p-3 mb-4 text-red-600 rounded">
-            {error}
+    <div className="min-h-[80vh] flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-indigo-50 px-4 py-12">
+
+      <div className="w-full max-w-md">
+
+        <div className="text-center mb-6">
+
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-600 text-white rounded-2xl shadow-lg">
+            <FaDumbbell className="text-2xl" />
           </div>
-        )}
-        <p>
-          <label className="block font-bold mb-2 font-serif" htmlFor="email">
-            Email
-          </label>
-          <input
-            className="w-full p-2 border border-gray-300 mb-4 rounded"
-            type="email"
-            id="email"
-            name="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="Enter Your Email"
-          />
-        </p>
-        
-        <button
-          type="submit"
-          className="w-full bg-blue-500 text-white rounded font-bold font-serif p-2 text-xl"
-        >
-         Submit
-        </button>
-        <div className="bg-red-100 p-2 mb-4 text-red-600 font-bold font-serif rounded mt-4">
-         Password Remembered ? <a href="/login">login</a>
+
+          <h1 className="text-3xl font-bold text-gray-800 mt-4">
+            Forgot Password?
+          </h1>
+
+          <p className="text-gray-500 mt-2">
+            Enter your email and we'll help you reset your password.
+          </p>
+
         </div>
-      </form>
+
+
+        <form
+          onSubmit={handleSubmit}
+          className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100"
+        >
+
+          {error && (
+            <div className="mb-5 rounded-lg bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-600">
+              {error}
+            </div>
+          )}
+
+
+          <label
+            htmlFor="email"
+            className="block text-sm font-semibold text-gray-700 mb-2"
+          >
+            Email Address
+          </label>
+
+
+          <div className="relative">
+
+            <FaEnvelope className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
+
+            <input
+              id="email"
+              type="email"
+              value={email}
+              onChange={(e) =>
+                setEmail(e.target.value)
+              }
+              placeholder="Enter your registered email"
+              className="w-full pl-11 pr-4 py-3 border border-gray-300 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            />
+
+          </div>
+
+
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full mt-6 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-semibold py-3 rounded-xl transition shadow-md"
+          >
+            {loading
+              ? "Sending..."
+              : "Send Reset Link"}
+          </button>
+
+
+          <p className="text-center text-gray-600 text-sm mt-6">
+
+            Remember your password?{" "}
+
+            <Link
+              to="/login"
+              className="font-semibold text-blue-600 hover:text-blue-700"
+            >
+              Back to Login
+            </Link>
+
+          </p>
+
+        </form>
+
+      </div>
+
     </div>
   );
 };

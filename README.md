@@ -119,6 +119,6 @@ frontend/
 ├── vite.config.js
 └── README.md
 
-deployment Link:https://flourishing-fox-2d5ff0.netlify.app/
+deployment Link:https://fitness-class-front-end-wgzh.vercel.app/
                 
-                https://rad-cassata-a4c0f2.netlify.app/
+                

@@ -1,124 +1,219 @@
-import axios from "axios";
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { FaEye, FaEyeSlash, FaDumbbell } from "react-icons/fa";
 import api from "../Service/api";
 import { useAuth } from "../context/AuthContext";
 
 const Login = () => {
   const { login } = useAuth();
   const navigate = useNavigate();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState(null);
+  const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const response = await api.post("/auth/login", {
-  email,
-  password,
-});
 
-localStorage.setItem("token", response.data.token);
-localStorage.setItem("role", response.data.role);
+    setError("");
 
-// Update AuthContext
-login(response.data.user);
-
-toast.success(response.data.message);
-
-if (response.data.role === "admin") {
-
-    navigate("/admin");
-
-  } else if (response.data.role === "trainer") {
-
-    navigate("/trainer");
-
-  } else {
-
-    navigate("/dashboard");
-
-  }
-
-    } catch (error) {
-      setError(error.response.data.message);
-      toast.error(error.response.data.message);
+    if (!email.trim() || !password.trim()) {
+      setError("Please enter your email and password.");
+      return;
     }
 
-    setEmail("");
-    setPassword("");
+    try {
+      setLoading(true);
+
+      const response = await api.post("/auth/login", {
+        email,
+        password,
+      });
+
+      localStorage.setItem("token", response.data.token);
+      localStorage.setItem("role", response.data.role);
+
+      login(response.data.user);
+
+      toast.success(
+        response.data.message || "Login successful!"
+      );
+
+      if (response.data.role === "admin") {
+        navigate("/admin");
+      } else if (response.data.role === "trainer") {
+        navigate("/trainer");
+      } else {
+        navigate("/dashboard");
+      }
+
+    } catch (error) {
+      const message =
+        error.response?.data?.message ||
+        "Invalid email or password.";
+
+      setError(message);
+      toast.error(message);
+
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <div className="container mx-auto mt-8">
-      <form
-        className="max-w-md mx-auto bg-white p-8 shadow-lg"
-        onSubmit={handleSubmit}
-      >
-        <h2 className="text-2xl mb-4 font-bold font-serif text-center">
-          Login
-        </h2>
-        {error && (
-          <div className="bg-red-100 p-3 mb-4 text-red-600 rounded">
-            {error}
+    <div className="min-h-[80vh] flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-indigo-50 px-4 py-12">
+
+      <div className="w-full max-w-md">
+
+        {/* Logo */}
+
+        <div className="text-center mb-6">
+
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-600 text-white rounded-2xl shadow-lg">
+            <FaDumbbell className="text-2xl" />
           </div>
-        )}
-        <p>
-          <label className="block font-bold mb-2 font-serif" htmlFor="email">
-            Email
-          </label>
-          <input
-            className="w-full p-2 border border-gray-300 mb-4 rounded"
-            type="email"
-            id="email"
-            name="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="Enter Your Email"
-          />
-        </p>
-        <p>
-          <label className="block font-bold mb-2 font-serif" htmlFor="password">
-            Password
-          </label>
-          <input
-            className="w-full p-2 border border-gray-300 mb-4 rounded"
-            type={showPassword ? "text" : "password"}
-            id="password"
-            name="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="Enter Your Password"
-          />
-          <button
-            type="button"
-            onClick={() => setShowPassword(!showPassword)}
-            className="bg-red-100 p-2 mb-4 text-red-600 rounded font-serif"
-          >
-            {showPassword ? "Hide" : "Show"}
-          </button>
-        </p>
-        <button
-          type="button"
-          onClick={() => navigate("/forgot-password")}
-          className="bg-red-100 p-2 mb-4 text-red-600 rounded font-serif"
-        >
-          Forgot Password
-        </button>
-        <button
-          type="submit"
-          className="w-full bg-blue-500 text-white rounded font-bold font-serif p-2 text-xl"
-        >
-          Login
-        </button>
-        <div className="bg-red-100 p-2 mb-4 text-red-600 font-bold font-serif rounded mt-4">
-          Don't have an account? <a href="/register">Register</a>
+
+          <h1 className="text-3xl font-bold text-gray-800 mt-4">
+            Welcome Back
+          </h1>
+
+          <p className="text-gray-500 mt-2">
+            Sign in to continue your fitness journey
+          </p>
+
         </div>
-      </form>
+
+
+        {/* Card */}
+
+        <form
+          onSubmit={handleSubmit}
+          className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100"
+        >
+
+          {/* Error */}
+
+          {error && (
+            <div className="mb-5 rounded-lg bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-600">
+              {error}
+            </div>
+          )}
+
+
+          {/* Email */}
+
+          <div className="mb-5">
+
+            <label
+              htmlFor="email"
+              className="block text-sm font-semibold text-gray-700 mb-2"
+            >
+              Email Address
+            </label>
+
+            <input
+              id="email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Enter your email"
+              className="w-full px-4 py-3 border border-gray-300 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+            />
+
+          </div>
+
+
+          {/* Password */}
+
+          <div className="mb-3">
+
+            <div className="flex justify-between items-center mb-2">
+
+              <label
+                htmlFor="password"
+                className="text-sm font-semibold text-gray-700"
+              >
+                Password
+              </label>
+
+              <Link
+                to="/forgot-password"
+                className="text-sm font-medium text-blue-600 hover:text-blue-700"
+              >
+                Forgot password?
+              </Link>
+
+            </div>
+
+
+            <div className="relative">
+
+              <input
+                id="password"
+                type={showPassword ? "text" : "password"}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Enter your password"
+                className="w-full px-4 py-3 pr-12 border border-gray-300 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+              />
+
+              <button
+                type="button"
+                onClick={() =>
+                  setShowPassword(!showPassword)
+                }
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-blue-600"
+                aria-label={
+                  showPassword
+                    ? "Hide password"
+                    : "Show password"
+                }
+              >
+                {showPassword ? (
+                  <FaEyeSlash />
+                ) : (
+                  <FaEye />
+                )}
+              </button>
+
+            </div>
+
+          </div>
+
+
+          {/* Login */}
+
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full mt-6 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-semibold py-3 rounded-xl transition shadow-md"
+          >
+            {loading ? "Signing in..." : "Sign In"}
+          </button>
+
+
+          {/* Register */}
+
+          <p className="text-center text-gray-600 text-sm mt-6">
+
+            Don't have an account?{" "}
+
+            <Link
+              to="/register"
+              className="font-semibold text-blue-600 hover:text-blue-700"
+            >
+              Create Account
+            </Link>
+
+          </p>
+
+        </form>
+
+      </div>
+
     </div>
   );
 };
