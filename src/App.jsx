@@ -3,6 +3,8 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { ToastContainer } from "react-toastify";
 import ProtectedRoute from "./Components/ProtectedRoute";
 import Home from './Pages/Home';
+import About from './Pages/About';
+import Contact from './Pages/Contact';
 import Navbar from './Components/Navbar';
 import Footer from './Components/Footer';
 import Login from './Pages/Login';
@@ -57,6 +59,8 @@ const App = () => {
          <div>
         <Routes>
   <Route path="/" element={<Home />} />
+  <Route path="/about" element={<About />} />
+  <Route path="/contact" element={<Contact />} />
 <Route path="/classes" element={<PopularClasses />} />
 
   <Route path="/login" element={<Login />} />
