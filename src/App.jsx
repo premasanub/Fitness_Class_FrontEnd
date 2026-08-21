@@ -7,7 +7,7 @@ import Navbar from './Components/Navbar';
 import Footer from './Components/Footer';
 import Login from './Pages/Login';
 import Register from './Pages/Register';
-import ForgotPassword from './Pages/ForgotPassword';
+import ForgotPassword from '../src/Pages/ForgotPassword';
 import ResetPassword from './Pages/ResetPassword';
 
 import PopularClasses from '../src/Components/PopularClasses';
