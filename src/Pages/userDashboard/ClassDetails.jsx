@@ -17,8 +17,7 @@ function ClassDetails() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const fromBookings =
-    location.state?.fromBookings || false;
+  const fromBookings = location.state?.fromBookings || false;
 
   const [selectedClass, setSelectedClass] = useState(null);
   const [booking, setBooking] = useState(null);
@@ -36,7 +35,6 @@ function ClassDetails() {
     "strength.jpg": strength,
   };
 
-  // Fetch details
   useEffect(() => {
     fetchDetails();
   }, [id, fromBookings]);
@@ -46,54 +44,36 @@ function ClassDetails() {
       setLoading(true);
 
       if (fromBookings) {
-        // id = booking id
-        const response = await api.get(
-          `/bookings/${id}`
-        );
+        const response = await api.get(`/bookings/${id}`);
 
-        console.log(
-          "BOOKING DETAILS:",
-          response.data
-        );
+        console.log("BOOKING DETAILS:", response.data);
 
         setBooking(response.data);
-
-        // booking.class = actual class
         setSelectedClass(response.data.class);
-
       } else {
-        // id = class id
-        const response = await api.get(
-          `/classes/${id}`
-        );
+        const response = await api.get(`/classes/${id}`);
 
-        console.log(
-          "CLASS DETAILS:",
-          response.data
-        );
+        console.log("CLASS DETAILS:", response.data);
 
         setSelectedClass(
           response.data.class || response.data
         );
       }
-
     } catch (error) {
       console.log(
         "DETAILS ERROR:",
         error.response?.data || error.message
       );
-
     } finally {
       setLoading(false);
     }
   };
 
-  // Check whether class can be changed
+  // --------------------------------
+  // Check slot change allowed
+  // --------------------------------
   const isChangeAllowed = () => {
-    if (
-      !selectedClass?.date ||
-      !selectedClass?.time
-    ) {
+    if (!selectedClass?.date || !selectedClass?.time) {
       return false;
     }
 
@@ -109,15 +89,12 @@ function ClassDetails() {
     const hoursRemaining =
       difference / (1000 * 60 * 60);
 
-    console.log(
-      "Hours remaining:",
-      hoursRemaining
-    );
-
     return hoursRemaining > 24;
   };
 
+  // --------------------------------
   // Change Slot
+  // --------------------------------
   const handleChangeSlot = async () => {
     if (!selectedSlot) {
       alert("Please select a time slot");
@@ -156,13 +133,14 @@ function ClassDetails() {
         error.response?.data?.message ||
           "Unable to change time slot"
       );
-
     } finally {
       setChangingSlot(false);
     }
   };
 
+  // --------------------------------
   // Loading
+  // --------------------------------
   if (loading) {
     return (
       <h2 className="text-center text-3xl mt-20">
@@ -171,7 +149,9 @@ function ClassDetails() {
     );
   }
 
+  // --------------------------------
   // Class not found
+  // --------------------------------
   if (!selectedClass) {
     return (
       <div className="text-center mt-20">
@@ -182,27 +162,33 @@ function ClassDetails() {
 
         <button
           onClick={() =>
-            navigate("/dashboard/schedule")
+            navigate("/dashboard/classes")
           }
           className="mt-5 bg-blue-600 text-white px-5 py-3 rounded-lg"
         >
-          Back to Schedule
+          Back to Classes
         </button>
 
       </div>
     );
   }
 
-  // Available slots
+  // --------------------------------
+  // Seats
+  // --------------------------------
+  const seatsAvailable = Number(
+    selectedClass.seats || 0
+  );
+
+  // --------------------------------
+  // Time slots
+  // --------------------------------
   const timeSlots = [
     selectedClass.time,
     "10:00",
     "14:00",
     "17:00",
   ];
-
-  const isFull =
-    Number(selectedClass.seats) <= 0;
 
   const canChange =
     fromBookings && isChangeAllowed();
@@ -256,28 +242,24 @@ function ClassDetails() {
         </p>
 
         <p>
-          <strong>Price:</strong> ₹
-          {selectedClass.price}
+          <strong>Price:</strong>{" "}
+          ₹{selectedClass.price}
         </p>
 
-        {/* Seats */}
         <p>
           <strong>Seats Available:</strong>{" "}
 
           <span
             className={
-              isFull
-                ? "text-red-600 font-semibold"
-                : "text-green-600 font-semibold"
+              seatsAvailable > 0
+                ? "text-green-600 font-semibold"
+                : "text-red-600 font-semibold"
             }
           >
-            {isFull
-              ? "No seats available"
-              : selectedClass.seats}
+            {seatsAvailable}
           </span>
         </p>
 
-        {/* Booking information */}
         {booking && (
           <p>
             <strong>Booked Slot:</strong>{" "}
@@ -301,9 +283,9 @@ function ClassDetails() {
         {selectedClass.description}
       </p>
 
-      {/* ========================= */}
+      {/* ================================= */}
       {/* BOOKED CLASS */}
-      {/* ========================= */}
+      {/* ================================= */}
 
       {fromBookings ? (
 
@@ -348,6 +330,7 @@ function ClassDetails() {
 
                     {timeSlots.map(
                       (slot, index) => (
+
                         <label
                           key={index}
                           className="flex items-center gap-3 border p-4 rounded-lg bg-white cursor-pointer hover:bg-gray-100"
@@ -370,6 +353,7 @@ function ClassDetails() {
                           {slot}
 
                         </label>
+
                       )
                     )}
 
@@ -428,36 +412,41 @@ function ClassDetails() {
               </p>
 
             </div>
+
           )}
 
         </div>
 
       ) : (
 
-        /* ========================= */
+        /* ================================= */
         /* NORMAL CLASS */
-        /* ========================= */
+        /* ================================= */
 
         <div className="mt-8">
 
-          {isFull ? (
+          {seatsAvailable <= 0 ? (
 
-            <div className="bg-red-50 border border-red-300 rounded-lg p-5">
+            <div>
 
-              <h3 className="text-xl font-bold text-red-600">
-                Class Full
-              </h3>
+              <div className="bg-red-50 border border-red-300 rounded-lg p-5 mb-4">
 
-              <p className="text-red-500 mt-2">
-                No seats are available for this class.
-                Please choose another class.
-              </p>
+                <h3 className="text-lg font-bold text-red-600">
+                  Class Full
+                </h3>
+
+                <p className="text-red-500 mt-1">
+                  Sorry, there are no available seats
+                  for this class.
+                </p>
+
+              </div>
 
               <button
                 disabled
-                className="mt-4 bg-gray-400 text-white px-6 py-3 rounded-lg cursor-not-allowed"
+                className="bg-gray-400 text-white px-6 py-3 rounded-lg cursor-not-allowed"
               >
-                Booking Unavailable
+                No Seats Available
               </button>
 
             </div>

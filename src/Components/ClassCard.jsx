@@ -16,7 +16,7 @@ function ClassCard({ item }) {
     "strength.jpg": strength,
   };
 
-  const isFull = Number(item.seats) <= 0;
+  const seatsAvailable = Number(item.seats || 0);
 
   return (
     <div className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl duration-300">
@@ -66,13 +66,13 @@ function ClassCard({ item }) {
 
         {/* Seats */}
         <p
-          className={`font-semibold mt-1 ${
-            isFull ? "text-red-600" : "text-green-600"
+          className={`font-semibold ${
+            seatsAvailable > 0
+              ? "text-green-600"
+              : "text-red-600"
           }`}
         >
-          {isFull
-            ? "No seats available"
-            : `Seats Available: ${item.seats}`}
+          Seats Available: {seatsAvailable}
         </p>
 
         {/* Buttons */}
@@ -88,15 +88,8 @@ function ClassCard({ item }) {
             View Details
           </button>
 
-          {/* Book Now / Class Full */}
-          {isFull ? (
-            <button
-              disabled
-              className="bg-gray-400 text-white px-4 py-2 rounded-lg cursor-not-allowed"
-            >
-              Class Full
-            </button>
-          ) : (
+          {/* Book Now / Full */}
+          {seatsAvailable > 0 ? (
             <button
               onClick={() =>
                 navigate(`/dashboard/booking/${item._id}`)
@@ -105,9 +98,17 @@ function ClassCard({ item }) {
             >
               Book Now
             </button>
+          ) : (
+            <button
+              disabled
+              className="bg-gray-400 text-white px-4 py-2 rounded-lg cursor-not-allowed"
+            >
+              Class Full
+            </button>
           )}
 
         </div>
+
       </div>
     </div>
   );
