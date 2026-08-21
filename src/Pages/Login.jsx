@@ -77,7 +77,7 @@ const Login = () => {
 
       } else {
         console.log("Going to DASHBOARD");
-        navigate("/dashboard");
+        navigate("/dashboard/profile");
       }
 
     } catch (error) {
