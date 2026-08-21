@@ -23,8 +23,6 @@ const Login = () => {
     setError("");
 
     if (!email.trim() || !password.trim()) {
-      console.log("Validation failed");
-
       setError("Please enter your email and password.");
       return;
     }
@@ -32,10 +30,8 @@ const Login = () => {
     try {
       setLoading(true);
 
-      console.log("Login email:", email);
-
       const response = await api.post("/auth/login", {
-        email,
+        email: email.trim(),
         password,
       });
 
@@ -44,40 +40,74 @@ const Login = () => {
       console.log("Role from backend:", response.data.role);
       console.log("Token exists:", !!response.data.token);
 
-      // Save authentication data
-      localStorage.setItem("token", response.data.token);
-      localStorage.setItem("role", response.data.role);
+      // -----------------------------
+      // Get login response data
+      // -----------------------------
+      const token = response.data.token;
+      const role = response.data.role;
+      const user = response.data.user;
 
-      // Save user
+      if (!token || !user) {
+        throw new Error("Invalid login response from server.");
+      }
+
+      // -----------------------------
+      // Create complete user object
+      // -----------------------------
+      const loggedInUser = {
+        ...user,
+        role: role,
+      };
+
+      console.log("Complete logged in user:", loggedInUser);
+
+      // -----------------------------
+      // Save authentication data
+      // -----------------------------
+      localStorage.setItem("token", token);
+      localStorage.setItem("role", role);
       localStorage.setItem(
         "user",
-        JSON.stringify(response.data.user)
+        JSON.stringify(loggedInUser)
       );
 
       console.log(
-        "LocalStorage user:",
-        localStorage.getItem("user")
+        "Saved user:",
+        JSON.parse(localStorage.getItem("user"))
       );
 
+      console.log(
+        "Saved role:",
+        localStorage.getItem("role")
+      );
+
+      // -----------------------------
       // Update AuthContext
-      login(response.data.user);
+      // -----------------------------
+      login(loggedInUser);
 
       toast.success(
         response.data.message || "Login successful!"
       );
 
+      // -----------------------------
       // Redirect according to role
-      if (response.data.role === "admin") {
+      // -----------------------------
+      if (role === "admin") {
         console.log("Going to ADMIN");
-        navigate("/admin");
+        navigate("/admin", { replace: true });
 
-      } else if (response.data.role === "trainer") {
+      } else if (role === "trainer") {
         console.log("Going to TRAINER");
-        navigate("/trainer");
+        navigate("/trainer", { replace: true });
+
+      } else if (role === "user") {
+        console.log("Going to USER PROFILE");
+        navigate("/dashboard/profile", { replace: true });
 
       } else {
-        console.log("Going to DASHBOARD");
-        navigate("/dashboard/profile");
+        console.log("Unknown role:", role);
+        setError("Invalid user role.");
       }
 
     } catch (error) {
@@ -148,6 +178,7 @@ const Login = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Enter your email"
+              autoComplete="email"
               className="w-full px-4 py-3 border border-gray-300 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
             />
 
@@ -182,13 +213,14 @@ const Login = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Enter your password"
+                autoComplete="current-password"
                 className="w-full px-4 py-3 pr-12 border border-gray-300 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
               />
 
               <button
                 type="button"
                 onClick={() =>
-                  setShowPassword(!showPassword)
+                  setShowPassword((prev) => !prev)
                 }
                 className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-blue-600"
                 aria-label={
