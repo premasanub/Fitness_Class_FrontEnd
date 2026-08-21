@@ -18,74 +18,91 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    console.log("LOGIN BUTTON CLICKED");
+
     setError("");
 
     if (!email.trim() || !password.trim()) {
+      console.log("Validation failed");
+
       setError("Please enter your email and password.");
       return;
     }
 
     try {
-  setLoading(true);
+      setLoading(true);
 
-  console.log("Login email:", email);
+      console.log("Login email:", email);
 
-  const response = await api.post("/auth/login", {
-    email,
-    password,
-  });
+      const response = await api.post("/auth/login", {
+        email,
+        password,
+      });
 
-  console.log("LOGIN RESPONSE:", response.data);
+      console.log("LOGIN RESPONSE:", response.data);
+      console.log("User from backend:", response.data.user);
+      console.log("Role from backend:", response.data.role);
+      console.log("Token exists:", !!response.data.token);
 
-  console.log("User from backend:", response.data.user);
-  console.log("Role from backend:", response.data.role);
-  console.log("Token exists:", !!response.data.token);
+      // Save authentication data
+      localStorage.setItem("token", response.data.token);
+      localStorage.setItem("role", response.data.role);
 
-  localStorage.setItem("token", response.data.token);
-  localStorage.setItem("role", response.data.role);
+      // Save user
+      localStorage.setItem(
+        "user",
+        JSON.stringify(response.data.user)
+      );
 
-  login(response.data.user);
+      console.log(
+        "LocalStorage user:",
+        localStorage.getItem("user")
+      );
 
-  console.log(
-    "LocalStorage user:",
-    localStorage.getItem("user")
-  );
+      // Update AuthContext
+      login(response.data.user);
 
-  toast.success(
-    response.data.message || "Login successful!"
-  );
+      toast.success(
+        response.data.message || "Login successful!"
+      );
 
-  if (response.data.role === "admin") {
-    navigate("/admin");
-  } else if (response.data.role === "trainer") {
-    navigate("/trainer");
-  } else {
-    navigate("/dashboard");
-  }
+      // Redirect according to role
+      if (response.data.role === "admin") {
+        console.log("Going to ADMIN");
+        navigate("/admin");
 
-} catch (error) {
+      } else if (response.data.role === "trainer") {
+        console.log("Going to TRAINER");
+        navigate("/trainer");
 
-  console.log("LOGIN ERROR:", error);
-  console.log("ERROR RESPONSE:", error.response);
-  console.log("ERROR MESSAGE:", error.message);
+      } else {
+        console.log("Going to DASHBOARD");
+        navigate("/dashboard");
+      }
 
-  const message =
-    error.response?.data?.message ||
-    "Invalid email or password.";
+    } catch (error) {
+      console.log("LOGIN ERROR:", error);
+      console.log("ERROR RESPONSE:", error.response);
+      console.log("ERROR MESSAGE:", error.message);
 
-  setError(message);
-  toast.error(message);
+      const message =
+        error.response?.data?.message ||
+        "Invalid email or password.";
 
-} finally {
-  setLoading(false);
-}
+      setError(message);
+      toast.error(message);
+
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="min-h-[80vh] flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-indigo-50 px-4 py-12">
 
       <div className="w-full max-w-md">
 
         {/* Logo */}
-
         <div className="text-center mb-6">
 
           <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-600 text-white rounded-2xl shadow-lg">
@@ -102,25 +119,20 @@ const Login = () => {
 
         </div>
 
-
-        {/* Card */}
-
+        {/* Login Card */}
         <form
           onSubmit={handleSubmit}
           className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100"
         >
 
           {/* Error */}
-
           {error && (
             <div className="mb-5 rounded-lg bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-600">
               {error}
             </div>
           )}
 
-
           {/* Email */}
-
           <div className="mb-5">
 
             <label
@@ -141,9 +153,7 @@ const Login = () => {
 
           </div>
 
-
           {/* Password */}
-
           <div className="mb-3">
 
             <div className="flex justify-between items-center mb-2">
@@ -163,7 +173,6 @@ const Login = () => {
               </Link>
 
             </div>
-
 
             <div className="relative">
 
@@ -199,9 +208,7 @@ const Login = () => {
 
           </div>
 
-
-          {/* Login */}
-
+          {/* Login Button */}
           <button
             type="submit"
             disabled={loading}
@@ -210,9 +217,7 @@ const Login = () => {
             {loading ? "Signing in..." : "Sign In"}
           </button>
 
-
           {/* Register */}
-
           <p className="text-center text-gray-600 text-sm mt-6">
 
             Don't have an account?{" "}
