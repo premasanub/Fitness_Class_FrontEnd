@@ -88,20 +88,27 @@ function Booking() {
 
   // ⭐ Trainer created slots from backend
   const timeSlots = selectedClass.timeSlots || [];
+  const isFull = Number(selectedClass.seats) <= 0;
 
   // Proceed to payment
   const handleBooking = () => {
-    if (!selectedSlot) {
-      return;
-    }
+  if (Number(selectedClass.seats) <= 0) {
+    alert("No seats available for this class.");
+    return;
+  }
 
-    navigate("/dashboard/payments", {
-      state: {
-        classData: selectedClass,
-        selectedSlot: selectedSlot,
-      },
-    });
-  };
+  if (!selectedSlot) {
+    alert("Please select a time slot.");
+    return;
+  }
+
+  navigate("/dashboard/payments", {
+    state: {
+      classData: selectedClass,
+      selectedSlot,
+    },
+  });
+};
 
   return (
     <div className="max-w-4xl mx-auto p-6">
@@ -170,63 +177,72 @@ function Booking() {
             Available Time Slots
           </h2>
 
-          {timeSlots.length === 0 ? (
+       {/* Available Time Slots */}
+<h2 className="text-xl font-bold mt-8 mb-4">
+  Available Time Slots
+</h2>
 
-            <p className="text-red-500 border p-4 rounded-lg">
-              No time slots available for this class.
-            </p>
+{isFull ? (
+  <div className="bg-red-50 border border-red-300 text-red-600 p-5 rounded-lg">
+    <h3 className="font-bold text-lg">
+      Class Full
+    </h3>
 
-          ) : (
+    <p className="mt-1">
+      No seats are available for this class.
+    </p>
+  </div>
+) : timeSlots.length === 0 ? (
+  <p className="text-red-500 border p-4 rounded-lg">
+    No time slots available for this class.
+  </p>
+) : (
+  <div className="space-y-3">
+    {timeSlots.map((slot, index) => (
+      <label
+        key={index}
+        className={`flex items-center gap-3 border p-4 rounded-lg cursor-pointer transition ${
+          selectedSlot === slot
+            ? "border-green-500 bg-green-50"
+            : "hover:bg-gray-100"
+        }`}
+      >
+        <input
+          type="radio"
+          name="slot"
+          value={slot}
+          checked={selectedSlot === slot}
+          onChange={(e) =>
+            setSelectedSlot(e.target.value)
+          }
+        />
 
-            <div className="space-y-3">
-
-              {timeSlots.map((slot, index) => (
-
-                <label
-                  key={index}
-                  className={`flex items-center gap-3 border p-4 rounded-lg cursor-pointer transition ${
-                    selectedSlot === slot
-                      ? "border-green-500 bg-green-50"
-                      : "hover:bg-gray-100"
-                  }`}
-                >
-
-                  <input
-                    type="radio"
-                    name="slot"
-                    value={slot}
-                    checked={selectedSlot === slot}
-                    onChange={(e) =>
-                      setSelectedSlot(e.target.value)
-                    }
-                  />
-
-                  <span className="font-medium">
-                    {slot}
-                  </span>
-
-                </label>
-
-              ))}
-
-            </div>
-
-          )}
+        <span className="font-medium">
+          {slot}
+        </span>
+      </label>
+    ))}
+  </div>
+)}
 
           {/* Payment Button */}
           <button
-            disabled={
-              !selectedSlot || timeSlots.length === 0
-            }
-            onClick={handleBooking}
-            className={`mt-8 px-6 py-3 rounded-lg text-white ${
-              selectedSlot && timeSlots.length > 0
-                ? "bg-green-600 hover:bg-green-700"
-                : "bg-gray-400 cursor-not-allowed"
-            }`}
-          >
-            Proceed to Payment
-          </button>
+  disabled={
+    isFull ||
+    !selectedSlot ||
+    timeSlots.length === 0
+  }
+  onClick={handleBooking}
+  className={`mt-8 px-6 py-3 rounded-lg text-white ${
+    !isFull &&
+    selectedSlot &&
+    timeSlots.length > 0
+      ? "bg-green-600 hover:bg-green-700"
+      : "bg-gray-400 cursor-not-allowed"
+  }`}
+>
+  {isFull ? "Class Full" : "Proceed to Payment"}
+</button>
 
         </div>
       </div>

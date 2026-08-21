@@ -1,5 +1,10 @@
 import { useEffect, useState } from "react";
-import { useParams, useNavigate, useLocation } from "react-router-dom";
+import {
+  useParams,
+  useNavigate,
+  useLocation,
+} from "react-router-dom";
+
 import api from "../../Service/api";
 
 import yoga from "../../assets/yoga.jpg";
@@ -12,7 +17,8 @@ function ClassDetails() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const fromBookings = location.state?.fromBookings || false;
+  const fromBookings =
+    location.state?.fromBookings || false;
 
   const [selectedClass, setSelectedClass] = useState(null);
   const [booking, setBooking] = useState(null);
@@ -30,6 +36,7 @@ function ClassDetails() {
     "strength.jpg": strength,
   };
 
+  // Fetch details
   useEffect(() => {
     fetchDetails();
   }, [id, fromBookings]);
@@ -40,29 +47,42 @@ function ClassDetails() {
 
       if (fromBookings) {
         // id = booking id
-        const response = await api.get(`/bookings/${id}`);
+        const response = await api.get(
+          `/bookings/${id}`
+        );
 
-        console.log("BOOKING DETAILS:", response.data);
+        console.log(
+          "BOOKING DETAILS:",
+          response.data
+        );
 
         setBooking(response.data);
 
-        // booking.class contains the actual class
+        // booking.class = actual class
         setSelectedClass(response.data.class);
+
       } else {
         // id = class id
-        const response = await api.get(`/classes/${id}`);
+        const response = await api.get(
+          `/classes/${id}`
+        );
 
-        console.log("CLASS DETAILS:", response.data);
+        console.log(
+          "CLASS DETAILS:",
+          response.data
+        );
 
         setSelectedClass(
           response.data.class || response.data
         );
       }
+
     } catch (error) {
       console.log(
         "DETAILS ERROR:",
         error.response?.data || error.message
       );
+
     } finally {
       setLoading(false);
     }
@@ -70,7 +90,10 @@ function ClassDetails() {
 
   // Check whether class can be changed
   const isChangeAllowed = () => {
-    if (!selectedClass?.date || !selectedClass?.time) {
+    if (
+      !selectedClass?.date ||
+      !selectedClass?.time
+    ) {
       return false;
     }
 
@@ -133,11 +156,13 @@ function ClassDetails() {
         error.response?.data?.message ||
           "Unable to change time slot"
       );
+
     } finally {
       setChangingSlot(false);
     }
   };
 
+  // Loading
   if (loading) {
     return (
       <h2 className="text-center text-3xl mt-20">
@@ -146,9 +171,11 @@ function ClassDetails() {
     );
   }
 
+  // Class not found
   if (!selectedClass) {
     return (
       <div className="text-center mt-20">
+
         <h2 className="text-2xl font-bold text-red-500">
           Class details not found
         </h2>
@@ -161,6 +188,7 @@ function ClassDetails() {
         >
           Back to Schedule
         </button>
+
       </div>
     );
   }
@@ -173,6 +201,9 @@ function ClassDetails() {
     "17:00",
   ];
 
+  const isFull =
+    Number(selectedClass.seats) <= 0;
+
   const canChange =
     fromBookings && isChangeAllowed();
 
@@ -180,7 +211,6 @@ function ClassDetails() {
     <div className="max-w-5xl mx-auto p-8">
 
       {/* Image */}
-
       <img
         src={
           classImages[selectedClass.image] ||
@@ -191,13 +221,11 @@ function ClassDetails() {
       />
 
       {/* Title */}
-
       <h1 className="text-4xl font-bold mt-6">
         {selectedClass.title}
       </h1>
 
       {/* Details */}
-
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-6">
 
         <p>
@@ -232,11 +260,24 @@ function ClassDetails() {
           {selectedClass.price}
         </p>
 
+        {/* Seats */}
         <p>
           <strong>Seats Available:</strong>{" "}
-          {selectedClass.seats}
+
+          <span
+            className={
+              isFull
+                ? "text-red-600 font-semibold"
+                : "text-green-600 font-semibold"
+            }
+          >
+            {isFull
+              ? "No seats available"
+              : selectedClass.seats}
+          </span>
         </p>
 
+        {/* Booking information */}
         {booking && (
           <p>
             <strong>Booked Slot:</strong>{" "}
@@ -256,7 +297,6 @@ function ClassDetails() {
       </div>
 
       {/* Description */}
-
       <p className="mt-6 text-gray-700">
         {selectedClass.description}
       </p>
@@ -266,32 +306,39 @@ function ClassDetails() {
       {/* ========================= */}
 
       {fromBookings ? (
+
         <div className="mt-8">
 
+          {/* Meeting */}
           {selectedClass.meetingLink && (
-  <a
-    href={selectedClass.meetingLink}
-    target="_blank"
-    rel="noopener noreferrer"
-    className="inline-block mt-6 bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700"
-  >
-    Join Meeting
-  </a>
-)}
+            <a
+              href={selectedClass.meetingLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block mt-6 bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700"
+            >
+              Join Meeting
+            </a>
+          )}
 
-          {/* Change allowed */}
-
+          {/* Change Slot */}
           {canChange ? (
+
             <>
               {!showSlots ? (
+
                 <button
-                  onClick={() => setShowSlots(true)}
-                  className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700"
+                  onClick={() =>
+                    setShowSlots(true)
+                  }
+                  className="mt-6 bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700"
                 >
                   Change Slot
                 </button>
+
               ) : (
-                <div className="border rounded-xl p-6 bg-gray-50">
+
+                <div className="border rounded-xl p-6 bg-gray-50 mt-6">
 
                   <h2 className="text-xl font-bold mb-5">
                     Select New Time Slot
@@ -311,8 +358,7 @@ function ClassDetails() {
                             name="newSlot"
                             value={slot}
                             checked={
-                              selectedSlot ===
-                              slot
+                              selectedSlot === slot
                             }
                             onChange={(e) =>
                               setSelectedSlot(
@@ -365,10 +411,12 @@ function ClassDetails() {
 
                 </div>
               )}
+
             </>
+
           ) : (
-            // Less than 24 hours
-            <div className="bg-red-50 border border-red-300 rounded-lg p-5">
+
+            <div className="bg-red-50 border border-red-300 rounded-lg p-5 mt-6">
 
               <h3 className="text-lg font-bold text-red-600">
                 Schedule cannot be changed
@@ -383,22 +431,53 @@ function ClassDetails() {
           )}
 
         </div>
+
       ) : (
 
         /* ========================= */
         /* NORMAL CLASS */
         /* ========================= */
 
-        <button
-          onClick={() =>
-            navigate(
-              `/dashboard/booking/${selectedClass._id}`
-            )
-          }
-          className="mt-8 bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700"
-        >
-          Book Now
-        </button>
+        <div className="mt-8">
+
+          {isFull ? (
+
+            <div className="bg-red-50 border border-red-300 rounded-lg p-5">
+
+              <h3 className="text-xl font-bold text-red-600">
+                Class Full
+              </h3>
+
+              <p className="text-red-500 mt-2">
+                No seats are available for this class.
+                Please choose another class.
+              </p>
+
+              <button
+                disabled
+                className="mt-4 bg-gray-400 text-white px-6 py-3 rounded-lg cursor-not-allowed"
+              >
+                Booking Unavailable
+              </button>
+
+            </div>
+
+          ) : (
+
+            <button
+              onClick={() =>
+                navigate(
+                  `/dashboard/booking/${selectedClass._id}`
+                )
+              }
+              className="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700"
+            >
+              Book Now
+            </button>
+
+          )}
+
+        </div>
 
       )}
 

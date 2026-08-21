@@ -14,8 +14,9 @@ function ClassCard({ item }) {
     "zumba.jpg": zumba,
     "cardio.jpg": cardio,
     "strength.jpg": strength,
-    
   };
+
+  const isFull = Number(item.seats) <= 0;
 
   return (
     <div className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl duration-300">
@@ -29,56 +30,84 @@ function ClassCard({ item }) {
 
       <div className="p-5">
 
+        {/* Title */}
         <h2 className="text-2xl font-bold mb-2">
           {item.title}
         </h2>
 
+        {/* Trainer */}
         <p className="text-gray-600">
           <span className="font-semibold">Trainer:</span>{" "}
-          {item.trainer?.name}
+          {item.trainer?.name || "Not Assigned"}
         </p>
 
+        {/* Category */}
         <p className="text-gray-600">
           <span className="font-semibold">Category:</span>{" "}
           {item.category}
         </p>
 
+        {/* Date */}
         <p className="text-gray-600">
           <span className="font-semibold">Date:</span>{" "}
           {item.date}
         </p>
 
+        {/* Time */}
         <p className="text-gray-600">
           <span className="font-semibold">Time:</span>{" "}
           {item.time}
         </p>
 
+        {/* Price */}
         <p className="text-blue-600 font-bold mt-2">
           ₹ {item.price}
         </p>
 
-        <p className="text-green-600">
-          Seats Available: {item.seats}
+        {/* Seats */}
+        <p
+          className={`font-semibold mt-1 ${
+            isFull ? "text-red-600" : "text-green-600"
+          }`}
+        >
+          {isFull
+            ? "No seats available"
+            : `Seats Available: ${item.seats}`}
         </p>
 
+        {/* Buttons */}
         <div className="flex gap-3 mt-5">
 
+          {/* View Details */}
           <button
-            onClick={() => navigate(`/dashboard/classes/${item._id}`)}
+            onClick={() =>
+              navigate(`/dashboard/classes/${item._id}`)
+            }
             className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
           >
             View Details
           </button>
 
-          <button
-            onClick={() => navigate(`/dashboard/booking/${item._id}`)}
-            className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700"
-          >
-            Book Now
-          </button>
+          {/* Book Now / Class Full */}
+          {isFull ? (
+            <button
+              disabled
+              className="bg-gray-400 text-white px-4 py-2 rounded-lg cursor-not-allowed"
+            >
+              Class Full
+            </button>
+          ) : (
+            <button
+              onClick={() =>
+                navigate(`/dashboard/booking/${item._id}`)
+              }
+              className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700"
+            >
+              Book Now
+            </button>
+          )}
 
         </div>
-
       </div>
     </div>
   );
