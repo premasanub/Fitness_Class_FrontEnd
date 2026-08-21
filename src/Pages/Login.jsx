@@ -26,43 +26,59 @@ const Login = () => {
     }
 
     try {
-      setLoading(true);
+  setLoading(true);
 
-      const response = await api.post("/auth/login", {
-        email,
-        password,
-      });
+  console.log("Login email:", email);
 
-      localStorage.setItem("token", response.data.token);
-      localStorage.setItem("role", response.data.role);
+  const response = await api.post("/auth/login", {
+    email,
+    password,
+  });
 
-      login(response.data.user);
+  console.log("LOGIN RESPONSE:", response.data);
 
-      toast.success(
-        response.data.message || "Login successful!"
-      );
+  console.log("User from backend:", response.data.user);
+  console.log("Role from backend:", response.data.role);
+  console.log("Token exists:", !!response.data.token);
 
-      if (response.data.role === "admin") {
-        navigate("/admin");
-      } else if (response.data.role === "trainer") {
-        navigate("/trainer");
-      } else {
-        navigate("/dashboard");
-      }
+  localStorage.setItem("token", response.data.token);
+  localStorage.setItem("role", response.data.role);
 
-    } catch (error) {
-      const message =
-        error.response?.data?.message ||
-        "Invalid email or password.";
+  login(response.data.user);
 
-      setError(message);
-      toast.error(message);
+  console.log(
+    "LocalStorage user:",
+    localStorage.getItem("user")
+  );
 
-    } finally {
-      setLoading(false);
-    }
-  };
+  toast.success(
+    response.data.message || "Login successful!"
+  );
 
+  if (response.data.role === "admin") {
+    navigate("/admin");
+  } else if (response.data.role === "trainer") {
+    navigate("/trainer");
+  } else {
+    navigate("/dashboard");
+  }
+
+} catch (error) {
+
+  console.log("LOGIN ERROR:", error);
+  console.log("ERROR RESPONSE:", error.response);
+  console.log("ERROR MESSAGE:", error.message);
+
+  const message =
+    error.response?.data?.message ||
+    "Invalid email or password.";
+
+  setError(message);
+  toast.error(message);
+
+} finally {
+  setLoading(false);
+}
   return (
     <div className="min-h-[80vh] flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-indigo-50 px-4 py-12">
 
