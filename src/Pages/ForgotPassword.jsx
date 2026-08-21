@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import api from "../Service/api";
+import api from "../Service/api";   //updated
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
