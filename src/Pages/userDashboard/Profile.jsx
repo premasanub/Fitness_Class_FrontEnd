@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import api from "../../Service/api";
 import {
   FaUser,
   FaEnvelope,
@@ -11,323 +10,555 @@ import {
   FaBullseye,
   FaMapMarkerAlt,
   FaEdit,
-  FaDumbbell,
+  FaSave,
+  FaTimes,
 } from "react-icons/fa";
+import { toast } from "react-toastify";
+import api from "../../Service/api";
 
 function Profile() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [editing, setEditing] = useState(false);
+  const [saving, setSaving] = useState(false);
 
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    age: "",
+    gender: "",
+    height: "",
+    weight: "",
+    goal: "",
+    address: "",
+  });
+
+  // ===============================
+  // GET LOGGED-IN USER PROFILE
+  // ===============================
   useEffect(() => {
     fetchProfile();
   }, []);
 
   const fetchProfile = async () => {
     try {
-      const storedUser = JSON.parse(localStorage.getItem("user"));
+      const response = await api.get("/user/profile");
 
-      if (!storedUser?._id) {
-        setLoading(false);
-        return;
-      }
+      const userData = response.data.user;
 
-      const response = await api.get(`/user/${storedUser._id}`);
+      setUser(userData);
 
-      setUser(response.data.user || response.data);
+      setFormData({
+        name: userData.name || "",
+        email: userData.email || "",
+        phone: userData.phone || "",
+        age: userData.age || "",
+        gender: userData.gender || "",
+        height: userData.height || "",
+        weight: userData.weight || "",
+        goal: userData.goal || "",
+        address: userData.address || "",
+      });
     } catch (error) {
       console.log(
         "PROFILE ERROR:",
         error.response?.data || error.message
+      );
+
+      toast.error(
+        error.response?.data?.message ||
+          "Failed to load profile"
       );
     } finally {
       setLoading(false);
     }
   };
 
+  // ===============================
+  // INPUT CHANGE
+  // ===============================
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  // ===============================
+  // UPDATE PROFILE
+  // ===============================
+  const handleUpdate = async (e) => {
+    e.preventDefault();
+
+    try {
+      setSaving(true);
+
+      const response = await api.put(
+        "/user/profile",
+        formData
+      );
+
+      const updatedUser = response.data.user;
+
+      setUser(updatedUser);
+
+      setFormData({
+        name: updatedUser.name || "",
+        email: updatedUser.email || "",
+        phone: updatedUser.phone || "",
+        age: updatedUser.age || "",
+        gender: updatedUser.gender || "",
+        height: updatedUser.height || "",
+        weight: updatedUser.weight || "",
+        goal: updatedUser.goal || "",
+        address: updatedUser.address || "",
+      });
+
+      // Update localStorage user data
+      const storedUser = JSON.parse(
+        localStorage.getItem("user")
+      );
+
+      if (storedUser) {
+        localStorage.setItem(
+          "user",
+          JSON.stringify({
+            ...storedUser,
+            ...updatedUser,
+          })
+        );
+      }
+
+      setEditing(false);
+
+      toast.success("Profile updated successfully");
+    } catch (error) {
+      console.log(
+        "UPDATE PROFILE ERROR:",
+        error.response?.data || error.message
+      );
+
+      toast.error(
+        error.response?.data?.message ||
+          "Failed to update profile"
+      );
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  // ===============================
+  // CANCEL EDIT
+  // ===============================
+  const handleCancel = () => {
+    setFormData({
+      name: user?.name || "",
+      email: user?.email || "",
+      phone: user?.phone || "",
+      age: user?.age || "",
+      gender: user?.gender || "",
+      height: user?.height || "",
+      weight: user?.weight || "",
+      goal: user?.goal || "",
+      address: user?.address || "",
+    });
+
+    setEditing(false);
+  };
+
+  // ===============================
+  // LOADING
+  // ===============================
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="text-center">
-          <div className="w-10 h-10 border-4 border-red-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+
+          <div className="w-10 h-10 border-4 border-red-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
 
           <p className="text-gray-600 font-medium">
             Loading Profile...
           </p>
+
         </div>
       </div>
     );
   }
 
+  // ===============================
+  // USER NOT FOUND
+  // ===============================
   if (!user) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="bg-white shadow-lg rounded-2xl p-8 text-center">
+
+        <div className="bg-white p-8 rounded-2xl shadow text-center">
+
           <FaUser className="text-5xl text-gray-400 mx-auto mb-4" />
 
           <h2 className="text-xl font-bold text-gray-800">
             Profile Not Found
           </h2>
 
-          <p className="text-gray-500 mt-2">
-            Unable to load your profile details.
-          </p>
         </div>
+
       </div>
     );
   }
 
-  const profileImage = user.profileImage
-    ? user.profileImage
-    : null;
-
+  // ===============================
+  // UI
+  // ===============================
   return (
     <div className="min-h-screen bg-gray-50 p-4 md:p-8">
 
-      {/* ================= HEADER ================= */}
-      <div className="max-w-6xl mx-auto mb-8">
+      <div className="max-w-5xl mx-auto">
 
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        {/* ================= HEADER ================= */}
+
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
 
           <div>
-            <h1 className="text-3xl md:text-4xl font-bold text-gray-900">
+
+            <h1 className="text-3xl font-bold text-gray-900">
               My Profile
             </h1>
 
-            <p className="text-gray-500 mt-2">
-              Manage your personal and fitness information
+            <p className="text-gray-500 mt-1">
+              Manage your personal information
             </p>
+
           </div>
 
-          <button
-            className="flex items-center justify-center gap-2 bg-red-600 hover:bg-red-700 text-white px-5 py-3 rounded-xl font-semibold transition"
-          >
-            <FaEdit />
-            Edit Profile
-          </button>
+          {!editing && (
+            <button
+              onClick={() => setEditing(true)}
+              className="flex items-center justify-center gap-2 bg-red-600 hover:bg-red-700 text-white px-5 py-3 rounded-xl font-semibold transition"
+            >
+              <FaEdit />
+              Edit Profile
+            </button>
+          )}
 
         </div>
-      </div>
 
 
-      {/* ================= MAIN PROFILE ================= */}
-      <div className="max-w-6xl mx-auto">
+        {/* ================= PROFILE CARD ================= */}
 
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
 
-          {/* ================= PROFILE COVER ================= */}
-          <div className="h-32 bg-gradient-to-r from-red-600 to-red-800"></div>
+          {/* RED COVER */}
+
+          <div className="h-28 bg-gradient-to-r from-red-600 to-red-800"></div>
 
 
-          {/* ================= PROFILE HEADER ================= */}
-          <div className="px-6 md:px-10 pb-8">
+          {/* PROFILE HEADER */}
 
-            <div className="flex flex-col md:flex-row md:items-end gap-5 -mt-14">
+          <div className="px-6 md:px-10 pb-6">
 
-              {/* Profile Image */}
-              <div className="w-28 h-28 rounded-full border-4 border-white shadow-lg bg-gray-100 flex items-center justify-center overflow-hidden">
+            <div className="flex items-center gap-5 -mt-12">
 
-                {profileImage ? (
+              <div className="w-24 h-24 rounded-full bg-white border-4 border-white shadow-lg flex items-center justify-center overflow-hidden">
+
+                {user.profileImage ? (
                   <img
-                    src={profileImage}
+                    src={user.profileImage}
                     alt="Profile"
                     className="w-full h-full object-cover"
                   />
                 ) : (
-                  <FaUser className="text-5xl text-gray-400" />
+                  <div className="w-full h-full rounded-full bg-gray-100 flex items-center justify-center">
+                    <FaUser className="text-4xl text-gray-400" />
+                  </div>
                 )}
 
               </div>
 
 
-              {/* Name */}
-              <div className="pb-2">
+              <div className="pt-10">
 
                 <h2 className="text-2xl font-bold text-gray-900">
                   {user.name || "User"}
                 </h2>
 
-                <p className="text-gray-500 mt-1">
-                  {user.email || "No email available"}
+                <p className="text-gray-500">
+                  {user.email}
                 </p>
 
               </div>
 
+            </div>
 
-              {/* Role */}
-              <div className="md:ml-auto pb-2">
+          </div>
 
-                <span className="inline-flex items-center gap-2 bg-red-50 text-red-600 px-4 py-2 rounded-full font-semibold capitalize">
-                  <FaDumbbell />
-                  {user.role || "User"}
-                </span>
+
+          {/* ================= FORM ================= */}
+
+          <form
+            onSubmit={handleUpdate}
+            className="p-6 md:p-10"
+          >
+
+            <div className="flex items-center gap-3 mb-7">
+
+              <div className="w-10 h-10 rounded-lg bg-red-50 flex items-center justify-center">
+                <FaUser className="text-red-600" />
+              </div>
+
+              <div>
+
+                <h2 className="text-xl font-bold text-gray-900">
+                  Personal Information
+                </h2>
+
+                <p className="text-sm text-gray-500">
+                  Update your personal and fitness details
+                </p>
 
               </div>
 
             </div>
 
-          </div>
 
-        </div>
+            {/* ================= FIELDS ================= */}
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+              <InputField
+                label="Full Name"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                icon={<FaUser />}
+                editing={editing}
+              />
 
 
-        {/* ================= PERSONAL INFORMATION ================= */}
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 md:p-8 mt-6">
+              <InputField
+                label="Email Address"
+                name="email"
+                type="email"
+                value={formData.email}
+                onChange={handleChange}
+                icon={<FaEnvelope />}
+                editing={editing}
+              />
 
-          <div className="flex items-center gap-3 mb-6">
 
-            <div className="w-10 h-10 rounded-lg bg-red-50 flex items-center justify-center">
-              <FaUser className="text-red-600" />
+              <InputField
+                label="Phone Number"
+                name="phone"
+                value={formData.phone}
+                onChange={handleChange}
+                icon={<FaPhone />}
+                editing={editing}
+              />
+
+
+              <InputField
+                label="Age"
+                name="age"
+                type="number"
+                value={formData.age}
+                onChange={handleChange}
+                icon={<FaBirthdayCake />}
+                editing={editing}
+              />
+
+
+              {/* GENDER */}
+
+              <div>
+
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  Gender
+                </label>
+
+                {editing ? (
+                  <div className="relative">
+
+                    <FaVenusMars className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
+
+                    <select
+                      name="gender"
+                      value={formData.gender}
+                      onChange={handleChange}
+                      className="w-full border border-gray-300 rounded-xl py-3 pl-11 pr-4 focus:outline-none focus:ring-2 focus:ring-red-500"
+                    >
+
+                      <option value="">
+                        Select Gender
+                      </option>
+
+                      <option value="Male">
+                        Male
+                      </option>
+
+                      <option value="Female">
+                        Female
+                      </option>
+
+                      <option value="Other">
+                        Other
+                      </option>
+
+                    </select>
+
+                  </div>
+                ) : (
+                  <DisplayField
+                    icon={<FaVenusMars />}
+                    value={user.gender}
+                  />
+                )}
+
+              </div>
+
+
+              <InputField
+                label="Height (cm)"
+                name="height"
+                type="number"
+                value={formData.height}
+                onChange={handleChange}
+                icon={<FaRulerVertical />}
+                editing={editing}
+              />
+
+
+              <InputField
+                label="Weight (kg)"
+                name="weight"
+                type="number"
+                value={formData.weight}
+                onChange={handleChange}
+                icon={<FaWeight />}
+                editing={editing}
+              />
+
+
+              {/* FITNESS GOAL */}
+
+              <div>
+
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  Fitness Goal
+                </label>
+
+                {editing ? (
+                  <div className="relative">
+
+                    <FaBullseye className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
+
+                    <select
+                      name="goal"
+                      value={formData.goal}
+                      onChange={handleChange}
+                      className="w-full border border-gray-300 rounded-xl py-3 pl-11 pr-4 focus:outline-none focus:ring-2 focus:ring-red-500"
+                    >
+
+                      <option value="">
+                        Select Goal
+                      </option>
+
+                      <option value="Weight Loss">
+                        Weight Loss
+                      </option>
+
+                      <option value="Weight Gain">
+                        Weight Gain
+                      </option>
+
+                      <option value="Muscle Building">
+                        Muscle Building
+                      </option>
+
+                      <option value="General Fitness">
+                        General Fitness
+                      </option>
+
+                    </select>
+
+                  </div>
+                ) : (
+                  <DisplayField
+                    icon={<FaBullseye />}
+                    value={user.goal}
+                  />
+                )}
+
+              </div>
+
             </div>
 
-            <div>
-              <h2 className="text-xl font-bold text-gray-900">
-                Personal Information
-              </h2>
 
-              <p className="text-sm text-gray-500">
-                Your basic personal details
-              </p>
+            {/* ================= ADDRESS ================= */}
+
+            <div className="mt-6">
+
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                Address
+              </label>
+
+              {editing ? (
+                <div className="relative">
+
+                  <FaMapMarkerAlt className="absolute left-4 top-4 text-gray-400" />
+
+                  <textarea
+                    name="address"
+                    value={formData.address}
+                    onChange={handleChange}
+                    rows="3"
+                    placeholder="Enter your address"
+                    className="w-full border border-gray-300 rounded-xl py-3 pl-11 pr-4 focus:outline-none focus:ring-2 focus:ring-red-500 resize-none"
+                  />
+
+                </div>
+              ) : (
+                <DisplayField
+                  icon={<FaMapMarkerAlt />}
+                  value={user.address}
+                />
+              )}
+
             </div>
 
-          </div>
+
+            {/* ================= BUTTONS ================= */}
+
+            {editing && (
+              <div className="flex justify-end gap-3 mt-8 pt-6 border-t">
+
+                <button
+                  type="button"
+                  onClick={handleCancel}
+                  className="flex items-center gap-2 px-5 py-3 rounded-xl border border-gray-300 text-gray-700 hover:bg-gray-100 font-semibold"
+                >
+                  <FaTimes />
+                  Cancel
+                </button>
 
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <button
+                  type="submit"
+                  disabled={saving}
+                  className="flex items-center gap-2 px-5 py-3 rounded-xl bg-red-600 hover:bg-red-700 text-white font-semibold disabled:opacity-50"
+                >
+                  <FaSave />
 
-            {/* Name */}
-            <ProfileItem
-              icon={<FaUser />}
-              label="Full Name"
-              value={user.name}
-            />
+                  {saving
+                    ? "Updating..."
+                    : "Update Profile"}
+                </button>
 
-            {/* Email */}
-            <ProfileItem
-              icon={<FaEnvelope />}
-              label="Email Address"
-              value={user.email}
-            />
+              </div>
+            )}
 
-            {/* Phone */}
-            <ProfileItem
-              icon={<FaPhone />}
-              label="Phone Number"
-              value={user.phone}
-            />
-
-            {/* Age */}
-            <ProfileItem
-              icon={<FaBirthdayCake />}
-              label="Age"
-              value={user.age ? `${user.age} years` : null}
-            />
-
-            {/* Gender */}
-            <ProfileItem
-              icon={<FaVenusMars />}
-              label="Gender"
-              value={user.gender}
-            />
-
-            {/* Address */}
-            <ProfileItem
-              icon={<FaMapMarkerAlt />}
-              label="Address"
-              value={user.address}
-            />
-
-          </div>
-
-        </div>
-
-
-        {/* ================= FITNESS INFORMATION ================= */}
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 md:p-8 mt-6">
-
-          <div className="flex items-center gap-3 mb-6">
-
-            <div className="w-10 h-10 rounded-lg bg-red-50 flex items-center justify-center">
-              <FaDumbbell className="text-red-600" />
-            </div>
-
-            <div>
-              <h2 className="text-xl font-bold text-gray-900">
-                Fitness Information
-              </h2>
-
-              <p className="text-sm text-gray-500">
-                Your fitness and body information
-              </p>
-            </div>
-
-          </div>
-
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
-
-            {/* Height */}
-            <ProfileItem
-              icon={<FaRulerVertical />}
-              label="Height"
-              value={user.height ? `${user.height} cm` : null}
-            />
-
-            {/* Weight */}
-            <ProfileItem
-              icon={<FaWeight />}
-              label="Weight"
-              value={user.weight ? `${user.weight} kg` : null}
-            />
-
-            {/* Goal */}
-            <ProfileItem
-              icon={<FaBullseye />}
-              label="Fitness Goal"
-              value={user.goal}
-            />
-
-          </div>
-
-        </div>
-
-
-        {/* ================= ACCOUNT INFORMATION ================= */}
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 md:p-8 mt-6 mb-8">
-
-          <div className="flex items-center gap-3 mb-6">
-
-            <div className="w-10 h-10 rounded-lg bg-red-50 flex items-center justify-center">
-              <FaEnvelope className="text-red-600" />
-            </div>
-
-            <div>
-              <h2 className="text-xl font-bold text-gray-900">
-                Account Information
-              </h2>
-
-              <p className="text-sm text-gray-500">
-                Information about your account
-              </p>
-            </div>
-
-          </div>
-
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-
-            <ProfileItem
-              icon={<FaUser />}
-              label="Account Role"
-              value={user.role || "User"}
-            />
-
-            <ProfileItem
-              icon={<FaEnvelope />}
-              label="Account Email"
-              value={user.email}
-            />
-
-          </div>
+          </form>
 
         </div>
 
@@ -339,28 +570,68 @@ function Profile() {
 
 
 /* =====================================================
-   PROFILE ITEM COMPONENT
+   INPUT FIELD
 ===================================================== */
 
-function ProfileItem({ icon, label, value }) {
+function InputField({
+  label,
+  name,
+  value,
+  onChange,
+  icon,
+  type = "text",
+  editing,
+}) {
   return (
-    <div className="flex items-center gap-4 bg-gray-50 border border-gray-100 rounded-xl p-4">
+    <div>
 
-      <div className="w-11 h-11 flex-shrink-0 rounded-lg bg-white shadow-sm flex items-center justify-center text-red-600">
+      <label className="block text-sm font-semibold text-gray-700 mb-2">
+        {label}
+      </label>
+
+      {editing ? (
+        <div className="relative">
+
+          <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">
+            {icon}
+          </div>
+
+          <input
+            type={type}
+            name={name}
+            value={value}
+            onChange={onChange}
+            className="w-full border border-gray-300 rounded-xl py-3 pl-11 pr-4 focus:outline-none focus:ring-2 focus:ring-red-500"
+          />
+
+        </div>
+      ) : (
+        <DisplayField
+          icon={icon}
+          value={value}
+        />
+      )}
+
+    </div>
+  );
+}
+
+
+/* =====================================================
+   DISPLAY FIELD
+===================================================== */
+
+function DisplayField({ icon, value }) {
+  return (
+    <div className="flex items-center gap-3 bg-gray-50 border border-gray-100 rounded-xl px-4 py-3">
+
+      <div className="text-red-500">
         {icon}
       </div>
 
-      <div className="min-w-0">
-
-        <p className="text-sm text-gray-500">
-          {label}
-        </p>
-
-        <p className="font-semibold text-gray-900 mt-1 break-words">
-          {value || "Not provided"}
-        </p>
-
-      </div>
+      <p className="text-gray-800 font-medium">
+        {value || "Not provided"}
+      </p>
 
     </div>
   );
