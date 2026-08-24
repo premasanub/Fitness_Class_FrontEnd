@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import api from "../Service/api";
+import api from "../../Service/api";
 import { toast } from "react-toastify";
 
 function DashboardHome() {
