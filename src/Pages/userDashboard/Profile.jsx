@@ -34,9 +34,9 @@ function Profile() {
     address: "",
   });
 
-  // ===============================
+  // ==========================================
   // GET LOGGED-IN USER PROFILE
-  // ===============================
+  // ==========================================
   useEffect(() => {
     fetchProfile();
   }, []);
@@ -53,15 +53,15 @@ function Profile() {
         name: userData.name || "",
         email: userData.email || "",
         phone: userData.phone || "",
-        age: userData.age || "",
+        age: userData.age ?? "",
         gender: userData.gender || "",
-        height: userData.height || "",
-        weight: userData.weight || "",
+        height: userData.height ?? "",
+        weight: userData.weight ?? "",
         goal: userData.goal || "",
         address: userData.address || "",
       });
     } catch (error) {
-      console.log(
+      console.error(
         "PROFILE ERROR:",
         error.response?.data || error.message
       );
@@ -75,9 +75,9 @@ function Profile() {
     }
   };
 
-  // ===============================
-  // INPUT CHANGE
-  // ===============================
+  // ==========================================
+  // HANDLE INPUT
+  // ==========================================
   const handleChange = (e) => {
     const { name, value } = e.target;
 
@@ -87,9 +87,9 @@ function Profile() {
     }));
   };
 
-  // ===============================
+  // ==========================================
   // UPDATE PROFILE
-  // ===============================
+  // ==========================================
   const handleUpdate = async (e) => {
     e.preventDefault();
 
@@ -109,24 +109,24 @@ function Profile() {
         name: updatedUser.name || "",
         email: updatedUser.email || "",
         phone: updatedUser.phone || "",
-        age: updatedUser.age || "",
+        age: updatedUser.age ?? "",
         gender: updatedUser.gender || "",
-        height: updatedUser.height || "",
-        weight: updatedUser.weight || "",
+        height: updatedUser.height ?? "",
+        weight: updatedUser.weight ?? "",
         goal: updatedUser.goal || "",
         address: updatedUser.address || "",
       });
 
-      // Update localStorage user data
-      const storedUser = JSON.parse(
-        localStorage.getItem("user")
-      );
+      // Update localStorage
+      const storedUser = localStorage.getItem("user");
 
       if (storedUser) {
+        const parsedUser = JSON.parse(storedUser);
+
         localStorage.setItem(
           "user",
           JSON.stringify({
-            ...storedUser,
+            ...parsedUser,
             ...updatedUser,
           })
         );
@@ -136,7 +136,7 @@ function Profile() {
 
       toast.success("Profile updated successfully");
     } catch (error) {
-      console.log(
+      console.error(
         "UPDATE PROFILE ERROR:",
         error.response?.data || error.message
       );
@@ -150,18 +150,18 @@ function Profile() {
     }
   };
 
-  // ===============================
+  // ==========================================
   // CANCEL EDIT
-  // ===============================
+  // ==========================================
   const handleCancel = () => {
     setFormData({
       name: user?.name || "",
       email: user?.email || "",
       phone: user?.phone || "",
-      age: user?.age || "",
+      age: user?.age ?? "",
       gender: user?.gender || "",
-      height: user?.height || "",
-      weight: user?.weight || "",
+      height: user?.height ?? "",
+      weight: user?.weight ?? "",
       goal: user?.goal || "",
       address: user?.address || "",
     });
@@ -169,60 +169,51 @@ function Profile() {
     setEditing(false);
   };
 
-  // ===============================
+  // ==========================================
   // LOADING
-  // ===============================
+  // ==========================================
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="text-center">
-
           <div className="w-10 h-10 border-4 border-red-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
 
           <p className="text-gray-600 font-medium">
             Loading Profile...
           </p>
-
         </div>
       </div>
     );
   }
 
-  // ===============================
-  // USER NOT FOUND
-  // ===============================
+  // ==========================================
+  // PROFILE NOT FOUND
+  // ==========================================
   if (!user) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
-
         <div className="bg-white p-8 rounded-2xl shadow text-center">
-
           <FaUser className="text-5xl text-gray-400 mx-auto mb-4" />
 
           <h2 className="text-xl font-bold text-gray-800">
             Profile Not Found
           </h2>
-
         </div>
-
       </div>
     );
   }
 
-  // ===============================
-  // UI
-  // ===============================
   return (
     <div className="min-h-screen bg-gray-50 p-4 md:p-8">
-
       <div className="max-w-5xl mx-auto">
 
-        {/* ================= HEADER ================= */}
+        {/* ==========================================
+            PAGE HEADER
+        ========================================== */}
 
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
 
           <div>
-
             <h1 className="text-3xl font-bold text-gray-900">
               My Profile
             </h1>
@@ -230,77 +221,84 @@ function Profile() {
             <p className="text-gray-500 mt-1">
               Manage your personal information
             </p>
-
           </div>
 
           {!editing && (
             <button
+              type="button"
               onClick={() => setEditing(true)}
-              className="flex items-center justify-center gap-2 bg-red-600 hover:bg-red-700 text-white px-5 py-3 rounded-xl font-semibold transition"
+              className="inline-flex items-center justify-center gap-2 bg-red-600 hover:bg-red-700 text-white px-5 py-3 rounded-xl font-semibold transition"
             >
               <FaEdit />
               Edit Profile
             </button>
           )}
-
         </div>
 
+        {/* ==========================================
+            PROFILE CARD
+        ========================================== */}
 
-        {/* ================= PROFILE CARD ================= */}
-
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
 
           {/* RED COVER */}
 
           <div className="h-28 bg-gradient-to-r from-red-600 to-red-800"></div>
 
-
           {/* PROFILE HEADER */}
 
           <div className="px-6 md:px-10 pb-6">
 
-            <div className="flex items-center gap-5 -mt-12">
+            <div className="flex items-end gap-5 -mt-12">
 
-              <div className="w-24 h-24 rounded-full bg-white border-4 border-white shadow-lg flex items-center justify-center overflow-hidden">
+              {/* PROFILE IMAGE */}
+
+              <div className="w-24 h-24 shrink-0 rounded-full bg-white border-4 border-white shadow-lg overflow-hidden flex items-center justify-center">
 
                 {user.profileImage ? (
                   <img
                     src={user.profileImage}
                     alt="Profile"
                     className="w-full h-full object-cover"
+                    onError={(e) => {
+                      e.currentTarget.style.display = "none";
+                    }}
                   />
                 ) : (
-                  <div className="w-full h-full rounded-full bg-gray-100 flex items-center justify-center">
-                    <FaUser className="text-4xl text-gray-400" />
+                  <div className="w-full h-full bg-gray-100 flex items-center justify-center">
+                    <FaUser className="text-4xl text-black" />
                   </div>
                 )}
 
               </div>
 
+              {/* USER NAME */}
 
-              <div className="pt-10">
+              <div className="pb-1 min-w-0">
 
-                <h2 className="text-2xl font-bold text-gray-900">
+                <h2 className="text-2xl font-bold text-gray-900 truncate">
                   {user.name || "User"}
                 </h2>
 
-                <p className="text-gray-500">
+                <p className="text-gray-500 truncate">
                   {user.email}
                 </p>
 
               </div>
 
             </div>
-
           </div>
 
-
-          {/* ================= FORM ================= */}
+          {/* ==========================================
+              FORM
+          ========================================== */}
 
           <form
             onSubmit={handleUpdate}
-            className="p-6 md:p-10"
+            className="px-6 md:px-10 pb-10"
           >
+
+            {/* SECTION TITLE */}
 
             <div className="flex items-center gap-3 mb-7">
 
@@ -309,7 +307,6 @@ function Profile() {
               </div>
 
               <div>
-
                 <h2 className="text-xl font-bold text-gray-900">
                   Personal Information
                 </h2>
@@ -317,15 +314,15 @@ function Profile() {
                 <p className="text-sm text-gray-500">
                   Update your personal and fitness details
                 </p>
-
               </div>
 
             </div>
 
+            {/* ==========================================
+                FIELDS
+            ========================================== */}
 
-            {/* ================= FIELDS ================= */}
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-5">
 
               <InputField
                 label="Full Name"
@@ -335,7 +332,6 @@ function Profile() {
                 icon={<FaUser />}
                 editing={editing}
               />
-
 
               <InputField
                 label="Email Address"
@@ -347,16 +343,15 @@ function Profile() {
                 editing={editing}
               />
 
-
               <InputField
                 label="Phone Number"
                 name="phone"
+                type="tel"
                 value={formData.phone}
                 onChange={handleChange}
                 icon={<FaPhone />}
                 editing={editing}
               />
-
 
               <InputField
                 label="Age"
@@ -368,55 +363,21 @@ function Profile() {
                 editing={editing}
               />
 
-
               {/* GENDER */}
 
-              <div>
-
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  Gender
-                </label>
-
-                {editing ? (
-                  <div className="relative">
-
-                    <FaVenusMars className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
-
-                    <select
-                      name="gender"
-                      value={formData.gender}
-                      onChange={handleChange}
-                      className="w-full border border-gray-300 rounded-xl py-3 pl-11 pr-4 focus:outline-none focus:ring-2 focus:ring-red-500"
-                    >
-
-                      <option value="">
-                        Select Gender
-                      </option>
-
-                      <option value="Male">
-                        Male
-                      </option>
-
-                      <option value="Female">
-                        Female
-                      </option>
-
-                      <option value="Other">
-                        Other
-                      </option>
-
-                    </select>
-
-                  </div>
-                ) : (
-                  <DisplayField
-                    icon={<FaVenusMars />}
-                    value={user.gender}
-                  />
-                )}
-
-              </div>
-
+              <SelectField
+                label="Gender"
+                name="gender"
+                value={formData.gender}
+                onChange={handleChange}
+                icon={<FaVenusMars />}
+                editing={editing}
+                options={[
+                  { value: "Male", label: "Male" },
+                  { value: "Female", label: "Female" },
+                  { value: "Other", label: "Other" },
+                ]}
+              />
 
               <InputField
                 label="Height (cm)"
@@ -428,7 +389,6 @@ function Profile() {
                 editing={editing}
               />
 
-
               <InputField
                 label="Weight (kg)"
                 name="weight"
@@ -439,114 +399,84 @@ function Profile() {
                 editing={editing}
               />
 
-
-              {/* FITNESS GOAL */}
-
-              <div>
-
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  Fitness Goal
-                </label>
-
-                {editing ? (
-                  <div className="relative">
-
-                    <FaBullseye className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
-
-                    <select
-                      name="goal"
-                      value={formData.goal}
-                      onChange={handleChange}
-                      className="w-full border border-gray-300 rounded-xl py-3 pl-11 pr-4 focus:outline-none focus:ring-2 focus:ring-red-500"
-                    >
-
-                      <option value="">
-                        Select Goal
-                      </option>
-
-                      <option value="Weight Loss">
-                        Weight Loss
-                      </option>
-
-                      <option value="Weight Gain">
-                        Weight Gain
-                      </option>
-
-                      <option value="Muscle Building">
-                        Muscle Building
-                      </option>
-
-                      <option value="General Fitness">
-                        General Fitness
-                      </option>
-
-                    </select>
-
-                  </div>
-                ) : (
-                  <DisplayField
-                    icon={<FaBullseye />}
-                    value={user.goal}
-                  />
-                )}
-
-              </div>
+              <SelectField
+                label="Fitness Goal"
+                name="goal"
+                value={formData.goal}
+                onChange={handleChange}
+                icon={<FaBullseye />}
+                editing={editing}
+                options={[
+                  {
+                    value: "Weight Loss",
+                    label: "Weight Loss",
+                  },
+                  {
+                    value: "Weight Gain",
+                    label: "Weight Gain",
+                  },
+                  {
+                    value: "Muscle Building",
+                    label: "Muscle Building",
+                  },
+                  {
+                    value: "General Fitness",
+                    label: "General Fitness",
+                  },
+                ]}
+              />
 
             </div>
 
+            {/* ==========================================
+                ADDRESS
+            ========================================== */}
 
-            {/* ================= ADDRESS ================= */}
+            <div className="mt-5">
 
-            <div className="mt-6">
-
-              <label className="block text-sm font-semibold text-gray-700 mb-2">
-                Address
-              </label>
+              <FieldLabel
+                icon={<FaMapMarkerAlt />}
+                label="Address"
+              />
 
               {editing ? (
-                <div className="relative">
-
-                  <FaMapMarkerAlt className="absolute left-4 top-4 text-gray-400" />
-
-                  <textarea
-                    name="address"
-                    value={formData.address}
-                    onChange={handleChange}
-                    rows="3"
-                    placeholder="Enter your address"
-                    className="w-full border border-gray-300 rounded-xl py-3 pl-11 pr-4 focus:outline-none focus:ring-2 focus:ring-red-500 resize-none"
-                  />
-
-                </div>
-              ) : (
-                <DisplayField
-                  icon={<FaMapMarkerAlt />}
-                  value={user.address}
+                <textarea
+                  name="address"
+                  value={formData.address}
+                  onChange={handleChange}
+                  rows={3}
+                  placeholder="Enter your address"
+                  className="w-full px-4 py-3 bg-white border border-gray-300 rounded-xl text-gray-900 placeholder:text-gray-400 outline-none resize-none transition focus:border-red-500 focus:ring-2 focus:ring-red-100"
                 />
+              ) : (
+                <div className="min-h-[48px] flex items-center px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-gray-900">
+                  {user.address || "Not provided"}
+                </div>
               )}
 
             </div>
 
-
-            {/* ================= BUTTONS ================= */}
+            {/* ==========================================
+                BUTTONS
+            ========================================== */}
 
             {editing && (
-              <div className="flex justify-end gap-3 mt-8 pt-6 border-t">
+              <div className="flex justify-end items-center gap-3 mt-8 pt-6 border-t border-gray-200">
 
                 <button
                   type="button"
                   onClick={handleCancel}
-                  className="flex items-center gap-2 px-5 py-3 rounded-xl border border-gray-300 text-gray-700 hover:bg-gray-100 font-semibold"
+                  disabled={saving}
+                  className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl border border-gray-300 bg-white text-gray-800 hover:bg-gray-50 font-semibold transition"
                 >
                   <FaTimes />
                   Cancel
                 </button>
 
-
                 <button
                   type="submit"
                   disabled={saving}
-                  className="flex items-center gap-2 px-5 py-3 rounded-xl bg-red-600 hover:bg-red-700 text-white font-semibold disabled:opacity-50"
+                  className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-red-600 hover:bg-red-700 text-white font-semibold transition disabled:opacity-60 disabled:cursor-not-allowed"
                 >
                   <FaSave />
 
@@ -559,15 +489,27 @@ function Profile() {
             )}
 
           </form>
-
         </div>
-
       </div>
-
     </div>
   );
 }
 
+/* =====================================================
+   FIELD LABEL
+===================================================== */
+
+function FieldLabel({ icon, label }) {
+  return (
+    <label className="flex items-center gap-2 text-sm font-semibold text-gray-800 mb-2">
+      <span className="text-black text-sm">
+        {icon}
+      </span>
+
+      <span>{label}</span>
+    </label>
+  );
+}
 
 /* =====================================================
    INPUT FIELD
@@ -583,55 +525,79 @@ function InputField({
   editing,
 }) {
   return (
-    <div>
+    <div className="w-full">
 
-      <label className="block text-sm font-semibold text-gray-700 mb-2">
-        {label}
-      </label>
+      <FieldLabel
+        icon={icon}
+        label={label}
+      />
 
       {editing ? (
-        <div className="relative">
-
-          <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">
-            {icon}
-          </div>
-
-          <input
-            type={type}
-            name={name}
-            value={value}
-            onChange={onChange}
-            className="w-full border border-gray-300 rounded-xl py-3 pl-11 pr-4 focus:outline-none focus:ring-2 focus:ring-red-500"
-          />
-
-        </div>
-      ) : (
-        <DisplayField
-          icon={icon}
+        <input
+          type={type}
+          name={name}
           value={value}
+          onChange={onChange}
+          className="w-full h-12 px-4 bg-white border border-gray-300 rounded-xl text-gray-900 font-medium outline-none transition focus:border-red-500 focus:ring-2 focus:ring-red-100"
         />
+      ) : (
+        <div className="w-full min-h-[48px] flex items-center px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 font-medium">
+          {value || "Not provided"}
+        </div>
       )}
 
     </div>
   );
 }
 
-
 /* =====================================================
-   DISPLAY FIELD
+   SELECT FIELD
 ===================================================== */
 
-function DisplayField({ icon, value }) {
+function SelectField({
+  label,
+  name,
+  value,
+  onChange,
+  icon,
+  editing,
+  options,
+}) {
   return (
-    <div className="flex items-center gap-3 bg-gray-50 border border-gray-100 rounded-xl px-4 py-3">
+    <div className="w-full">
 
-      <div className="text-red-500">
-        {icon}
-      </div>
+      <FieldLabel
+        icon={icon}
+        label={label}
+      />
 
-      <p className="text-gray-800 font-medium">
-        {value || "Not provided"}
-      </p>
+      {editing ? (
+        <select
+          name={name}
+          value={value}
+          onChange={onChange}
+          className="w-full h-12 px-4 bg-white border border-gray-300 rounded-xl text-gray-900 font-medium outline-none transition focus:border-red-500 focus:ring-2 focus:ring-red-100 cursor-pointer"
+        >
+
+          <option value="">
+            Select {label}
+          </option>
+
+          {options.map((option) => (
+            <option
+              key={option.value}
+              value={option.value}
+            >
+              {option.label}
+            </option>
+          ))}
+
+        </select>
+      ) : (
+        <div className="w-full min-h-[48px] flex items-center px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 font-medium">
+          {value || "Not provided"}
+        </div>
+      )}
 
     </div>
   );
