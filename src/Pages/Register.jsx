@@ -7,6 +7,8 @@ import {
   FaDumbbell,
 } from "react-icons/fa";
 
+import {useSearchParams} from "react-router-dom";               //for refferal part
+
 import api from "../Service/api";
 
 const Register = () => {
@@ -19,6 +21,12 @@ const Register = () => {
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+
+
+  //referal part
+  const [searchParams] = useSearchParams();
+  const referralCode = searchParams.get("ref");
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -44,6 +52,7 @@ const Register = () => {
         name,
         email,
         password,
+         referralCode,
       });
 
       toast.success(
