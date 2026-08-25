@@ -8,7 +8,7 @@ import {
   FaSignOutAlt,
 } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
-
+import { FaGift } from "react-icons/fa";
 function Sidebar() {
   return (
     <div className="w-64 min-h-screen bg-gray-900 text-white p-6">
@@ -60,6 +60,14 @@ function Sidebar() {
   <li className="flex items-center gap-3 cursor-pointer hover:text-blue-400">
     <FaStar />
     Feedback
+  </li>
+</NavLink>
+
+
+<NavLink to="/dashboard/referral">
+  <li className="flex items-center gap-3 cursor-pointer hover:text-blue-400">
+    <FaGift />
+    Referral
   </li>
 </NavLink>
         <li className="flex items-center gap-3 cursor-pointer hover:text-red-400">

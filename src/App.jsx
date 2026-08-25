@@ -41,6 +41,8 @@ import AdminUsers from "./Pages/adminPerson/AdminUsers";
 import AdminTrainers from "./Pages/adminPerson/AdminTrainers";
 import AdminClasses from "./Pages/adminPerson/AdminClasses";
 import AdminBookings from "./Pages/adminPerson/AdminBookings";
+
+import ReferralOffer from './Pages/userDashboard/ReferralOffer';
 const App = () => {
   return (
     <div>
@@ -119,6 +121,11 @@ const App = () => {
   <Route path="payments" element={<Payments />} />
    <Route path="change-slot/:id" element={<ChangeSlot />} />
   <Route path="feedback" element={<Feedback />} />
+
+  <Route
+  path="referral"
+  element={<ReferralOffer />}
+/>
   
 </Route>
 
