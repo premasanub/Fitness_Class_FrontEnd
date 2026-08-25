@@ -21,7 +21,7 @@ function DashboardHome() {
         }
 
         const response = await api.get(
-          `/dashboard/${user._id}`
+          `user/dashboard/${user._id}`
         );
 
         console.log("Dashboard Data:", response.data);
