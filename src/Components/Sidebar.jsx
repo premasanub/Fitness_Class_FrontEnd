@@ -76,7 +76,7 @@ function Sidebar() {
   onClick={() => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
-    window.location.href = "/login";
+    window.location.href = "/";
   }}
   className="flex items-center gap-3 cursor-pointer hover:text-blue-400"
 >
