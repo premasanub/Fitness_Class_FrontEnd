@@ -41,7 +41,7 @@ import AdminUsers from "./Pages/adminPerson/AdminUsers";
 import AdminTrainers from "./Pages/adminPerson/AdminTrainers";
 import AdminClasses from "./Pages/adminPerson/AdminClasses";
 import AdminBookings from "./Pages/adminPerson/AdminBookings";
-import ReferralOfferManagement from "./Pages/Admin/ReferralOfferManagement";
+import ReferralOfferManagement from "./Pages/adminPerson/ReferralOfferManagement";
 import ReferralOffer from './Pages/userDashboard/ReferralOffer';
 const App = () => {
   return (
