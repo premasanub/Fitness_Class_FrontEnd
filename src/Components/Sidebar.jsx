@@ -70,7 +70,8 @@ function Sidebar() {
     Referral
   </li>
 </NavLink>
-        <NavLink to="/dashboard/logout">
+
+<NavLink to="/">
   <li className="flex items-center gap-3 cursor-pointer hover:text-blue-400">
     <FaSignOutAlt />
     Logout
