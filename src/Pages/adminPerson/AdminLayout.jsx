@@ -40,6 +40,13 @@ function AdminLayout() {
       path: "/admin/bookings",
       icon: <FaCalendarCheck />,
     },
+
+
+    {
+      name: "Referral Offers",
+      path: "/admin/referral-offer",
+      icon: <FaCalendarCheck />,
+    },
   ];
 
   const handleLogout = () => {
