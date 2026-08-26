@@ -74,6 +74,7 @@ function TrainerDashboardLayout() {
          <NavLink to="/trainer/add-class"
          className="flex items-center gap-3 hover:text-yellow-400"
            >
+             <FaBook />
          Add Class
              </NavLink>
 
