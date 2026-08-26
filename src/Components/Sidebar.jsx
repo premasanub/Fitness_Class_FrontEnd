@@ -71,11 +71,18 @@ function Sidebar() {
   </li>
 </NavLink>
 
-<NavLink to="/">
-  <li className="flex items-center gap-3 cursor-pointer hover:text-blue-400">
-    <FaSignOutAlt />
-    Logout
-  </li>
+<NavLink >
+ <li
+  onClick={() => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    window.location.href = "/login";
+  }}
+  className="flex items-center gap-3 cursor-pointer hover:text-blue-400"
+>
+  <FaSignOutAlt />
+  Logout
+</li>
 </NavLink>
 
       </ul>
