@@ -49,12 +49,12 @@ function AdminLayout() {
     },
   ];
 
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
+  // const handleLogout = () => {
+  //   localStorage.removeItem("token");
+  //   localStorage.removeItem("user");
 
-    window.location.href = "/login";
-  };
+  //   window.location.href = "/";
+  // };
 
   return (
     <div className="min-h-screen bg-gray-100 flex">
@@ -173,7 +173,11 @@ function AdminLayout() {
         <div className="p-4 border-t border-gray-700">
 
           <button
-            onClick={handleLogout}
+            onClick={() => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    window.location.href = "/";
+  }}
             className="w-full flex items-center gap-4 px-4 py-3 rounded-lg text-red-400 hover:bg-red-500 hover:text-white transition"
           >
 

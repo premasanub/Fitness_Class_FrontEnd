@@ -119,6 +119,6 @@ frontend/
 ├── vite.config.js
 └── README.md
 
-deployment Link:https://fitness-class-front-end-wgzh.vercel.app/
+deployment Link:https://fitness-class-front-end-hb3y.vercel.app/
                 
                 
