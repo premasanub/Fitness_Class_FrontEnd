@@ -24,7 +24,9 @@ function BookingCard({ booking }) {
   // ================================
 
   const handleCancel = async () => {
+
     try {
+
       await api.put(
         `/bookings/cancel/${booking._id}`
       );
@@ -36,6 +38,12 @@ function BookingCard({ booking }) {
       window.location.reload();
 
     } catch (error) {
+
+      console.log(
+        "CANCEL ERROR:",
+        error.response?.data || error.message
+      );
+
       toast.error(
         error.response?.data?.message ||
         "Error cancelling booking"
@@ -49,6 +57,7 @@ function BookingCard({ booking }) {
   // ================================
 
   const handleViewDetails = () => {
+
     navigate(
       `/dashboard/classes/${booking.class?._id}`,
       {
@@ -57,6 +66,7 @@ function BookingCard({ booking }) {
         },
       }
     );
+
   };
 
 
@@ -65,6 +75,7 @@ function BookingCard({ booking }) {
   // ================================
 
   const handleFeedback = () => {
+
     navigate(
       "/dashboard/feedback",
       {
@@ -73,15 +84,18 @@ function BookingCard({ booking }) {
         },
       }
     );
+
   };
 
 
   return (
-    <div className="bg-white">
+
+    <div className="bg-white shadow-lg rounded-xl overflow-hidden">
 
       {/* ================================
           Class Image
       ================================= */}
+
       <img
         src={
           classImages[booking.class?.image] ||
@@ -91,12 +105,14 @@ function BookingCard({ booking }) {
         className="w-full h-52 object-cover"
       />
 
-      <div>
+
+      <div className="p-5">
 
         {/* ================================
             Class Name
         ================================= */}
-        <h2 className="text-2xl font-bold">
+
+        <h2 className="text-2xl font-bold mb-2">
           {booking.class?.title}
         </h2>
 
@@ -104,6 +120,7 @@ function BookingCard({ booking }) {
         {/* ================================
             Trainer
         ================================= */}
+
         <p>
           <strong>Trainer:</strong>{" "}
           {booking.trainer?.name ||
@@ -115,6 +132,7 @@ function BookingCard({ booking }) {
         {/* ================================
             Date
         ================================= */}
+
         <p>
           <strong>Date:</strong>{" "}
           {booking.class?.date}
@@ -124,6 +142,7 @@ function BookingCard({ booking }) {
         {/* ================================
             Time Slot
         ================================= */}
+
         <p>
           <strong>Time Slot:</strong>{" "}
           {booking.selectedSlot ||
@@ -134,8 +153,10 @@ function BookingCard({ booking }) {
         {/* ================================
             Payment
         ================================= */}
+
         <p>
           <strong>Payment:</strong>{" "}
+
           <span
             className={`font-semibold ${
               booking.paymentStatus === "Paid"
@@ -145,14 +166,17 @@ function BookingCard({ booking }) {
           >
             {booking.paymentStatus}
           </span>
+
         </p>
 
 
         {/* ================================
             Booking Status
         ================================= */}
+
         <p>
           <strong>Status:</strong>{" "}
+
           <span
             className={`font-semibold ${
               booking.bookingStatus ===
@@ -169,18 +193,22 @@ function BookingCard({ booking }) {
           >
             {booking.bookingStatus}
           </span>
+
         </p>
 
 
         {/* ================================
-            Buttons (No gap, no margin)
+            Buttons
         ================================= */}
-        <div className="flex flex-wrap">
+
+        <div className="flex flex-wrap gap-3 mt-5">
+
 
           {/* View Details */}
+
           <button
             onClick={handleViewDetails}
-            className="bg-blue-600 text-white"
+            className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
           >
             View Details
           </button>
@@ -189,55 +217,77 @@ function BookingCard({ booking }) {
           {/* ================================
               Confirmed Booking
           ================================= */}
+
           {booking.bookingStatus ===
             "Confirmed" && (
+
             <>
               {/* Change Slot */}
+
               <button
                 onClick={() =>
                   navigate(
                     `/dashboard/change-slot/${booking._id}`
                   )
                 }
-                className="bg-indigo-600 text-white"
+                className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700"
               >
                 Change Slot
               </button>
 
+
               {/* Cancel */}
+
               <button
                 onClick={handleCancel}
-                className="bg-red-600 text-white"
+                className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700"
               >
                 Cancel Booking
               </button>
+
             </>
+
           )}
 
 
           {/* ================================
               Completed Booking
           ================================= */}
+
           {booking.bookingStatus ===
             "Completed" && (
+
             booking.feedbackGiven === true ? (
-              <span className="bg-green-100 text-green-700 font-semibold flex items-center">
+
+              // Feedback already submitted
+
+              <span
+                className="bg-green-100 text-green-700 px-5 py-2 rounded-lg font-semibold flex items-center"
+              >
                 ✓ Feedback Submitted!
               </span>
+
             ) : (
+
+              // Feedback not submitted
+
               <button
                 onClick={handleFeedback}
-                className="bg-yellow-500 text-white"
+                className="bg-yellow-500 text-white px-5 py-2 rounded-lg hover:bg-yellow-600"
               >
                 Give Feedback
               </button>
+
             )
+
           )}
 
         </div>
 
       </div>
+
     </div>
+
   );
 }
 
