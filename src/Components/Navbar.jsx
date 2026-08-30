@@ -12,69 +12,47 @@ function Navbar() {
   };
 
   return (
-    <nav className="bg-black text-white px-10 py-4 flex justify-between items-center">
+    <nav className="bg-black text-white flex justify-between items-center">
 
-      {/* Logo */}
-      <Link to="/" className="flex items-center gap-2">
+      {/* Logo (No gap) */}
+      <Link to="/" className="flex items-center">
         <FaDumbbell className="text-blue-500 text-3xl" />
-
         <h1 className="text-3xl font-bold">
           Fit<span className="text-blue-500">Book</span>
         </h1>
       </Link>
 
-      {/* Navigation */}
-      <ul className="hidden md:flex items-center gap-8">
-
+      {/* Navigation (No gap) */}
+      <ul className="hidden md:flex items-center">
         <li>
-          <Link
-            to="/"
-            className="hover:text-blue-500 transition"
-          >
+          <Link to="/" className="hover:text-blue-500">
             Home
           </Link>
         </li>
-
         <li>
-          <Link
-            to="/classes"
-            className="hover:text-blue-500 transition"
-          >
+          <Link to="/classes" className="hover:text-blue-500">
             Classes
           </Link>
         </li>
-
         <li>
-          <Link
-            to="/trainers"
-            className="hover:text-blue-500 transition"
-          >
+          <Link to="/trainers" className="hover:text-blue-500">
             Trainers
           </Link>
         </li>
-
         <li>
-          <Link
-            to="/about"
-            className="hover:text-blue-500 transition"
-          >
+          <Link to="/about" className="hover:text-blue-500">
             About
           </Link>
         </li>
-
         <li>
-          <Link
-            to="/contact"
-            className="hover:text-blue-500 transition"
-          >
+          <Link to="/contact" className="hover:text-blue-500">
             Contact
           </Link>
         </li>
-
       </ul>
 
-      {/* Right side */}
-      <div className="flex items-center gap-4">
+      {/* Right side (No gap) */}
+      <div className="flex items-center">
 
         {user ? (
           <>
@@ -82,7 +60,7 @@ function Navbar() {
             <Link
               to="/dashboard"
               title="Dashboard"
-              className="w-10 h-10 flex items-center justify-center rounded-full bg-blue-600 hover:bg-blue-700 transition"
+              className="w-10 h-10 flex items-center justify-center bg-blue-600 hover:bg-blue-700"
             >
               <FaTachometerAlt />
             </Link>
@@ -90,7 +68,7 @@ function Navbar() {
             {/* Logout */}
             <button
               onClick={handleLogout}
-              className="bg-red-600 px-5 py-2 rounded-lg hover:bg-red-700 transition"
+              className="bg-red-600 hover:bg-red-700"
             >
               Logout
             </button>
@@ -99,14 +77,14 @@ function Navbar() {
           <>
             {/* Login */}
             <Link to="/login">
-              <button className="border border-white px-5 py-2 rounded-lg hover:bg-white hover:text-black transition">
+              <button className="border border-white hover:bg-white hover:text-black">
                 Login
               </button>
             </Link>
 
             {/* Register */}
             <Link to="/register">
-              <button className="bg-blue-600 px-5 py-2 rounded-lg hover:bg-blue-700 transition">
+              <button className="bg-blue-600 hover:bg-blue-700">
                 Register
               </button>
             </Link>

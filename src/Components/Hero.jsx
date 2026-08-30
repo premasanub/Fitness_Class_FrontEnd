@@ -8,13 +8,13 @@ function Hero() {
     >
       <div className="bg-black/60 w-full h-full flex items-center">
 
-        <div className="ml-20 text-white">
+        <div className="text-white">
 
-          <span className="bg-blue-600 px-4 py-2 rounded">
+          <span className="bg-blue-600">
             #1 Fitness Booking Platform
           </span>
 
-          <h1 className="text-6xl font-bold mt-8">
+          <h1 className="text-6xl font-bold">
             Transform Your
             <br />
             <span className="text-blue-500">
@@ -23,18 +23,18 @@ function Hero() {
             Journey
           </h1>
 
-          <p className="mt-6 text-xl">
+          <p className="text-xl">
             Book professional trainers and
             <br />
             personalized fitness classes.
           </p>
 
-          <div className="mt-8 flex gap-5">
-            <button className="bg-blue-600 px-8 py-3 rounded-lg">
+          <div className="flex">
+            <button className="bg-blue-600 text-white">
               Explore Classes
             </button>
 
-            <button className="border border-white px-8 py-3 rounded-lg">
+            <button className="border border-white text-white">
               Join Now
             </button>
           </div>
@@ -47,3 +47,4 @@ function Hero() {
 }
 
 export default Hero;
+
