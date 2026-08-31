@@ -20,47 +20,32 @@ function DashboardHome() {
 
   const fetchDashboard = async () => {
     try {
-
       const user = JSON.parse(localStorage.getItem("user"));
+      if (!user?._id) return;
 
-      if (!user?._id) {
-        console.log("User not found in localStorage");
-        return;
-      }
-
-      const response = await api.get(
-        `/bookings/dashboard/${user._id}`
-      );
-
+      const response = await api.get(`/bookings/dashboard/${user._id}`);
       setStats(response.data.stats);
-
     } catch (error) {
-
-      console.error("Dashboard Error:", error);
-
       toast.error(
-        error.response?.data?.message ||
-        "Failed to load dashboard"
+        error.response?.data?.message || "Failed to load dashboard"
       );
-
     } finally {
       setLoading(false);
     }
   };
 
   return (
+    <div className="flex-1 bg-gray-100 min-h-screen m-0 p-0">
 
-    <div className="flex-1 p-8 bg-gray-100 min-h-screen">
-
-      <h1 className="text-4xl font-bold">
+      <h1 className="text-4xl font-bold m-0 p-0">
         Welcome Back 👋
       </h1>
 
-      <p className="text-gray-600 mt-2">
+      <p className="text-gray-600 m-0 p-0">
         Here's your fitness summary.
       </p>
 
-      <div className="grid md:grid-cols-4 gap-6 mt-10">
+      <div className="grid md:grid-cols-4 m-0 p-0">
 
         <DashboardCard
           title="Total Bookings"
@@ -89,7 +74,6 @@ function DashboardHome() {
       </div>
 
     </div>
-
   );
 }
 

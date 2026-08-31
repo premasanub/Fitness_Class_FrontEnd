@@ -20,266 +20,147 @@ function BookingCard({ booking }) {
   };
 
   // ================================
-  // Cancel Booking
+  // Cancel Booking (Console removed)
   // ================================
-
   const handleCancel = async () => {
-
     try {
-
-      await api.put(
-        `/bookings/cancel/${booking._id}`
-      );
-
-      toast.success(
-        "Booking Cancelled Successfully"
-      );
-
+      await api.put(`/bookings/cancel/${booking._id}`);
+      toast.success("Booking Cancelled Successfully");
       window.location.reload();
-
     } catch (error) {
-
-      console.log(
-        "CANCEL ERROR:",
-        error.response?.data || error.message
-      );
-
       toast.error(
-        error.response?.data?.message ||
-        "Error cancelling booking"
+        error.response?.data?.message || "Error cancelling booking"
       );
     }
   };
 
-
   // ================================
   // View Details
   // ================================
-
   const handleViewDetails = () => {
-
-    navigate(
-      `/dashboard/classes/${booking.class?._id}`,
-      {
-        state: {
-          fromBookings: true,
-        },
-      }
-    );
-
+    navigate(`/dashboard/classes/${booking.class?._id}`, {
+      state: { fromBookings: true },
+    });
   };
-
 
   // ================================
   // Give Feedback
   // ================================
-
   const handleFeedback = () => {
-
-    navigate(
-      "/dashboard/feedback",
-      {
-        state: {
-          bookingId: booking._id,
-        },
-      }
-    );
-
+    navigate("/dashboard/feedback", {
+      state: { bookingId: booking._id },
+    });
   };
 
-
   return (
+    <div className="bg-white shadow-lg rounded-xl overflow-hidden m-0 p-0">
 
-    <div className="bg-white shadow-lg rounded-xl overflow-hidden">
-
-      {/* ================================
-          Class Image
-      ================================= */}
-
+      {/* Class Image */}
       <img
-        src={
-          classImages[booking.class?.image] ||
-          strength
-        }
+        src={classImages[booking.class?.image] || strength}
         alt={booking.class?.title}
-        className="w-full h-52 object-cover"
+        className="w-full h-52 object-cover m-0 p-0"
       />
 
+      <div className="m-0 p-0">
 
-      <div className="p-5">
-
-        {/* ================================
-            Class Name
-        ================================= */}
-
-        <h2 className="text-2xl font-bold mb-2">
+        {/* Class Name */}
+        <h2 className="text-2xl font-bold m-0 p-0">
           {booking.class?.title}
         </h2>
 
-
-        {/* ================================
-            Trainer
-        ================================= */}
-
-        <p>
+        {/* Trainer */}
+        <p className="m-0 p-0">
           <strong>Trainer:</strong>{" "}
-          {booking.trainer?.name ||
-            booking.class?.trainer?.name ||
-            "Not Assigned"}
+          {booking.trainer?.name || booking.class?.trainer?.name || "Not Assigned"}
         </p>
 
-
-        {/* ================================
-            Date
-        ================================= */}
-
-        <p>
-          <strong>Date:</strong>{" "}
-          {booking.class?.date}
+        {/* Date */}
+        <p className="m-0 p-0">
+          <strong>Date:</strong> {booking.class?.date}
         </p>
 
-
-        {/* ================================
-            Time Slot
-        ================================= */}
-
-        <p>
-          <strong>Time Slot:</strong>{" "}
-          {booking.selectedSlot ||
-            booking.class?.time}
+        {/* Time Slot */}
+        <p className="m-0 p-0">
+          <strong>Time Slot:</strong> {booking.selectedSlot || booking.class?.time}
         </p>
 
-
-        {/* ================================
-            Payment
-        ================================= */}
-
-        <p>
+        {/* Payment */}
+        <p className="m-0 p-0">
           <strong>Payment:</strong>{" "}
-
           <span
-            className={`font-semibold ${
-              booking.paymentStatus === "Paid"
-                ? "text-green-600"
-                : "text-yellow-600"
+            className={`font-semibold m-0 p-0 ${
+              booking.paymentStatus === "Paid" ? "text-green-600" : "text-yellow-600"
             }`}
           >
             {booking.paymentStatus}
           </span>
-
         </p>
 
-
-        {/* ================================
-            Booking Status
-        ================================= */}
-
-        <p>
+        {/* Booking Status */}
+        <p className="m-0 p-0">
           <strong>Status:</strong>{" "}
-
           <span
-            className={`font-semibold ${
-              booking.bookingStatus ===
-              "Confirmed"
+            className={`font-semibold m-0 p-0 ${
+              booking.bookingStatus === "Confirmed"
                 ? "text-green-600"
-                : booking.bookingStatus ===
-                  "Completed"
+                : booking.bookingStatus === "Completed"
                 ? "text-blue-600"
-                : booking.bookingStatus ===
-                  "Cancelled"
+                : booking.bookingStatus === "Cancelled"
                 ? "text-red-600"
                 : "text-yellow-600"
             }`}
           >
             {booking.bookingStatus}
           </span>
-
         </p>
 
-
-        {/* ================================
-            Buttons
-        ================================= */}
-
-        <div className="flex flex-wrap gap-3 mt-5">
-
+        {/* Buttons Container */}
+        <div className="flex flex-wrap m-0 p-0">
 
           {/* View Details */}
-
           <button
             onClick={handleViewDetails}
-            className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+            className="bg-blue-600 text-white rounded-lg hover:bg-blue-700 m-0 p-0"
           >
             View Details
           </button>
 
-
-          {/* ================================
-              Confirmed Booking
-          ================================= */}
-
-          {booking.bookingStatus ===
-            "Confirmed" && (
-
+          {/* Confirmed Booking */}
+          {booking.bookingStatus === "Confirmed" && (
             <>
               {/* Change Slot */}
-
               <button
-                onClick={() =>
-                  navigate(
-                    `/dashboard/change-slot/${booking._id}`
-                  )
-                }
-                className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700"
+                onClick={() => navigate(`/dashboard/change-slot/${booking._id}`)}
+                className="bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 m-0 p-0"
               >
                 Change Slot
               </button>
 
-
               {/* Cancel */}
-
               <button
                 onClick={handleCancel}
-                className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700"
+                className="bg-red-600 text-white rounded-lg hover:bg-red-700 m-0 p-0"
               >
                 Cancel Booking
               </button>
-
             </>
-
           )}
 
-
-          {/* ================================
-              Completed Booking
-          ================================= */}
-
-          {booking.bookingStatus ===
-            "Completed" && (
-
+          {/* Completed Booking */}
+          {booking.bookingStatus === "Completed" && (
             booking.feedbackGiven === true ? (
-
-              // Feedback already submitted
-
-              <span
-                className="bg-green-100 text-green-700 px-5 py-2 rounded-lg font-semibold flex items-center"
-              >
+              <span className="bg-green-100 text-green-700 rounded-lg font-semibold flex items-center m-0 p-0">
                 ✓ Feedback Submitted!
               </span>
-
             ) : (
-
-              // Feedback not submitted
-
               <button
                 onClick={handleFeedback}
-                className="bg-yellow-500 text-white px-5 py-2 rounded-lg hover:bg-yellow-600"
+                className="bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 m-0 p-0"
               >
                 Give Feedback
               </button>
-
             )
-
           )}
 
         </div>
@@ -287,7 +168,6 @@ function BookingCard({ booking }) {
       </div>
 
     </div>
-
   );
 }
 

@@ -12,85 +12,62 @@ function Navbar() {
   };
 
   return (
-    <nav className="bg-black text-white px-10 py-4 flex justify-between items-center">
+    <nav className="bg-black text-white flex justify-between items-center m-0 p-0">
 
       {/* Logo */}
-      <Link to="/" className="flex items-center gap-2">
-        <FaDumbbell className="text-blue-500 text-3xl" />
-
-        <h1 className="text-3xl font-bold">
+      <Link to="/" className="flex items-center m-0 p-0">
+        <FaDumbbell className="text-blue-500 text-3xl m-0 p-0" />
+        <h1 className="text-3xl font-bold m-0 p-0">
           Fit<span className="text-blue-500">Book</span>
         </h1>
       </Link>
 
       {/* Navigation */}
-      <ul className="hidden md:flex items-center gap-8">
-
-        <li>
-          <Link
-            to="/"
-            className="hover:text-blue-500 transition"
-          >
+      <ul className="hidden md:flex items-center m-0 p-0">
+        <li className="m-0 p-0">
+          <Link to="/" className="hover:text-blue-500 transition m-0 p-0">
             Home
           </Link>
         </li>
-
-        <li>
-          <Link
-            to="/classes"
-            className="hover:text-blue-500 transition"
-          >
+        <li className="m-0 p-0">
+          <Link to="/classes" className="hover:text-blue-500 transition m-0 p-0">
             Classes
           </Link>
         </li>
-
-        <li>
-          <Link
-            to="/trainers"
-            className="hover:text-blue-500 transition"
-          >
+        <li className="m-0 p-0">
+          <Link to="/trainers" className="hover:text-blue-500 transition m-0 p-0">
             Trainers
           </Link>
         </li>
-
-        <li>
-          <Link
-            to="/about"
-            className="hover:text-blue-500 transition"
-          >
+        <li className="m-0 p-0">
+          <Link to="/about" className="hover:text-blue-500 transition m-0 p-0">
             About
           </Link>
         </li>
-
-        <li>
-          <Link
-            to="/contact"
-            className="hover:text-blue-500 transition"
-          >
+        <li className="m-0 p-0">
+          <Link to="/contact" className="hover:text-blue-500 transition m-0 p-0">
             Contact
           </Link>
         </li>
-
       </ul>
 
       {/* Right side */}
-      <div className="flex items-center gap-4">
-
+      <div className="flex items-center m-0 p-0">
         {user ? (
           <>
             {/* Dashboard */}
             <Link
               to="/dashboard"
               title="Dashboard"
-              className="w-10 h-10 flex items-center justify-center rounded-full bg-blue-600 hover:bg-blue-700 transition"
+              className="w-10 h-10 flex items-center justify-center rounded-full bg-blue-600 hover:bg-blue-700 transition m-0 p-0"
             >
-              <FaTachometerAlt />
+              <FaTachometerAlt className="m-0 p-0" />
             </Link>
 
             {/* Logout */}
             <button
               onClick={handleLogout}
-              className="bg-red-600 px-5 py-2 rounded-lg hover:bg-red-700 transition"
+              className="bg-red-600 rounded-lg hover:bg-red-700 transition m-0 p-0"
             >
               Logout
             </button>
@@ -98,22 +75,22 @@ function Navbar() {
         ) : (
           <>
             {/* Login */}
-            <Link to="/login">
-              <button className="border border-white px-5 py-2 rounded-lg hover:bg-white hover:text-black transition">
+            <Link to="/login" className="m-0 p-0">
+              <button className="border border-white rounded-lg hover:bg-white hover:text-black transition m-0 p-0">
                 Login
               </button>
             </Link>
 
             {/* Register */}
-            <Link to="/register">
-              <button className="bg-blue-600 px-5 py-2 rounded-lg hover:bg-blue-700 transition">
+            <Link to="/register" className="m-0 p-0">
+              <button className="bg-blue-600 rounded-lg hover:bg-blue-700 transition m-0 p-0">
                 Register
               </button>
             </Link>
           </>
         )}
-
       </div>
+
     </nav>
   );
 }
