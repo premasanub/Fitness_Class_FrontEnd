@@ -1,17 +1,17 @@
-/* @import "tailwindcss";
+@import "tailwindcss";
 *{
-    margin: 1;
-    padding: 1;
+    margin: 0;
+    padding: 0;
     box-sizing: border-box;
 }
 body{
     font-family: Arial,Arial, Helvetica, sans-serif ;
     background: #ffffff;
-} */
+}
 
 
 
-@import "tailwindcss";
+/* @import "tailwindcss";
 
 /* Force zero margins and paddings globally across all elements */
 *, *::before, *::after {
@@ -26,4 +26,4 @@ body, html, #root {
     font-family: Arial, Helvetica, sans-serif;
     background: #ffffff;
     width: 100%;
-}
+} */
