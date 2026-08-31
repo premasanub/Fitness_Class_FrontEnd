@@ -25,4 +25,3 @@ function StatsCounter() {
 }
 
 export default StatsCounter;
-

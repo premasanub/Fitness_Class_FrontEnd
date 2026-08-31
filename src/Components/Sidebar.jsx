@@ -6,76 +6,85 @@ import {
   FaCreditCard,
   FaStar,
   FaSignOutAlt,
-  FaGift
 } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
-
+import { FaGift } from "react-icons/fa";
 function Sidebar() {
   return (
-    <div className="min-h-screen bg-gray-900 text-white m-0 p-0">
-      <h1 className="text-3xl font-bold text-blue-500 m-0 p-0">
+    <div className="w-64 min-h-screen bg-gray-900 text-white p-6">
+
+      <h1 className="text-3xl font-bold text-blue-500 mb-10">
         FitBook
       </h1>
 
-      <ul className="m-0 p-0">
-        <NavLink to="/dashboard" className="m-0 p-0">
-          <li className="flex items-center cursor-pointer hover:text-blue-400 m-0 p-0">
-            <FaHome className="m-0 p-0" /> Dashboard
-          </li>
-        </NavLink>
+      <ul className="space-y-6">
 
-        <NavLink to="/dashboard/profile" className="m-0 p-0">
-          <li className="flex items-center cursor-pointer hover:text-blue-400 m-0 p-0">
-            <FaUser className="m-0 p-0" /> Profile
-          </li>
-        </NavLink>
+        <NavLink to="/dashboard">
+  <li className="flex items-center gap-3 cursor-pointer hover:text-blue-400">
+    <FaHome />
+    Dashboard
+  </li>
+</NavLink>
+       <NavLink to="/dashboard/profile">
+  <li className="flex items-center gap-3 cursor-pointer hover:text-blue-400">
+    <FaUser />
+    Profile
+  </li>
+</NavLink>
 
-        <NavLink to="/dashboard/classes" className="m-0 p-0">
-          <li className="flex items-center cursor-pointer hover:text-blue-400 m-0 p-0">
-            <FaDumbbell className="m-0 p-0" /> Classes
-          </li>
-        </NavLink>
+        <NavLink to="/dashboard/classes">
+  <li className="flex items-center gap-3 cursor-pointer hover:text-blue-400">
+    <FaDumbbell />
+    Classes
+  </li>
+</NavLink>
+       <NavLink to="/dashboard/bookings">
+  <li className="flex items-center gap-3 cursor-pointer hover:text-blue-400">
+    <FaCalendarCheck />
+    My Bookings
+  </li>
+</NavLink>
 
-        <NavLink to="/dashboard/bookings" className="m-0 p-0">
-          <li className="flex items-center cursor-pointer hover:text-blue-400 m-0 p-0">
-            <FaCalendarCheck className="m-0 p-0" /> My Bookings
-          </li>
-        </NavLink>
+<NavLink to="/dashboard/schedule">
+  Class Schedule
+</NavLink>
 
-        <NavLink to="/dashboard/schedule" className="m-0 p-0">
-          Class Schedule
-        </NavLink>
+<NavLink to="/dashboard/payments">
+  <li className="flex items-center gap-3 cursor-pointer hover:text-blue-400">
+    <FaCreditCard />
+    Payments
+  </li>
+</NavLink>
 
-        <NavLink to="/dashboard/payments" className="m-0 p-0">
-          <li className="flex items-center cursor-pointer hover:text-blue-400 m-0 p-0">
-            <FaCreditCard className="m-0 p-0" /> Payments
-          </li>
-        </NavLink>
+<NavLink to="/dashboard/feedback">
+  <li className="flex items-center gap-3 cursor-pointer hover:text-blue-400">
+    <FaStar />
+    Feedback
+  </li>
+</NavLink>
 
-        <NavLink to="/dashboard/feedback" className="m-0 p-0">
-          <li className="flex items-center cursor-pointer hover:text-blue-400 m-0 p-0">
-            <FaStar className="m-0 p-0" /> Feedback
-          </li>
-        </NavLink>
 
-        <NavLink to="/dashboard/referral" className="m-0 p-0">
-          <li className="flex items-center cursor-pointer hover:text-blue-400 m-0 p-0">
-            <FaGift className="m-0 p-0" /> Referral
-          </li>
-        </NavLink>
+<NavLink to="/dashboard/referral">
+  <li className="flex items-center gap-3 cursor-pointer hover:text-blue-400">
+    <FaGift />
+    Referral
+  </li>
+</NavLink>
 
-        <NavLink className="m-0 p-0">
-          <li
-            onClick={() => {
-              localStorage.removeItem("token");
-              localStorage.removeItem("user");
-              window.location.href = "/";
-            }}
-            className="flex items-center cursor-pointer hover:text-blue-400 m-0 p-0"
-          >
-            <FaSignOutAlt className="m-0 p-0" /> Logout
-          </li>
-        </NavLink>
+<NavLink >
+ <li
+  onClick={() => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    window.location.href = "/";
+  }}
+  className="flex items-center gap-3 cursor-pointer hover:text-blue-400"
+>
+  <FaSignOutAlt />
+  Logout
+</li>
+</NavLink>
+
       </ul>
     </div>
   );
