@@ -12,7 +12,7 @@ function Navbar() {
   };
 
   return (
-    <nav className="bg-black text-white flex justify-between items-center m-0 p-0">
+    <nav className="bg-black text-white flex justify-between items-center m-0 p-0 w-full">
 
       {/* Logo */}
       <Link to="/" className="flex items-center m-0 p-0">
@@ -22,8 +22,8 @@ function Navbar() {
         </h1>
       </Link>
 
-      {/* Navigation */}
-      <ul className="hidden md:flex items-center m-0 p-0">
+      {/* Navigation - Added gap-4 to separate links safely without margin/padding */}
+      <ul className="hidden md:flex items-center gap-4 m-0 p-0">
         <li className="m-0 p-0">
           <Link to="/" className="hover:text-blue-500 transition m-0 p-0">
             Home
@@ -51,11 +51,10 @@ function Navbar() {
         </li>
       </ul>
 
-      {/* Right side */}
-      <div className="flex items-center m-0 p-0">
+      {/* Right side - Added gap-4 to separate action items safely */}
+      <div className="flex items-center gap-4 m-0 p-0">
         {user ? (
           <>
-            {/* Dashboard */}
             <Link
               to="/dashboard"
               title="Dashboard"
@@ -64,7 +63,6 @@ function Navbar() {
               <FaTachometerAlt className="m-0 p-0" />
             </Link>
 
-            {/* Logout */}
             <button
               onClick={handleLogout}
               className="bg-red-600 rounded-lg hover:bg-red-700 transition m-0 p-0"
@@ -74,14 +72,12 @@ function Navbar() {
           </>
         ) : (
           <>
-            {/* Login */}
             <Link to="/login" className="m-0 p-0">
               <button className="border border-white rounded-lg hover:bg-white hover:text-black transition m-0 p-0">
                 Login
               </button>
             </Link>
 
-            {/* Register */}
             <Link to="/register" className="m-0 p-0">
               <button className="bg-blue-600 rounded-lg hover:bg-blue-700 transition m-0 p-0">
                 Register
@@ -96,3 +92,4 @@ function Navbar() {
 }
 
 export default Navbar;
+
