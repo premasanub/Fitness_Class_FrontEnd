@@ -25,7 +25,7 @@ function TrainerDashboardLayout() {
           <NavLink
             to="/trainer"
             end
-            className="flex items-center gap-3 hover:text-yellow-400"
+            className="flex items-center gap-3 hover:text-yellow-400 mx-auto"
           >
             <FaHome />
             Dashboard
