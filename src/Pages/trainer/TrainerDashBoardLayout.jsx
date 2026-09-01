@@ -10,7 +10,7 @@ import {
 
 function TrainerDashboardLayout() {
   return (
-    <div className="flex min-h-screen">
+    <div className="flex min-h-screen ">
 
       {/* Sidebar */}
 
@@ -25,7 +25,7 @@ function TrainerDashboardLayout() {
           <NavLink
             to="/trainer"
             end
-            className="flex items-center gap-3 hover:text-yellow-400 mx-auto"
+            className="flex items-center gap-3 hover:text-yellow-400 "
           >
             <FaHome />
             Dashboard

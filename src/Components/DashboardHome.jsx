@@ -50,7 +50,7 @@ function DashboardHome() {
 
   return (
 
-    <div className="flex-1 p-8 bg-gray-100 min-h-screen">
+    <div className="flex-1 p-8 bg-gray-100 min-h-screen ">
 
       <h1 className="text-4xl font-bold">
         Welcome Back 👋
