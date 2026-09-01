@@ -508,7 +508,7 @@ function TrainerProfile() {
 
   return (
 
-    <div className="max-w-3xl mx-auto bg-white shadow-lg rounded-xl p-8 my-5">
+    <div className="max-w-3xl mx-auto bg-white shadow-lg rounded-xl p-2 my-5">
 
       <h1 className="text-3xl font-bold mb-8">
         Trainer Profile
