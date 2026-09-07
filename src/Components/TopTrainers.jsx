@@ -14,7 +14,7 @@ function TopTrainers() {
   const fetchTrainers = async () => {
     try {
 
-      const response = await api.get("/trainers");
+      const response = await api.get("/trainers/");
 
       setTrainers(response.data.trainers);
 
