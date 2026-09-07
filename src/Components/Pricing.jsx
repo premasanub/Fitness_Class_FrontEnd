@@ -1,5 +1,4 @@
 function Pricing() {
-
   const plans = [
     {
       title: "Basic",
@@ -31,49 +30,74 @@ function Pricing() {
   ];
 
   return (
-    <section className="py-20">
+    <section className="bg-white py-16 md:py-20">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-      <h4 className="text-center text-blue-600 font-semibold">
-        MEMBERSHIP
-      </h4>
+        {/* Heading */}
+        <div className="text-center mb-12">
+          <p className="text-blue-600 font-semibold text-lg">
+            MEMBERSHIP
+          </p>
 
-      <h1 className="text-5xl font-bold text-center mt-3">
-        Pricing Plans
-      </h1>
+          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mt-2">
+            Pricing Plans
+          </h1>
+        </div>
 
-      <div className="grid md:grid-cols-3 gap-8 px-10 mt-12">
+        {/* Pricing Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 items-stretch">
+          {plans.map((plan, index) => (
+            <div
+              key={index}
+              className="bg-white border border-gray-200
+                         rounded-2xl shadow-md
+                         p-8 text-center
+                         min-h-[390px]
+                         flex flex-col
+                         hover:shadow-xl
+                         hover:-translate-y-1
+                         transition-all duration-300"
+            >
+              {/* Plan */}
+              <h2 className="text-3xl font-bold text-gray-900">
+                {plan.title}
+              </h2>
 
-        {plans.map((plan, index) => (
+              {/* Price */}
+              <h1 className="text-5xl text-blue-600 font-bold my-6">
+                {plan.price}
+              </h1>
 
-          <div
-            key={index}
-            className="border rounded-xl shadow-lg p-8 text-center hover:shadow-2xl transition"
-          >
+              {/* Features */}
+              <div className="space-y-3 flex-grow">
+                {plan.features.map((feature, i) => (
+                  <p
+                    key={i}
+                    className="text-gray-700 text-base"
+                  >
+                    <span className="text-blue-600 font-bold mr-2">
+                      ✓
+                    </span>
+                    {feature}
+                  </p>
+                ))}
+              </div>
 
-            <h2 className="text-3xl font-bold">
-              {plan.title}
-            </h2>
-
-            <h1 className="text-5xl text-blue-600 font-bold my-6">
-              {plan.price}
-            </h1>
-
-            {plan.features.map((feature, i) => (
-              <p key={i} className="mb-3">
-                ✔ {feature}
-              </p>
-            ))}
-
-            <button className="mt-6 bg-blue-600 text-white px-8 py-3 rounded-lg">
-              Choose Plan
-            </button>
-
-          </div>
-
-        ))}
-
+              {/* Button */}
+              <button
+                className="mt-8 w-full bg-blue-600
+                           hover:bg-blue-700
+                           text-white font-semibold
+                           py-3 px-6
+                           rounded-lg
+                           transition duration-300"
+              >
+                Choose Plan
+              </button>
+            </div>
+          ))}
+        </div>
       </div>
-
     </section>
   );
 }

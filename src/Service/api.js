@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "https://fitness-class-backend.onrender.com/api",
+  baseURL: "https://fitness-class-front-end-hb3y.vercel.app/api",
     // baseURL: "http://localhost:3000/api",
 });
 

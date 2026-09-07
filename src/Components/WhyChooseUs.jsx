@@ -8,25 +8,25 @@ import {
 function WhyChooseUs() {
   const features = [
     {
-      icon: <FaUserTie size={40} className="text-blue-600" />,
+      icon: <FaUserTie />,
       title: "Expert Trainers",
       description:
         "Train with certified and experienced fitness professionals.",
     },
     {
-      icon: <FaDumbbell size={40} className="text-blue-600" />,
+      icon: <FaDumbbell />,
       title: "Modern Equipment",
       description:
         "Access world-class equipment for effective workouts.",
     },
     {
-      icon: <FaClock size={40} className="text-blue-600" />,
+      icon: <FaClock />,
       title: "Flexible Schedule",
       description:
         "Choose classes based on your convenient time.",
     },
     {
-      icon: <FaHeartbeat size={40} className="text-blue-600" />,
+      icon: <FaHeartbeat />,
       title: "Healthy Lifestyle",
       description:
         "Improve your fitness with personalized training plans.",
@@ -34,37 +34,48 @@ function WhyChooseUs() {
   ];
 
   return (
-    <section className="py-20 bg-gray-100">
+    <section className="bg-gray-100 py-16 md:py-20">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-      <h4 className="text-center text-blue-600 font-semibold">
-        WHY CHOOSE US
-      </h4>
+        {/* Heading */}
+        <div className="text-center mb-12">
+          <p className="text-blue-600 font-semibold text-lg">
+            WHY CHOOSE US
+          </p>
 
-      <h1 className="text-5xl font-bold text-center mt-3">
-        Your Fitness, Our Priority
-      </h1>
+          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mt-2">
+            Your Fitness, Our Priority
+          </h1>
+        </div>
 
-      <div className="grid md:grid-cols-4 gap-8 px-10 mt-12">
+        {/* Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
+          {features.map((feature, index) => (
+            <div
+              key={index}
+              className="bg-white rounded-2xl shadow-md p-7 text-center
+                         min-h-[240px] flex flex-col items-center
+                         justify-center
+                         hover:shadow-xl hover:-translate-y-1
+                         transition-all duration-300"
+            >
+              {/* Icon */}
+              <div className="text-blue-600 text-4xl mb-5">
+                {feature.icon}
+              </div>
 
-        {features.map((feature, index) => (
-          <div
-            key={index}
-            className="bg-white rounded-xl shadow-lg p-8 text-center hover:shadow-2xl transition"
-          >
-            <div className="flex justify-center">
-              {feature.icon}
+              {/* Title */}
+              <h2 className="text-xl md:text-2xl font-bold text-gray-900">
+                {feature.title}
+              </h2>
+
+              {/* Description */}
+              <p className="text-gray-600 mt-3 leading-relaxed">
+                {feature.description}
+              </p>
             </div>
-
-            <h2 className="text-2xl font-bold mt-5">
-              {feature.title}
-            </h2>
-
-            <p className="text-gray-600 mt-3">
-              {feature.description}
-            </p>
-          </div>
-        ))}
-
+          ))}
+        </div>
       </div>
     </section>
   );
