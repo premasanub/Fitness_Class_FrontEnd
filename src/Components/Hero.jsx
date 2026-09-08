@@ -1,4 +1,5 @@
 import hero from "../assets/hero.jpg";
+import {Link} from "react-router-dom";
 
 function Hero() {
   return (
@@ -30,13 +31,17 @@ function Hero() {
           </p>
 
           <div className="mt-8 flex gap-5">
-            <button className="bg-blue-600 px-8 py-3 rounded-lg">
-              Explore Classes
-            </button>
+            <Link to="/classes">
+              <button className="bg-blue-600 px-8 py-3 rounded-lg">
+                Explore Classes
+              </button>
+            </Link>
 
-            <button className="border border-white px-8 py-3 rounded-lg">
-              Join Now
-            </button>
+            <Link to="/register">
+              <button className="border border-white px-8 py-3 rounded-lg">
+                Join Now
+              </button>
+            </Link>
           </div>
 
         </div>
