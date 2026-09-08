@@ -1,3 +1,6 @@
+
+
+
 import { useEffect, useState } from "react";
 import {
   useParams,
@@ -69,17 +72,128 @@ function ClassDetails() {
     }
   };
 
-  // --------------------------------
-  // Check slot change allowed
-  // --------------------------------
-  const isChangeAllowed = () => {
+  // ============================================
+  // Convert class date + time into Date object
+  // ============================================
+  const getClassDateTime = () => {
     if (!selectedClass?.date || !selectedClass?.time) {
+      return null;
+    }
+
+    let time = selectedClass.time.trim();
+
+    /*
+      Supports:
+      07:00
+      07:00 AM
+      07:00 AM - 08:00 AM
+      7:00 AM - 8:00 AM
+    */
+
+    // If time contains range, take starting time
+    if (time.includes("-")) {
+      time = time.split("-")[0].trim();
+    }
+
+    let hours;
+    let minutes;
+
+    // 12-hour format: 07:00 AM / 7:00 PM
+    const amPmMatch = time.match(
+      /^(\d{1,2}):(\d{2})\s*(AM|PM)$/i
+    );
+
+    if (amPmMatch) {
+      hours = Number(amPmMatch[1]);
+      minutes = Number(amPmMatch[2]);
+
+      const period = amPmMatch[3].toUpperCase();
+
+      if (period === "PM" && hours !== 12) {
+        hours += 12;
+      }
+
+      if (period === "AM" && hours === 12) {
+        hours = 0;
+      }
+    } else {
+      // 24-hour format: 07:00 / 19:00
+      const timeMatch = time.match(
+        /^(\d{1,2}):(\d{2})$/
+      );
+
+      if (!timeMatch) {
+        return null;
+      }
+
+      hours = Number(timeMatch[1]);
+      minutes = Number(timeMatch[2]);
+    }
+
+    /*
+      Handles date safely.
+      Expected date format:
+      YYYY-MM-DD
+    */
+
+    const dateParts = selectedClass.date
+      .split("-")
+      .map(Number);
+
+    if (dateParts.length !== 3) {
+      return null;
+    }
+
+    const [year, month, day] = dateParts;
+
+    const classDateTime = new Date(
+      year,
+      month - 1,
+      day,
+      hours,
+      minutes,
+      0,
+      0
+    );
+
+    return classDateTime;
+  };
+
+  // ============================================
+  // Booking allowed only BEFORE 24 hours
+  // ============================================
+  const isBookingAllowed = () => {
+    const classDateTime = getClassDateTime();
+
+    if (!classDateTime) {
       return false;
     }
 
-    const classDateTime = new Date(
-      `${selectedClass.date}T${selectedClass.time}`
-    );
+    const now = new Date();
+
+    const difference =
+      classDateTime.getTime() - now.getTime();
+
+    const hoursRemaining =
+      difference / (1000 * 60 * 60);
+
+    /*
+      Booking is allowed only when:
+      class is more than 24 hours away.
+    */
+
+    return hoursRemaining >= 24;
+  };
+
+  // ============================================
+  // Check slot change allowed
+  // ============================================
+  const isChangeAllowed = () => {
+    const classDateTime = getClassDateTime();
+
+    if (!classDateTime) {
+      return false;
+    }
 
     const now = new Date();
 
@@ -92,9 +206,9 @@ function ClassDetails() {
     return hoursRemaining > 24;
   };
 
-  // --------------------------------
+  // ============================================
   // Change Slot
-  // --------------------------------
+  // ============================================
   const handleChangeSlot = async () => {
     if (!selectedSlot) {
       alert("Please select a time slot");
@@ -122,7 +236,6 @@ function ClassDetails() {
 
       setShowSlots(false);
       setSelectedSlot("");
-
     } catch (error) {
       console.log(
         "CHANGE SLOT ERROR:",
@@ -138,9 +251,9 @@ function ClassDetails() {
     }
   };
 
-  // --------------------------------
+  // ============================================
   // Loading
-  // --------------------------------
+  // ============================================
   if (loading) {
     return (
       <h2 className="text-center text-3xl mt-20">
@@ -149,13 +262,12 @@ function ClassDetails() {
     );
   }
 
-  // --------------------------------
+  // ============================================
   // Class not found
-  // --------------------------------
+  // ============================================
   if (!selectedClass) {
     return (
       <div className="text-center mt-20">
-
         <h2 className="text-2xl font-bold text-red-500">
           Class details not found
         </h2>
@@ -168,21 +280,26 @@ function ClassDetails() {
         >
           Back to Classes
         </button>
-
       </div>
     );
   }
 
-  // --------------------------------
+  // ============================================
   // Seats
-  // --------------------------------
+  // ============================================
   const seatsAvailable = Number(
     selectedClass.seats || 0
   );
 
-  // --------------------------------
+  // ============================================
+  // Booking permission
+  // ============================================
+  const canBook =
+    seatsAvailable > 0 && isBookingAllowed();
+
+  // ============================================
   // Time slots
-  // --------------------------------
+  // ============================================
   const timeSlots = [
     selectedClass.time,
     "10:00",
@@ -270,6 +387,7 @@ function ClassDetails() {
         {booking && (
           <p>
             <strong>Booking Status:</strong>{" "}
+
             <span className="text-green-600 font-semibold">
               {booking.bookingStatus}
             </span>
@@ -353,7 +471,6 @@ function ClassDetails() {
                           {slot}
 
                         </label>
-
                       )
                     )}
 
@@ -425,6 +542,10 @@ function ClassDetails() {
 
         <div className="mt-8">
 
+          {/* ================================= */}
+          {/* NO SEATS */}
+          {/* ================================= */}
+
           {seatsAvailable <= 0 ? (
 
             <div>
@@ -451,15 +572,58 @@ function ClassDetails() {
 
             </div>
 
+          ) : !isBookingAllowed() ? (
+
+            /* ================================= */
+            /* BOOKING CLOSED */
+            /* ================================= */
+
+            <div>
+
+              <div className="bg-red-50 border border-red-300 rounded-lg p-5 mb-4">
+
+                <h3 className="text-lg font-bold text-red-600">
+                  Booking Closed
+                </h3>
+
+                <p className="text-red-500 mt-1">
+                  Booking is allowed only before
+                  24 hours of the class.
+                </p>
+
+              </div>
+
+              <button
+                disabled
+                className="bg-gray-400 text-white px-6 py-3 rounded-lg cursor-not-allowed"
+              >
+                Booking Closed
+              </button>
+
+            </div>
+
           ) : (
 
+            /* ================================= */
+            /* BOOK NOW */
+            /* ================================= */
+
             <button
-              onClick={() =>
+              onClick={() => {
+                if (!canBook) {
+                  return;
+                }
+
                 navigate(
                   `/dashboard/booking/${selectedClass._id}`
-                )
-              }
-              className="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700"
+                );
+              }}
+              disabled={!canBook}
+              className={`px-6 py-3 rounded-lg text-white font-semibold ${
+                canBook
+                  ? "bg-green-600 hover:bg-green-700"
+                  : "bg-gray-400 cursor-not-allowed"
+              }`}
             >
               Book Now
             </button>
@@ -467,7 +631,6 @@ function ClassDetails() {
           )}
 
         </div>
-
       )}
 
     </div>
