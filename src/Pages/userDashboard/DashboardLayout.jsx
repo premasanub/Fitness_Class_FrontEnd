@@ -1,14 +1,33 @@
+// import { Outlet } from "react-router-dom";
+// import Sidebar from "../../Components/Sidebar";
+
+// function DashboardLayout() {
+//   return (
+//     <div className="flex min-h-screen">
+//       <Sidebar />
+
+//       <div className="flex-1 bg-gray-100 p-8">
+//         <Outlet />
+//       </div>
+//     </div>
+//   );
+// }
+
+// export default DashboardLayout;
+
 import { Outlet } from "react-router-dom";
 import Sidebar from "../../Components/Sidebar";
 
 function DashboardLayout() {
   return (
-    <div className="flex min-h-screen">
+    <div className="flex min-h-screen bg-gray-100">
       <Sidebar />
 
-      <div className="flex-1 bg-gray-100 p-8">
-        <Outlet />
-      </div>
+      <main className="flex-1 min-w-0 flex flex-col">
+        <div className="flex-1 w-full">
+          <Outlet />
+        </div>
+      </main>
     </div>
   );
 }
