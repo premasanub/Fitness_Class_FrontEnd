@@ -4,6 +4,8 @@ import {
   FaTwitter,
   FaYoutube,
 } from "react-icons/fa";
+import { Link } from "react-router-dom";
+  
 
 function Footer() {
   return (
@@ -31,19 +33,19 @@ function Footer() {
 
           <ul className="flex flex-col gap-2 text-gray-400">
             <li className="hover:text-white transition cursor-pointer">
-              Home
+              <Link to="/">Home</Link>
             </li>
 
             <li className="hover:text-white transition cursor-pointer">
-              Classes
+              <Link to="/classes">Classes</Link>
             </li>
 
             <li className="hover:text-white transition cursor-pointer">
-              Trainers
+              <Link to="/trainers">Trainers</Link>
             </li>
 
             <li className="hover:text-white transition cursor-pointer">
-              Contact
+              <Link to="/contact">Contact</Link>
             </li>
           </ul>
         </div>
