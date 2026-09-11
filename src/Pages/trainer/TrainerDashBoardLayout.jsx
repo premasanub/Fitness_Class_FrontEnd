@@ -1,92 +1,215 @@
+// import { NavLink, Outlet } from "react-router-dom";
+// import {
+//   FaHome,
+//   FaUser,
+//   FaCalendarAlt,
+//   FaBook,
+//   FaUsers,
+//   FaStar
+// } from "react-icons/fa";
+
+// function TrainerDashboardLayout() {
+//   return (
+//     <div className="flex min-h-screen ">
+
+//       {/* Sidebar */}
+
+//       <div className="w-72 bg-gray-900 text-white p-6">
+
+//         <h2 className="text-2xl font-bold mb-8">
+//           Trainer Panel
+//         </h2>
+
+//         <nav className="space-y-4">
+
+//           <NavLink
+//             to="/trainer"
+//             end
+//             className="flex items-center gap-3 hover:text-yellow-400 "
+//           >
+//             <FaHome />
+//             Dashboard
+//           </NavLink>
+
+//           <NavLink
+//             to="/trainer/profile"
+//             className="flex items-center gap-3 hover:text-yellow-400"
+//           >
+//             <FaUser />
+//             My Profile
+//           </NavLink>
+
+//           <NavLink
+//             to="/trainer/schedule"
+//             className="flex items-center gap-3 hover:text-yellow-400"
+//           >
+//             <FaCalendarAlt />
+//             My Schedule
+//           </NavLink>
+
+//           <NavLink
+//             to="/trainer/bookings"
+//             className="flex items-center gap-3 hover:text-yellow-400"
+//           >
+//             <FaBook />
+//             Bookings
+//           </NavLink>
+
+//           <NavLink
+//             to="/trainer/students"
+//             className="flex items-center gap-3 hover:text-yellow-400"
+//           >
+//             <FaUsers />
+//             Students
+//           </NavLink>
+
+//           <NavLink
+//             to="/trainer/reviews"
+//             className="flex items-center gap-3 hover:text-yellow-400"
+//           >
+//             <FaStar />
+//             Reviews
+//           </NavLink>
+
+//          <NavLink to="/trainer/add-class"
+//          className="flex items-center gap-3 hover:text-yellow-400"
+//            >
+//              <FaBook />
+//          Add Class
+//              </NavLink>
+
+//         </nav>
+
+//       </div>
+
+//       {/* Content */}
+
+//       <div className="flex-1 p-8 bg-gray-100">
+//         <Outlet />
+//       </div>
+
+//     </div>
+//   );
+// }
+
+// export default TrainerDashboardLayout;
+
+
 import { NavLink, Outlet } from "react-router-dom";
+
 import {
   FaHome,
   FaUser,
   FaCalendarAlt,
   FaBook,
   FaUsers,
-  FaStar
+  FaStar,
 } from "react-icons/fa";
 
 function TrainerDashboardLayout() {
+  const getNavClass = ({ isActive }) =>
+    `flex items-center gap-3 rounded-lg transition ${
+      isActive
+        ? "bg-yellow-500 text-gray-900"
+        : "text-gray-300 hover:text-yellow-400"
+    }`;
+
   return (
-    <div className="flex min-h-screen ">
+    <div className="flex min-h-screen">
 
       {/* Sidebar */}
+      <aside className="w-72 min-h-screen bg-gray-900 text-white flex flex-col gap-8 shrink-0">
 
-      <div className="w-72 bg-gray-900 text-white p-6">
+        {/* Sidebar Header */}
+        <div>
+          <h2 className="text-2xl font-bold">
+            Trainer Panel
+          </h2>
+        </div>
 
-        <h2 className="text-2xl font-bold mb-8">
-          Trainer Panel
-        </h2>
+        {/* Navigation */}
+        <nav>
+          <ul className="flex flex-col gap-4">
 
-        <nav className="space-y-4">
+            <li>
+              <NavLink
+                to="/trainer"
+                end
+                className={getNavClass}
+              >
+                <FaHome />
+                <span>Dashboard</span>
+              </NavLink>
+            </li>
 
-          <NavLink
-            to="/trainer"
-            end
-            className="flex items-center gap-3 hover:text-yellow-400 "
-          >
-            <FaHome />
-            Dashboard
-          </NavLink>
+            <li>
+              <NavLink
+                to="/trainer/profile"
+                className={getNavClass}
+              >
+                <FaUser />
+                <span>My Profile</span>
+              </NavLink>
+            </li>
 
-          <NavLink
-            to="/trainer/profile"
-            className="flex items-center gap-3 hover:text-yellow-400"
-          >
-            <FaUser />
-            My Profile
-          </NavLink>
+            <li>
+              <NavLink
+                to="/trainer/schedule"
+                className={getNavClass}
+              >
+                <FaCalendarAlt />
+                <span>My Schedule</span>
+              </NavLink>
+            </li>
 
-          <NavLink
-            to="/trainer/schedule"
-            className="flex items-center gap-3 hover:text-yellow-400"
-          >
-            <FaCalendarAlt />
-            My Schedule
-          </NavLink>
+            <li>
+              <NavLink
+                to="/trainer/bookings"
+                className={getNavClass}
+              >
+                <FaBook />
+                <span>Bookings</span>
+              </NavLink>
+            </li>
 
-          <NavLink
-            to="/trainer/bookings"
-            className="flex items-center gap-3 hover:text-yellow-400"
-          >
-            <FaBook />
-            Bookings
-          </NavLink>
+            <li>
+              <NavLink
+                to="/trainer/students"
+                className={getNavClass}
+              >
+                <FaUsers />
+                <span>Students</span>
+              </NavLink>
+            </li>
 
-          <NavLink
-            to="/trainer/students"
-            className="flex items-center gap-3 hover:text-yellow-400"
-          >
-            <FaUsers />
-            Students
-          </NavLink>
+            <li>
+              <NavLink
+                to="/trainer/reviews"
+                className={getNavClass}
+              >
+                <FaStar />
+                <span>Reviews</span>
+              </NavLink>
+            </li>
 
-          <NavLink
-            to="/trainer/reviews"
-            className="flex items-center gap-3 hover:text-yellow-400"
-          >
-            <FaStar />
-            Reviews
-          </NavLink>
+            <li>
+              <NavLink
+                to="/trainer/add-class"
+                className={getNavClass}
+              >
+                <FaBook />
+                <span>Add Class</span>
+              </NavLink>
+            </li>
 
-         <NavLink to="/trainer/add-class"
-         className="flex items-center gap-3 hover:text-yellow-400"
-           >
-             <FaBook />
-         Add Class
-             </NavLink>
-
+          </ul>
         </nav>
+      </aside>
 
-      </div>
-
-      {/* Content */}
-
-      <div className="flex-1 p-8 bg-gray-100">
+      {/* Main Content */}
+      <main className="flex-1 bg-gray-100 min-w-0">
         <Outlet />
-      </div>
+      </main>
 
     </div>
   );

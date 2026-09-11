@@ -1,9 +1,28 @@
+// function DashboardCard({ title, value, color }) {
+//   return (
+//     <div className={`rounded-xl p-6 shadow-lg text-white ${color}`}>
+//       <h3 className="text-lg">{title}</h3>
+
+//       <h1 className="text-4xl font-bold mt-3">
+//         {value}
+//       </h1>
+//     </div>
+//   );
+// }
+
+// export default DashboardCard;
+
+
 function DashboardCard({ title, value, color }) {
   return (
-    <div className={`rounded-xl p-6 shadow-lg text-white ${color}`}>
-      <h3 className="text-lg">{title}</h3>
+    <div
+      className={`rounded-xl shadow-lg text-white ${color} flex flex-col gap-3`}
+    >
+      <h3 className="text-lg font-medium">
+        {title}
+      </h3>
 
-      <h1 className="text-4xl font-bold mt-3">
+      <h1 className="text-4xl font-bold">
         {value}
       </h1>
     </div>
@@ -11,3 +30,4 @@ function DashboardCard({ title, value, color }) {
 }
 
 export default DashboardCard;
+
