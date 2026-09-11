@@ -1,140 +1,146 @@
-import { FaEnvelope, FaPhone, FaMapMarkerAlt } from "react-icons/fa";
+
+import {
+  FaEnvelope,
+  FaPhone,
+  FaMapMarkerAlt,
+} from "react-icons/fa";
 
 function Contact() {
   return (
-    <div className="min-h-screen bg-gray-50 py-16 px-6">
+    <div className="min-h-screen bg-gray-50 flex flex-col gap-12">
 
-      <div className="max-w-6xl mx-auto">
+      {/* Heading */}
+      <section className="w-full max-w-6xl self-center flex flex-col items-center gap-4 text-center min-h-40 justify-center">
+        <h1 className="text-4xl md:text-5xl font-bold">
+          Contact <span className="text-blue-600">Us</span>
+        </h1>
 
-        {/* Heading */}
-        <div className="text-center mb-12">
+        <p className="text-gray-600">
+          Have questions? We would love to hear from you.
+        </p>
+      </section>
 
-          <h1 className="text-5xl font-bold">
-            Contact <span className="text-blue-600">Us</span>
-          </h1>
-
-          <p className="text-gray-600 mt-4">
-            Have questions? We would love to hear from you.
-          </p>
-
-        </div>
-
-        <div className="grid md:grid-cols-2 gap-10">
+      <section className="w-full max-w-6xl self-center">
+        <div className="w-[92%] self-center grid md:grid-cols-2 gap-10">
 
           {/* Contact Information */}
-          <div className="bg-black text-white rounded-2xl p-8">
+          <div className="bg-black text-white rounded-2xl min-h-96 flex flex-col justify-center gap-8">
+            <div className="w-[88%] self-center flex flex-col gap-8">
 
-            <h2 className="text-3xl font-bold mb-8">
-              Get In Touch
-            </h2>
+              <h2 className="text-3xl font-bold">
+                Get In Touch
+              </h2>
 
-            <div className="space-y-7">
+              <div className="flex flex-col gap-7">
 
-              <div className="flex items-center gap-4">
-                <FaEnvelope className="text-blue-500 text-2xl" />
+                <div className="flex items-center gap-4">
+                  <FaEnvelope className="text-blue-500 text-2xl shrink-0" />
 
-                <div>
-                  <p className="font-semibold">
-                    Email
-                  </p>
-
-                  <p className="text-gray-300">
-                    support@fitbook.com
-                  </p>
+                  <div className="flex flex-col gap-1">
+                    <p className="font-semibold">Email</p>
+                    <p className="text-gray-300">
+                      support@fitbook.com
+                    </p>
+                  </div>
                 </div>
-              </div>
 
-              <div className="flex items-center gap-4">
-                <FaPhone className="text-blue-500 text-2xl" />
+                <div className="flex items-center gap-4">
+                  <FaPhone className="text-blue-500 text-2xl shrink-0" />
 
-                <div>
-                  <p className="font-semibold">
-                    Phone
-                  </p>
-
-                  <p className="text-gray-300">
-                    +91 98765 43210
-                  </p>
+                  <div className="flex flex-col gap-1">
+                    <p className="font-semibold">Phone</p>
+                    <p className="text-gray-300">
+                      +91 98765 43210
+                    </p>
+                  </div>
                 </div>
-              </div>
 
-              <div className="flex items-center gap-4">
-                <FaMapMarkerAlt className="text-blue-500 text-2xl" />
+                <div className="flex items-center gap-4">
+                  <FaMapMarkerAlt className="text-blue-500 text-2xl shrink-0" />
 
-                <div>
-                  <p className="font-semibold">
-                    Location
-                  </p>
-
-                  <p className="text-gray-300">
-                    Chennai, Tamil Nadu, India
-                  </p>
+                  <div className="flex flex-col gap-1">
+                    <p className="font-semibold">Location</p>
+                    <p className="text-gray-300">
+                      Chennai, Tamil Nadu, India
+                    </p>
+                  </div>
                 </div>
-              </div>
 
+              </div>
             </div>
-
           </div>
 
           {/* Contact Form */}
-          <div className="bg-white rounded-2xl shadow-lg p-8">
+          <div className="bg-white rounded-2xl shadow-lg min-h-96 flex flex-col justify-center gap-6">
+            <div className="w-[88%] self-center flex flex-col gap-6">
 
-            <h2 className="text-3xl font-bold mb-6">
-              Send Us a Message
-            </h2>
+              <h2 className="text-3xl font-bold">
+                Send Us a Message
+              </h2>
 
-            <form className="space-y-5">
+              <form className="flex flex-col gap-5">
 
-              <div>
-                <label className="block font-semibold mb-2">
-                  Name
-                </label>
+                <div className="flex flex-col gap-2">
+                  <label
+                    htmlFor="name"
+                    className="font-semibold"
+                  >
+                    Name
+                  </label>
 
-                <input
-                  type="text"
-                  placeholder="Enter your name"
-                  className="w-full border border-gray-300 rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
+                  <input
+                    id="name"
+                    type="text"
+                    placeholder="Enter your name"
+                    className="w-full h-12 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 indent-3"
+                  />
+                </div>
 
-              <div>
-                <label className="block font-semibold mb-2">
-                  Email
-                </label>
+                <div className="flex flex-col gap-2">
+                  <label
+                    htmlFor="email"
+                    className="font-semibold"
+                  >
+                    Email
+                  </label>
 
-                <input
-                  type="email"
-                  placeholder="Enter your email"
-                  className="w-full border border-gray-300 rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
+                  <input
+                    id="email"
+                    type="email"
+                    placeholder="Enter your email"
+                    className="w-full h-12 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 indent-3"
+                  />
+                </div>
 
-              <div>
-                <label className="block font-semibold mb-2">
-                  Message
-                </label>
+                <div className="flex flex-col gap-2">
+                  <label
+                    htmlFor="message"
+                    className="font-semibold"
+                  >
+                    Message
+                  </label>
 
-                <textarea
-                  rows="5"
-                  placeholder="Enter your message"
-                  className="w-full border border-gray-300 rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
+                  <textarea
+                    id="message"
+                    rows="5"
+                    placeholder="Enter your message"
+                    className="w-full border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 indent-3"
+                  />
+                </div>
 
-              <button
-                type="submit"
-                className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition"
-              >
-                Send Message
-              </button>
+                <button
+                  type="submit"
+                  className="w-full min-h-12 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition flex items-center justify-center"
+                >
+                  Send Message
+                </button>
 
-            </form>
-
+              </form>
+            </div>
           </div>
 
         </div>
-
-      </div>
+      </section>
 
     </div>
   );

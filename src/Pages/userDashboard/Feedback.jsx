@@ -1,205 +1,647 @@
+// import { useEffect, useState } from "react";
+// import { useLocation, useNavigate } from "react-router-dom";
+// import api from "../../Service/api";
+
+// function Feedback() {
+
+//   const location = useLocation();
+//   const navigate = useNavigate();
+
+//   const [bookings, setBookings] = useState([]);
+//   const [selectedBooking, setSelectedBooking] = useState(null);
+
+//   const [trainerRating, setTrainerRating] = useState(0);
+//   const [classRating, setClassRating] = useState(0);
+
+//   const [trainerFeedback, setTrainerFeedback] = useState("");
+//   const [classFeedback, setClassFeedback] = useState("");
+
+//   const [loading, setLoading] = useState(false);
+
+//   // ================================
+//   // Fetch completed bookings
+//   // ================================
+
+//   useEffect(() => {
+//     fetchBookings();
+//   }, []);
+
+//   const fetchBookings = async () => {
+
+//     try {
+
+//       const user = JSON.parse(
+//         localStorage.getItem("user")
+//       );
+
+//       if (!user?._id) {
+//         console.log("User not found");
+//         return;
+//       }
+
+//       const response = await api.get(
+//         `/bookings/user/${user._id}`
+//       );
+
+//       console.log(
+//         "FEEDBACK BOOKINGS:",
+//         response.data
+//       );
+
+//       const completedBookings = response.data.filter(
+//         (booking) =>
+//           booking.bookingStatus === "Completed" &&
+//           booking.feedbackGiven !== true &&
+//           booking.class
+//       );
+
+//       setBookings(completedBookings);
+
+//       // If redirected from MyBookings
+//       if (location.state?.bookingId) {
+
+//         const booking = completedBookings.find(
+//           (item) =>
+//             item._id === location.state.bookingId
+//         );
+
+//         if (booking) {
+//           setSelectedBooking(booking);
+//         }
+//       }
+
+//     } catch (error) {
+
+//       console.log(
+//         "FETCH BOOKINGS ERROR:",
+//         error.response?.data || error.message
+//       );
+
+//     }
+//   };
+
+//   // ================================
+//   // Submit Feedback
+//   // ================================
+
+//   const handleSubmit = async (e) => {
+
+//     e.preventDefault();
+
+//     if (!selectedBooking) {
+//       alert("Please select a class.");
+//       return;
+//     }
+
+//     if (trainerRating === 0) {
+//       alert("Please give trainer rating.");
+//       return;
+//     }
+
+//     if (classRating === 0) {
+//       alert("Please give class rating.");
+//       return;
+//     }
+
+//     try {
+
+//       setLoading(true);
+
+//       const user = JSON.parse(
+//         localStorage.getItem("user")
+//       );
+
+//       const feedbackData = {
+
+//         user: user._id,
+
+//         booking: selectedBooking._id,
+
+//         class: selectedBooking.class._id,
+
+//         trainer:
+//           selectedBooking.trainer?._id ||
+//           selectedBooking.trainer,
+
+//         trainerRating: trainerRating,
+
+//         classRating: classRating,
+
+//         trainerFeedback: trainerFeedback,
+
+//         classFeedback: classFeedback,
+//       };
+
+//       console.log(
+//         "FEEDBACK DATA:",
+//         feedbackData
+//       );
+
+//       const response = await api.post(
+//         "/feedback",
+//         feedbackData
+//       );
+
+//       console.log(
+//         "FEEDBACK RESPONSE:",
+//         response.data
+//       );
+
+//       alert("Feedback submitted successfully!");
+
+//       // Go back to bookings
+//       navigate("/dashboard/bookings");
+
+//     } catch (error) {
+
+//       console.log(
+//         "FEEDBACK ERROR:",
+//         error.response?.data || error.message
+//       );
+
+//       alert(
+//         error.response?.data?.message ||
+//         "Failed to submit feedback."
+//       );
+
+//     } finally {
+
+//       setLoading(false);
+
+//     }
+//   };
+
+//   return (
+//     <div className="max-w-4xl mx-auto p-6">
+
+//       <h1 className="text-3xl font-bold mb-8">
+//         Class Feedback
+//       </h1>
+
+//       {/* ================================
+//           Select Class
+//       ================================= */}
+
+//       <div className="bg-white shadow-lg rounded-xl p-6 mb-6">
+
+//         <h2 className="text-xl font-bold mb-4">
+//           Select Completed Class
+//         </h2>
+
+//         {bookings.length === 0 ? (
+
+//           <p className="text-gray-500">
+//             No completed classes available for feedback.
+//           </p>
+
+//         ) : (
+
+//           <select
+//             value={selectedBooking?._id || ""}
+//             onChange={(e) => {
+
+//               const booking =
+//                 bookings.find(
+//                   (item) =>
+//                     item._id === e.target.value
+//                 );
+
+//               setSelectedBooking(
+//                 booking || null
+//               );
+
+//             }}
+//             className="w-full border p-3 rounded-lg"
+//           >
+
+//             <option value="">
+//               -- Select your completed class --
+//             </option>
+
+//             {bookings.map((booking) => (
+
+//               <option
+//                 key={booking._id}
+//                 value={booking._id}
+//               >
+//                 {booking.class?.title} -{" "}
+//                 {booking.selectedSlot}
+//               </option>
+
+//             ))}
+
+//           </select>
+
+//         )}
+
+//       </div>
+
+//       {/* ================================
+//           Feedback Form
+//       ================================= */}
+
+//       {selectedBooking && (
+
+//         <form
+//           onSubmit={handleSubmit}
+//           className="bg-white shadow-lg rounded-xl p-6"
+//         >
+
+//           {/* Class Information */}
+
+//           <div className="mb-6">
+
+//             <h2 className="text-2xl font-bold">
+//               {selectedBooking.class?.title}
+//             </h2>
+
+//             <p className="text-gray-600 mt-2">
+//               Trainer:{" "}
+//               {selectedBooking.trainer?.name ||
+//                 "Not assigned"}
+//             </p>
+
+//             <p className="text-gray-600">
+//               Time:{" "}
+//               {selectedBooking.selectedSlot}
+//             </p>
+
+//           </div>
+
+
+//           {/* ================================
+//               Trainer Rating
+//           ================================= */}
+
+//           <div className="mb-6">
+
+//             <label className="block font-semibold mb-2">
+//               Trainer Rating
+//             </label>
+
+//             <div className="flex gap-2">
+
+//               {[1, 2, 3, 4, 5].map(
+//                 (star) => (
+
+//                   <button
+//                     type="button"
+//                     key={star}
+//                     onClick={() =>
+//                       setTrainerRating(star)
+//                     }
+//                     className={`text-3xl ${
+//                       star <= trainerRating
+//                         ? "text-yellow-400"
+//                         : "text-gray-300"
+//                     }`}
+//                   >
+//                     ★
+//                   </button>
+
+//                 )
+//               )}
+
+//             </div>
+
+//           </div>
+
+
+//           {/* ================================
+//               Trainer Feedback
+//           ================================= */}
+
+//           <div className="mb-6">
+
+//             <label className="block font-semibold mb-2">
+//               Trainer Feedback
+//             </label>
+
+//             <textarea
+//               value={trainerFeedback}
+//               onChange={(e) =>
+//                 setTrainerFeedback(
+//                   e.target.value
+//                 )
+//               }
+//               placeholder="Write your feedback about the trainer..."
+//               rows="4"
+//               className="w-full border rounded-lg p-3"
+//             />
+
+//           </div>
+
+
+//           {/* ================================
+//               Class Rating
+//           ================================= */}
+
+//           <div className="mb-6">
+
+//             <label className="block font-semibold mb-2">
+//               Class Rating
+//             </label>
+
+//             <div className="flex gap-2">
+
+//               {[1, 2, 3, 4, 5].map(
+//                 (star) => (
+
+//                   <button
+//                     type="button"
+//                     key={star}
+//                     onClick={() =>
+//                       setClassRating(star)
+//                     }
+//                     className={`text-3xl ${
+//                       star <= classRating
+//                         ? "text-yellow-400"
+//                         : "text-gray-300"
+//                     }`}
+//                   >
+//                     ★
+//                   </button>
+
+//                 )
+//               )}
+
+//             </div>
+
+//           </div>
+
+
+//           {/* ================================
+//               Class Feedback
+//           ================================= */}
+
+//           <div className="mb-6">
+
+//             <label className="block font-semibold mb-2">
+//               Class Feedback
+//             </label>
+
+//             <textarea
+//               value={classFeedback}
+//               onChange={(e) =>
+//                 setClassFeedback(
+//                   e.target.value
+//                 )
+//               }
+//               placeholder="Write your feedback about the class..."
+//               rows="4"
+//               className="w-full border rounded-lg p-3"
+//             />
+
+//           </div>
+
+
+//           {/* ================================
+//               Submit
+//           ================================= */}
+
+//           <button
+//             type="submit"
+//             disabled={loading}
+//             className={`w-full py-3 rounded-lg text-white font-semibold ${
+//               loading
+//                 ? "bg-gray-400"
+//                 : "bg-blue-600 hover:bg-blue-700"
+//             }`}
+//           >
+//             {loading
+//               ? "Submitting..."
+//               : "Submit Feedback"}
+//           </button>
+
+//         </form>
+
+//       )}
+
+//     </div>
+//   );
+// }
+
+// export default Feedback;
+
 import { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import {
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
+import { toast } from "react-toastify";
 import api from "../../Service/api";
 
-function Feedback() {
+const getStoredUser = () => {
+  try {
+    const storedUser =
+      localStorage.getItem("user");
 
+    if (!storedUser) {
+      return null;
+    }
+
+    return JSON.parse(storedUser);
+  } catch {
+    return null;
+  }
+};
+
+function Feedback() {
   const location = useLocation();
   const navigate = useNavigate();
 
   const [bookings, setBookings] = useState([]);
-  const [selectedBooking, setSelectedBooking] = useState(null);
+  const [selectedBooking, setSelectedBooking] =
+    useState(null);
 
-  const [trainerRating, setTrainerRating] = useState(0);
+  const [trainerRating, setTrainerRating] =
+    useState(0);
+
   const [classRating, setClassRating] = useState(0);
 
-  const [trainerFeedback, setTrainerFeedback] = useState("");
-  const [classFeedback, setClassFeedback] = useState("");
+  const [trainerFeedback, setTrainerFeedback] =
+    useState("");
+
+  const [classFeedback, setClassFeedback] =
+    useState("");
 
   const [loading, setLoading] = useState(false);
-
-  // ================================
-  // Fetch completed bookings
-  // ================================
+  const [fetching, setFetching] = useState(true);
 
   useEffect(() => {
-    fetchBookings();
-  }, []);
+    const fetchBookings = async () => {
+      try {
+        setFetching(true);
 
-  const fetchBookings = async () => {
+        const user = getStoredUser();
 
-    try {
+        if (!user?._id) {
+          toast.error(
+            "User information not found. Please login again."
+          );
+          return;
+        }
 
-      const user = JSON.parse(
-        localStorage.getItem("user")
-      );
-
-      if (!user?._id) {
-        console.log("User not found");
-        return;
-      }
-
-      const response = await api.get(
-        `/bookings/user/${user._id}`
-      );
-
-      console.log(
-        "FEEDBACK BOOKINGS:",
-        response.data
-      );
-
-      const completedBookings = response.data.filter(
-        (booking) =>
-          booking.bookingStatus === "Completed" &&
-          booking.feedbackGiven !== true &&
-          booking.class
-      );
-
-      setBookings(completedBookings);
-
-      // If redirected from MyBookings
-      if (location.state?.bookingId) {
-
-        const booking = completedBookings.find(
-          (item) =>
-            item._id === location.state.bookingId
+        const response = await api.get(
+          `/bookings/user/${user._id}`
         );
 
-        if (booking) {
-          setSelectedBooking(booking);
+        const bookingList = Array.isArray(
+          response.data
+        )
+          ? response.data
+          : [];
+
+        const completedBookings =
+          bookingList.filter(
+            (booking) =>
+              booking.bookingStatus ===
+                "Completed" &&
+              booking.feedbackGiven !== true &&
+              booking.class
+          );
+
+        setBookings(completedBookings);
+
+        if (location.state?.bookingId) {
+          const booking =
+            completedBookings.find(
+              (item) =>
+                item._id ===
+                location.state.bookingId
+            );
+
+          if (booking) {
+            setSelectedBooking(booking);
+          }
         }
+      } catch (error) {
+        toast.error(
+          error.response?.data?.message ||
+            "Failed to load completed bookings."
+        );
+      } finally {
+        setFetching(false);
       }
+    };
 
-    } catch (error) {
-
-      console.log(
-        "FETCH BOOKINGS ERROR:",
-        error.response?.data || error.message
-      );
-
-    }
-  };
-
-  // ================================
-  // Submit Feedback
-  // ================================
+    fetchBookings();
+  }, [location.state]);
 
   const handleSubmit = async (e) => {
-
     e.preventDefault();
 
     if (!selectedBooking) {
-      alert("Please select a class.");
+      toast.error("Please select a class.");
       return;
     }
 
     if (trainerRating === 0) {
-      alert("Please give trainer rating.");
+      toast.error("Please give trainer rating.");
       return;
     }
 
     if (classRating === 0) {
-      alert("Please give class rating.");
+      toast.error("Please give class rating.");
       return;
     }
 
     try {
-
       setLoading(true);
 
-      const user = JSON.parse(
-        localStorage.getItem("user")
-      );
+      const user = getStoredUser();
+
+      if (!user?._id) {
+        toast.error(
+          "User information not found. Please login again."
+        );
+        return;
+      }
 
       const feedbackData = {
-
         user: user._id,
-
         booking: selectedBooking._id,
-
-        class: selectedBooking.class._id,
-
+        class: selectedBooking.class?._id,
         trainer:
           selectedBooking.trainer?._id ||
           selectedBooking.trainer,
-
-        trainerRating: trainerRating,
-
-        classRating: classRating,
-
-        trainerFeedback: trainerFeedback,
-
-        classFeedback: classFeedback,
+        trainerRating,
+        classRating,
+        trainerFeedback,
+        classFeedback,
       };
-
-      console.log(
-        "FEEDBACK DATA:",
-        feedbackData
-      );
 
       const response = await api.post(
         "/feedback",
         feedbackData
       );
 
-      console.log(
-        "FEEDBACK RESPONSE:",
-        response.data
+      if (response.data?.success === false) {
+        toast.error(
+          response.data?.message ||
+            "Failed to submit feedback."
+        );
+        return;
+      }
+
+      toast.success(
+        response.data?.message ||
+          "Feedback submitted successfully!"
       );
 
-      alert("Feedback submitted successfully!");
-
-      // Go back to bookings
       navigate("/dashboard/bookings");
-
     } catch (error) {
-
-      console.log(
-        "FEEDBACK ERROR:",
-        error.response?.data || error.message
-      );
-
-      alert(
+      toast.error(
         error.response?.data?.message ||
-        "Failed to submit feedback."
+          "Failed to submit feedback."
       );
-
     } finally {
-
       setLoading(false);
-
     }
   };
 
+  if (fetching) {
+    return (
+      <div className="min-h-[60vh] flex items-center justify-center">
+        <div className="text-center flex flex-col gap-3">
+          <div className="w-10 h-10 border-4 border-gray-200 border-t-blue-600 rounded-full animate-spin mx-auto" />
+
+          <h2 className="text-xl font-semibold text-gray-700">
+            Loading feedback...
+          </h2>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="max-w-4xl mx-auto p-6">
+    <div className="w-full max-w-4xl flex flex-col gap-8">
+      <div className="flex flex-col gap-2">
+        <h1 className="text-3xl md:text-4xl font-bold text-gray-900">
+          Class Feedback
+        </h1>
 
-      <h1 className="text-3xl font-bold mb-8">
-        Class Feedback
-      </h1>
+        <p className="text-gray-500">
+          Share your experience and help us improve.
+        </p>
+      </div>
 
-      {/* ================================
-          Select Class
-      ================================= */}
-
-      <div className="bg-white shadow-lg rounded-xl p-6 mb-6">
-
-        <h2 className="text-xl font-bold mb-4">
+      <div className="bg-white shadow-lg rounded-xl border border-gray-100 flex flex-col gap-5">
+        <h2 className="text-xl font-bold text-gray-900">
           Select Completed Class
         </h2>
 
         {bookings.length === 0 ? (
-
-          <p className="text-gray-500">
-            No completed classes available for feedback.
-          </p>
-
+          <div className="min-h-20 bg-gray-50 border border-gray-200 rounded-lg flex items-center">
+            <p className="text-gray-500">
+              No completed classes are available for
+              feedback.
+            </p>
+          </div>
         ) : (
-
           <select
             value={selectedBooking?._id || ""}
             onChange={(e) => {
-
               const booking =
                 bookings.find(
                   (item) =>
@@ -209,53 +651,37 @@ function Feedback() {
               setSelectedBooking(
                 booking || null
               );
-
             }}
-            className="w-full border p-3 rounded-lg"
+            className="w-full h-11 border border-gray-300 rounded-lg bg-white indent-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
-
             <option value="">
-              -- Select your completed class --
+              Select your completed class
             </option>
 
             {bookings.map((booking) => (
-
               <option
                 key={booking._id}
                 value={booking._id}
               >
-                {booking.class?.title} -{" "}
-                {booking.selectedSlot}
+                {booking.class?.title || "Class"} -{" "}
+                {booking.selectedSlot || "Time"}
               </option>
-
             ))}
-
           </select>
-
         )}
-
       </div>
 
-      {/* ================================
-          Feedback Form
-      ================================= */}
-
       {selectedBooking && (
-
         <form
           onSubmit={handleSubmit}
-          className="bg-white shadow-lg rounded-xl p-6"
+          className="bg-white shadow-lg rounded-xl border border-gray-100 flex flex-col gap-8"
         >
-
-          {/* Class Information */}
-
-          <div className="mb-6">
-
-            <h2 className="text-2xl font-bold">
+          <div className="flex flex-col gap-2">
+            <h2 className="text-2xl font-bold text-gray-900">
               {selectedBooking.class?.title}
             </h2>
 
-            <p className="text-gray-600 mt-2">
+            <p className="text-gray-600">
               Trainer:{" "}
               {selectedBooking.trainer?.name ||
                 "Not assigned"}
@@ -263,57 +689,38 @@ function Feedback() {
 
             <p className="text-gray-600">
               Time:{" "}
-              {selectedBooking.selectedSlot}
+              {selectedBooking.selectedSlot ||
+                "Not available"}
             </p>
-
           </div>
 
-
-          {/* ================================
-              Trainer Rating
-          ================================= */}
-
-          <div className="mb-6">
-
-            <label className="block font-semibold mb-2">
+          <div className="flex flex-col gap-3">
+            <label className="font-semibold text-gray-800">
               Trainer Rating
             </label>
 
             <div className="flex gap-2">
-
-              {[1, 2, 3, 4, 5].map(
-                (star) => (
-
-                  <button
-                    type="button"
-                    key={star}
-                    onClick={() =>
-                      setTrainerRating(star)
-                    }
-                    className={`text-3xl ${
-                      star <= trainerRating
-                        ? "text-yellow-400"
-                        : "text-gray-300"
-                    }`}
-                  >
-                    ★
-                  </button>
-
-                )
-              )}
-
+              {[1, 2, 3, 4, 5].map((star) => (
+                <button
+                  type="button"
+                  key={star}
+                  onClick={() =>
+                    setTrainerRating(star)
+                  }
+                  className={`text-3xl transition ${
+                    star <= trainerRating
+                      ? "text-yellow-400"
+                      : "text-gray-300"
+                  }`}
+                >
+                  ★
+                </button>
+              ))}
             </div>
-
           </div>
 
-
-          {/* ================================
-              Trainer Feedback
-          ================================= */}
-
-          <div className="mb-6">
-
-            <label className="block font-semibold mb-2">
+          <div className="flex flex-col gap-3">
+            <label className="font-semibold text-gray-800">
               Trainer Feedback
             </label>
 
@@ -326,57 +733,37 @@ function Feedback() {
               }
               placeholder="Write your feedback about the trainer..."
               rows="4"
-              className="w-full border rounded-lg p-3"
+              className="w-full border border-gray-300 rounded-lg indent-3 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
             />
-
           </div>
 
-
-          {/* ================================
-              Class Rating
-          ================================= */}
-
-          <div className="mb-6">
-
-            <label className="block font-semibold mb-2">
+          <div className="flex flex-col gap-3">
+            <label className="font-semibold text-gray-800">
               Class Rating
             </label>
 
             <div className="flex gap-2">
-
-              {[1, 2, 3, 4, 5].map(
-                (star) => (
-
-                  <button
-                    type="button"
-                    key={star}
-                    onClick={() =>
-                      setClassRating(star)
-                    }
-                    className={`text-3xl ${
-                      star <= classRating
-                        ? "text-yellow-400"
-                        : "text-gray-300"
-                    }`}
-                  >
-                    ★
-                  </button>
-
-                )
-              )}
-
+              {[1, 2, 3, 4, 5].map((star) => (
+                <button
+                  type="button"
+                  key={star}
+                  onClick={() =>
+                    setClassRating(star)
+                  }
+                  className={`text-3xl transition ${
+                    star <= classRating
+                      ? "text-yellow-400"
+                      : "text-gray-300"
+                  }`}
+                >
+                  ★
+                </button>
+              ))}
             </div>
-
           </div>
 
-
-          {/* ================================
-              Class Feedback
-          ================================= */}
-
-          <div className="mb-6">
-
-            <label className="block font-semibold mb-2">
+          <div className="flex flex-col gap-3">
+            <label className="font-semibold text-gray-800">
               Class Feedback
             </label>
 
@@ -389,22 +776,16 @@ function Feedback() {
               }
               placeholder="Write your feedback about the class..."
               rows="4"
-              className="w-full border rounded-lg p-3"
+              className="w-full border border-gray-300 rounded-lg indent-3 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
             />
-
           </div>
-
-
-          {/* ================================
-              Submit
-          ================================= */}
 
           <button
             type="submit"
             disabled={loading}
-            className={`w-full py-3 rounded-lg text-white font-semibold ${
+            className={`w-full min-h-12 rounded-lg text-white font-semibold flex items-center justify-center transition ${
               loading
-                ? "bg-gray-400"
+                ? "bg-gray-400 cursor-not-allowed"
                 : "bg-blue-600 hover:bg-blue-700"
             }`}
           >
@@ -412,11 +793,8 @@ function Feedback() {
               ? "Submitting..."
               : "Submit Feedback"}
           </button>
-
         </form>
-
       )}
-
     </div>
   );
 }

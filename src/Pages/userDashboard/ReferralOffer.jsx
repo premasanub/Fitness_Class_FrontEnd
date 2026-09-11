@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import api from "../../Service/api";
 import { toast } from "react-toastify";
 import {
@@ -22,20 +22,27 @@ function ReferralOffer() {
   useEffect(() => {
     const fetchReferralDetails = async () => {
       try {
+        setLoading(true);
+
         const response = await api.get("/referral");
 
-        console.log("Referral Response:", response.data);
+        if (response.data?.success) {
+          setReferral(
+            response.data.referral || {
+              referralCode: "",
+              referralLink: "",
+              referralCount: 0,
+            }
+          );
 
-        if (response.data.success) {
-          setReferral(response.data.referral);
-          setOffer(response.data.offer);
+          setOffer(response.data.offer || null);
+        } else {
+          toast.error(
+            response.data?.message ||
+              "Failed to load referral details"
+          );
         }
       } catch (error) {
-        console.error("Referral Axios Error:", error);
-        console.log("Status:", error.response?.status);
-        console.log("Data:", error.response?.data);
-        console.log("URL:", error.config?.url);
-
         toast.error(
           error.response?.data?.message ||
             "Failed to load referral details"
@@ -49,18 +56,28 @@ function ReferralOffer() {
   }, []);
 
   const handleCopy = async () => {
+    if (!referral.referralLink) {
+      toast.error("Referral link is not available");
+      return;
+    }
+
     try {
       await navigator.clipboard.writeText(
         referral.referralLink
       );
 
       toast.success("Referral link copied!");
-    } catch (error) {
+    } catch {
       toast.error("Failed to copy referral link");
     }
   };
 
   const handleShare = async () => {
+    if (!referral.referralLink) {
+      toast.error("Referral link is not available");
+      return;
+    }
+
     try {
       if (navigator.share) {
         await navigator.share({
@@ -77,44 +94,46 @@ function ReferralOffer() {
 
         toast.success("Referral link copied!");
       }
-    } catch (error) {
-      console.error("Share Error:", error);
+    } catch {
+      // User cancelled native share
     }
   };
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center py-20">
+      <div className="min-h-40 flex items-center justify-center">
         <div className="w-10 h-10 border-4 border-red-500 border-t-transparent rounded-full animate-spin"></div>
       </div>
     );
   }
 
   return (
-    <div>
-      {/* Header */}
-      <h1 className="text-4xl font-bold">
-        Refer Friends & Family
-      </h1>
+    <div className="w-full flex flex-col gap-8">
+      {/* HEADER */}
+      <div className="flex flex-col gap-2">
+        <h1 className="text-4xl font-bold text-gray-900">
+          Refer Friends & Family
+        </h1>
 
-      <p className="text-gray-500 mt-2">
-        Invite your friends and earn exciting rewards.
-      </p>
+        <p className="text-gray-500">
+          Invite your friends and earn exciting rewards.
+        </p>
+      </div>
 
-      {/* Offer */}
+      {/* OFFER */}
       {offer && (
-        <div className="mt-8 bg-red-500 text-white p-6 rounded-xl shadow">
+        <div className="bg-red-500 text-white rounded-xl shadow min-h-32 flex items-center">
           <div className="flex items-center gap-4">
-            <div className="bg-white/20 p-4 rounded-full">
+            <div className="w-14 h-14 shrink-0 bg-white/20 rounded-full flex items-center justify-center">
               <FaGift className="text-2xl" />
             </div>
 
-            <div>
+            <div className="flex flex-col gap-1">
               <h2 className="text-2xl font-bold">
                 {offer.title || "Referral Offer"}
               </h2>
 
-              <p className="mt-1 text-red-100">
+              <p className="text-red-100">
                 {offer.description ||
                   "Refer your friends and enjoy exciting rewards."}
               </p>
@@ -123,42 +142,35 @@ function ReferralOffer() {
         </div>
       )}
 
-      {/* Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+      {/* STATS */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="bg-blue-600 text-white rounded-xl shadow min-h-36 flex items-center justify-between gap-4">
+          <div className="flex flex-col gap-2">
+            <h2>Successful Referrals</h2>
 
-        <div className="bg-blue-600 text-white p-6 rounded-xl shadow">
-          <div className="flex justify-between items-center">
-            <div>
-              <h2>Successful Referrals</h2>
-
-              <h1 className="text-4xl font-bold mt-3">
-                {referral.referralCount}
-              </h1>
-            </div>
-
-            <FaUsers className="text-4xl opacity-80" />
+            <h1 className="text-4xl font-bold">
+              {referral.referralCount}
+            </h1>
           </div>
+
+          <FaUsers className="text-4xl opacity-80" />
         </div>
 
-        <div className="bg-purple-600 text-white p-6 rounded-xl shadow">
-          <div className="flex justify-between items-center">
-            <div>
-              <h2>Your Referral Code</h2>
+        <div className="bg-purple-600 text-white rounded-xl shadow min-h-36 flex items-center justify-between gap-4">
+          <div className="flex flex-col gap-2">
+            <h2>Your Referral Code</h2>
 
-              <h1 className="text-3xl font-bold mt-3 tracking-wider">
-                {referral.referralCode || "N/A"}
-              </h1>
-            </div>
-
-            <FaGift className="text-4xl opacity-80" />
+            <h1 className="text-3xl font-bold tracking-wider break-all">
+              {referral.referralCode || "N/A"}
+            </h1>
           </div>
-        </div>
 
+          <FaGift className="text-4xl opacity-80 shrink-0" />
+        </div>
       </div>
 
-      {/* Referral Link */}
-      <div className="bg-white p-6 rounded-xl shadow mt-8">
-
+      {/* REFERRAL LINK */}
+      <div className="bg-white rounded-xl shadow border border-gray-100 flex flex-col gap-5">
         <div className="flex items-center gap-3">
           <FaLink className="text-red-500 text-xl" />
 
@@ -167,13 +179,12 @@ function ReferralOffer() {
           </h2>
         </div>
 
-        <p className="text-gray-500 mt-2">
+        <p className="text-gray-500">
           Share this link with your friends to invite them.
         </p>
 
-        <div className="flex flex-col md:flex-row gap-3 mt-5">
-
-          <div className="flex-1 bg-gray-100 border border-gray-200 rounded-lg px-4 py-3">
+        <div className="flex flex-col md:flex-row gap-3">
+          <div className="flex-1 min-h-12 bg-gray-100 border border-gray-200 rounded-lg flex items-center">
             <p className="text-sm text-gray-700 break-all">
               {referral.referralLink ||
                 "No referral link available"}
@@ -181,81 +192,67 @@ function ReferralOffer() {
           </div>
 
           <button
+            type="button"
             onClick={handleCopy}
-            className="bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-lg flex items-center justify-center gap-2 transition"
+            className="min-h-12 bg-red-500 hover:bg-red-600 text-white rounded-lg flex items-center justify-center gap-2 transition"
           >
             <FaCopy />
             Copy Link
           </button>
-
         </div>
 
         <button
+          type="button"
           onClick={handleShare}
-          className="mt-4 bg-gray-900 hover:bg-gray-800 text-white px-6 py-3 rounded-lg flex items-center justify-center gap-2 transition"
+          className="min-h-12 bg-gray-900 hover:bg-gray-800 text-white rounded-lg flex items-center justify-center gap-2 transition"
         >
           <FaShareAlt />
           Share Referral Link
         </button>
-
       </div>
 
-      {/* How It Works */}
-      <div className="bg-white p-6 rounded-xl shadow mt-8">
-
+      {/* HOW IT WORKS */}
+      <div className="bg-white rounded-xl shadow border border-gray-100 flex flex-col gap-6">
         <h2 className="text-2xl font-bold">
           How It Works
         </h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <Step
+            number="1"
+            title="Share Your Link"
+            description="Copy your referral link and share it with your friends and family."
+          />
 
-          <div className="text-center">
-            <div className="w-12 h-12 mx-auto bg-red-100 text-red-500 rounded-full flex items-center justify-center font-bold text-xl">
-              1
-            </div>
+          <Step
+            number="2"
+            title="Friend Registers"
+            description="Your friend creates an account using your referral link."
+          />
 
-            <h3 className="font-bold mt-4">
-              Share Your Link
-            </h3>
-
-            <p className="text-gray-500 text-sm mt-2">
-              Copy your referral link and share it with
-              your friends and family.
-            </p>
-          </div>
-
-          <div className="text-center">
-            <div className="w-12 h-12 mx-auto bg-red-100 text-red-500 rounded-full flex items-center justify-center font-bold text-xl">
-              2
-            </div>
-
-            <h3 className="font-bold mt-4">
-              Friend Registers
-            </h3>
-
-            <p className="text-gray-500 text-sm mt-2">
-              Your friend creates an account using your
-              referral link.
-            </p>
-          </div>
-
-          <div className="text-center">
-            <div className="w-12 h-12 mx-auto bg-red-100 text-red-500 rounded-full flex items-center justify-center font-bold text-xl">
-              3
-            </div>
-
-            <h3 className="font-bold mt-4">
-              Earn Rewards
-            </h3>
-
-            <p className="text-gray-500 text-sm mt-2">
-              Once the referral is completed, you can
-              receive the applicable reward.
-            </p>
-          </div>
-
+          <Step
+            number="3"
+            title="Earn Rewards"
+            description="Once the referral is completed, you can receive the applicable reward."
+          />
         </div>
       </div>
+    </div>
+  );
+}
+
+function Step({ number, title, description }) {
+  return (
+    <div className="text-center flex flex-col items-center gap-3">
+      <div className="w-12 h-12 bg-red-100 text-red-500 rounded-full flex items-center justify-center font-bold text-xl">
+        {number}
+      </div>
+
+      <h3 className="font-bold">{title}</h3>
+
+      <p className="text-gray-500 text-sm">
+        {description}
+      </p>
     </div>
   );
 }

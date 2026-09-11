@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+
+import { useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import {
@@ -6,7 +7,6 @@ import {
   FaEyeSlash,
   FaDumbbell,
 } from "react-icons/fa";
-
 import api from "../Service/api";
 
 const ResetPassword = () => {
@@ -46,134 +46,148 @@ const ResetPassword = () => {
       );
 
       toast.success(
-        response.data.message ||
+        response.data?.message ||
           "Password updated successfully."
       );
 
       navigate("/login");
-
     } catch (error) {
       const message =
-        error.response?.data?.message ||
+        error?.response?.data?.message ||
         "Unable to reset password.";
 
       setError(message);
       toast.error(message);
-
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-[80vh] flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-indigo-50 px-4 py-12">
+    <div className="min-h-[80vh] flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-indigo-50">
 
-      <div className="w-full max-w-md">
+      <div className="w-[92%] max-w-md flex flex-col gap-6">
 
-        <div className="text-center mb-6">
+        {/* Header */}
+        <div className="flex flex-col items-center gap-3 text-center">
 
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-600 text-white rounded-2xl shadow-lg">
+          <div className="w-16 h-16 bg-blue-600 text-white rounded-2xl shadow-lg flex items-center justify-center">
             <FaDumbbell className="text-2xl" />
           </div>
 
-          <h1 className="text-3xl font-bold text-gray-800 mt-4">
+          <h1 className="text-3xl font-bold text-gray-800">
             Reset Password
           </h1>
 
-          <p className="text-gray-500 mt-2">
+          <p className="text-gray-500">
             Create a new password for your account.
           </p>
 
         </div>
 
-
+        {/* Reset Password Form */}
         <form
           onSubmit={handleSubmit}
-          className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100"
+          className="bg-white rounded-2xl shadow-xl border border-gray-100 flex flex-col gap-5"
         >
+          <div className="w-[88%] self-center flex flex-col gap-5">
 
-          {error && (
-            <div className="mb-5 rounded-lg bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-600">
-              {error}
+            {/* Error */}
+            {error && (
+              <div className="min-h-12 rounded-lg bg-red-50 border border-red-200 text-sm text-red-600 flex items-center">
+                <span className="indent-3">
+                  {error}
+                </span>
+              </div>
+            )}
+
+            {/* Password */}
+            <div className="flex flex-col gap-2">
+
+              <label
+                htmlFor="password"
+                className="text-sm font-semibold text-gray-700"
+              >
+                New Password
+              </label>
+
+              <div className="relative">
+
+                <input
+                  id="password"
+                  type={
+                    showPassword
+                      ? "text"
+                      : "password"
+                  }
+                  value={password}
+                  onChange={(e) =>
+                    setPassword(e.target.value)
+                  }
+                  placeholder="Enter your new password"
+                  autoComplete="new-password"
+                  disabled={loading}
+                  className="w-full h-12 border border-gray-300 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition indent-3"
+                />
+
+                <button
+                  type="button"
+                  onClick={() =>
+                    setShowPassword((prev) => !prev)
+                  }
+                  disabled={loading}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-blue-600 flex items-center justify-center w-8 h-8"
+                  aria-label={
+                    showPassword
+                      ? "Hide password"
+                      : "Show password"
+                  }
+                >
+                  {showPassword ? (
+                    <FaEyeSlash />
+                  ) : (
+                    <FaEye />
+                  )}
+                </button>
+
+              </div>
+
+              <p className="text-xs text-gray-500">
+                Password must contain at least 6 characters.
+              </p>
+
             </div>
-          )}
 
-
-          <label
-            htmlFor="password"
-            className="block text-sm font-semibold text-gray-700 mb-2"
-          >
-            New Password
-          </label>
-
-
-          <div className="relative">
-
-            <input
-              id="password"
-              type={
-                showPassword
-                  ? "text"
-                  : "password"
-              }
-              value={password}
-              onChange={(e) =>
-                setPassword(e.target.value)
-              }
-              placeholder="Enter your new password"
-              className="w-full px-4 py-3 pr-12 border border-gray-300 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-            />
-
+            {/* Submit */}
             <button
-              type="button"
-              onClick={() =>
-                setShowPassword(!showPassword)
-              }
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-blue-600"
+              type="submit"
+              disabled={loading}
+              className="w-full min-h-12 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-semibold rounded-xl transition shadow-md flex items-center justify-center"
             >
-              {showPassword ? (
-                <FaEyeSlash />
-              ) : (
-                <FaEye />
-              )}
+              {loading
+                ? "Updating..."
+                : "Update Password"}
             </button>
 
+            {/* Back to Login */}
+            <p className="text-center text-gray-600 text-sm">
+
+              <Link
+                to="/login"
+                className="font-semibold text-blue-600 hover:text-blue-700"
+              >
+                Back to Login
+              </Link>
+
+            </p>
+
           </div>
-
-
-          <p className="text-xs text-gray-500 mt-2">
-            Password must contain at least 6 characters.
-          </p>
-
-
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full mt-6 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-semibold py-3 rounded-xl transition shadow-md"
-          >
-            {loading
-              ? "Updating..."
-              : "Update Password"}
-          </button>
-
-
-          <p className="text-center text-gray-600 text-sm mt-6">
-
-            <Link
-              to="/login"
-              className="font-semibold text-blue-600 hover:text-blue-700"
-            >
-              Back to Login
-            </Link>
-
-          </p>
-
         </form>
 
       </div>
-
     </div>
   );
 };
 
 export default ResetPassword;
+

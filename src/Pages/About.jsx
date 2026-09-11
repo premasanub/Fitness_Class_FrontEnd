@@ -1,33 +1,58 @@
-import { FaDumbbell, FaUsers, FaCalendarCheck, FaVideo } from "react-icons/fa";
+
+import {
+  FaDumbbell,
+  FaUsers,
+  FaCalendarCheck,
+  FaVideo,
+} from "react-icons/fa";
 
 function About() {
+  const features = [
+    {
+      icon: <FaUsers />,
+      title: "Expert Trainers",
+      description: "Learn from experienced fitness trainers.",
+    },
+    {
+      icon: <FaCalendarCheck />,
+      title: "Easy Booking",
+      description: "Book your preferred fitness class easily.",
+    },
+    {
+      icon: <FaVideo />,
+      title: "Online Classes",
+      description: "Join your classes online from anywhere.",
+    },
+    {
+      icon: <FaDumbbell />,
+      title: "Stay Fit",
+      description: "Build a healthier and stronger lifestyle.",
+    },
+  ];
+
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 flex flex-col gap-16">
 
       {/* Hero */}
-      <section className="bg-black text-white py-20 px-6 text-center">
-
-        <h1 className="text-5xl font-bold">
+      <section className="bg-black text-white text-center min-h-80 flex flex-col items-center justify-center gap-5">
+        <h1 className="text-4xl md:text-5xl font-bold">
           About <span className="text-blue-500">FitBook</span>
         </h1>
 
-        <p className="max-w-3xl mx-auto mt-6 text-gray-300 text-lg">
+        <p className="w-[90%] max-w-3xl text-gray-300 text-lg leading-7">
           FitBook is an online fitness class platform that helps users
           discover, book and attend fitness classes with professional
           trainers from anywhere.
         </p>
-
       </section>
 
       {/* About Content */}
-      <section className="max-w-6xl mx-auto px-6 py-16">
+      <section className="w-full max-w-6xl self-center">
+        <div className="w-[92%] self-center grid md:grid-cols-2 gap-12 items-center">
 
-        <div className="grid md:grid-cols-2 gap-12 items-center">
-
-          <div>
-
-            <div className="flex items-center gap-3 mb-5">
-              <FaDumbbell className="text-blue-600 text-4xl" />
+          <div className="flex flex-col gap-5">
+            <div className="flex items-center gap-3">
+              <FaDumbbell className="text-blue-600 text-4xl shrink-0" />
 
               <h2 className="text-3xl font-bold">
                 Your Fitness Journey Starts Here
@@ -40,109 +65,64 @@ function About() {
               choose a suitable time slot and book their classes online.
             </p>
 
-            <p className="text-gray-600 leading-7 mt-4">
+            <p className="text-gray-600 leading-7">
               Our platform connects users with professional trainers
               offering classes such as Yoga, Zumba, Cardio and Strength
               Training.
             </p>
-
           </div>
 
-          <div className="bg-white rounded-2xl shadow-lg p-8">
+          <div className="bg-white rounded-2xl shadow-lg min-h-80 flex flex-col justify-center gap-5">
+            <div className="w-[90%] self-center flex flex-col gap-5">
+              <h3 className="text-2xl font-bold">
+                Why Choose FitBook?
+              </h3>
 
-            <h3 className="text-2xl font-bold mb-5">
-              Why Choose FitBook?
-            </h3>
-
-            <ul className="space-y-4 text-gray-600">
-
-              <li>
-                ✓ Easy online class booking
-              </li>
-
-              <li>
-                ✓ Professional trainers
-              </li>
-
-              <li>
-                ✓ Multiple fitness categories
-              </li>
-
-              <li>
-                ✓ Flexible time slots
-              </li>
-
-              <li>
-                ✓ Online fitness sessions
-              </li>
-
-              <li>
-                ✓ Booking and payment management
-              </li>
-
-            </ul>
-
+              <ul className="flex flex-col gap-4 text-gray-600">
+                <li>✓ Easy online class booking</li>
+                <li>✓ Professional trainers</li>
+                <li>✓ Multiple fitness categories</li>
+                <li>✓ Flexible time slots</li>
+                <li>✓ Online fitness sessions</li>
+                <li>✓ Booking and payment management</li>
+              </ul>
+            </div>
           </div>
 
         </div>
-
       </section>
 
       {/* Features */}
-      <section className="bg-white py-16">
+      <section className="bg-white min-h-96 flex flex-col justify-center gap-10">
+        <div className="w-full max-w-6xl self-center flex flex-col gap-10">
 
-        <div className="max-w-6xl mx-auto px-6">
-
-          <h2 className="text-3xl font-bold text-center mb-10">
+          <h2 className="text-3xl font-bold text-center">
             What We Offer
           </h2>
 
-          <div className="grid md:grid-cols-4 gap-6">
+          <div className="w-[92%] self-center grid sm:grid-cols-2 md:grid-cols-4 gap-6">
 
-            <div className="text-center p-6 rounded-xl shadow">
-              <FaUsers className="text-blue-600 text-4xl mx-auto mb-4" />
-              <h3 className="font-bold text-xl">
-                Expert Trainers
-              </h3>
-              <p className="text-gray-500 mt-2">
-                Learn from experienced fitness trainers.
-              </p>
-            </div>
+            {features.map((feature) => (
+              <div
+                key={feature.title}
+                className="rounded-xl shadow-lg border border-gray-100 min-h-52 flex flex-col items-center justify-center gap-4 text-center"
+              >
+                <div className="text-blue-600 text-4xl">
+                  {feature.icon}
+                </div>
 
-            <div className="text-center p-6 rounded-xl shadow">
-              <FaCalendarCheck className="text-blue-600 text-4xl mx-auto mb-4" />
-              <h3 className="font-bold text-xl">
-                Easy Booking
-              </h3>
-              <p className="text-gray-500 mt-2">
-                Book your preferred fitness class easily.
-              </p>
-            </div>
+                <h3 className="font-bold text-xl">
+                  {feature.title}
+                </h3>
 
-            <div className="text-center p-6 rounded-xl shadow">
-              <FaVideo className="text-blue-600 text-4xl mx-auto mb-4" />
-              <h3 className="font-bold text-xl">
-                Online Classes
-              </h3>
-              <p className="text-gray-500 mt-2">
-                Join your classes online from anywhere.
-              </p>
-            </div>
-
-            <div className="text-center p-6 rounded-xl shadow">
-              <FaDumbbell className="text-blue-600 text-4xl mx-auto mb-4" />
-              <h3 className="font-bold text-xl">
-                Stay Fit
-              </h3>
-              <p className="text-gray-500 mt-2">
-                Build a healthier and stronger lifestyle.
-              </p>
-            </div>
+                <p className="text-gray-500 w-[90%]">
+                  {feature.description}
+                </p>
+              </div>
+            ))}
 
           </div>
-
         </div>
-
       </section>
 
     </div>
@@ -150,3 +130,4 @@ function About() {
 }
 
 export default About;
+
