@@ -1,3 +1,473 @@
+// import { useEffect, useState } from "react";
+
+// import {
+//   FaUsers,
+//   FaBookOpen,
+//   FaCalendarAlt,
+//   FaStar,
+//   FaClipboardList,
+//   FaClock,
+// } from "react-icons/fa";
+
+// import api from "../../Service/api";
+// import { toast } from "react-toastify";
+
+// function TrainerHome() {
+//   const [dashboard, setDashboard] = useState(null);
+//   const [loading, setLoading] = useState(true);
+
+//   // Get logged-in trainer ID
+//   const getTrainerId = () => {
+//     const trainerId = localStorage.getItem("trainerId");
+
+//     if (trainerId) {
+//       return trainerId;
+//     }
+
+//     const userId = localStorage.getItem("userId");
+
+//     if (userId) {
+//       return userId;
+//     }
+
+//     const user = localStorage.getItem("user");
+
+//     if (user) {
+//       try {
+//         const parsedUser = JSON.parse(user);
+//         return parsedUser?._id || parsedUser?.id;
+//       } catch (error) {
+//         console.log("User parsing error:", error);
+//       }
+//     }
+
+//     return null;
+//   };
+
+//   // =========================================
+//   // FETCH TRAINER DASHBOARD
+//   // =========================================
+
+//   useEffect(() => {
+//     const fetchDashboard = async () => {
+//       try {
+//         const trainerId = getTrainerId();
+
+//         if (!trainerId) {
+//           toast.error("Trainer ID not found. Please login again.");
+//           setLoading(false);
+//           return;
+//         }
+
+//         console.log("Trainer ID:", trainerId);
+
+//         const response = await api.get(
+//           `/trainers/dashboard/${trainerId}`
+//         );
+
+//         console.log("Trainer Dashboard Response:", response.data);
+
+//         if (response.data.success) {
+//           setDashboard(response.data);
+//         } else {
+//           toast.error(
+//             response.data.message || "Failed to load dashboard"
+//           );
+//         }
+//       } catch (error) {
+//         console.log("Trainer Dashboard Error:", error);
+
+//         toast.error(
+//           error.response?.data?.message ||
+//             "Failed to load trainer dashboard"
+//         );
+//       } finally {
+//         setLoading(false);
+//       }
+//     };
+
+//     fetchDashboard();
+//   }, []);
+
+//   // =========================================
+//   // LOADING
+//   // =========================================
+
+//   if (loading) {
+//     return (
+//       <div className="flex justify-center items-center min-h-[400px]">
+//         <div className="text-lg text-gray-600">
+//           Loading dashboard...
+//         </div>
+//       </div>
+//     );
+//   }
+
+//   // =========================================
+//   // NO DATA
+//   // =========================================
+
+//   if (!dashboard) {
+//     return (
+//       <div className="bg-white rounded-xl shadow p-8 text-center">
+//         <h2 className="text-xl font-bold text-gray-800">
+//           Unable to load dashboard
+//         </h2>
+
+//         <p className="text-gray-500 mt-2">
+//           Please login again and try.
+//         </p>
+//       </div>
+//     );
+//   }
+
+//   // =========================================
+//   // BACKEND DATA
+//   // =========================================
+
+//   const stats = dashboard.stats || {};
+
+//   const todayClasses = dashboard.todayClasses || [];
+
+//   const upcomingClasses = dashboard.upcomingClasses || [];
+
+//   const trainerName =
+//     dashboard.trainer?.name || "Trainer";
+
+//   return (
+//     <div className="space-y-10">
+
+//       {/* =========================================
+//           WELCOME SECTION
+//       ========================================= */}
+
+//       <div>
+//         <h1 className="text-4xl font-bold text-gray-800">
+//           Welcome Back, {trainerName} 👋
+//         </h1>
+
+//         <p className="text-gray-600 mt-2">
+//           Manage your online fitness classes efficiently.
+//         </p>
+//       </div>
+
+
+//       {/* =========================================
+//           DASHBOARD CARDS
+//       ========================================= */}
+
+//       <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-6">
+
+//         {/* TOTAL STUDENTS */}
+
+//         <div className="bg-white rounded-xl shadow p-6">
+
+//           <FaUsers className="text-3xl text-blue-600 mb-4" />
+
+//           <h2 className="text-sm font-semibold text-gray-500">
+//             Total Students
+//           </h2>
+
+//           <p className="text-3xl font-bold mt-2 text-gray-800">
+//             {stats.totalStudents || 0}
+//           </p>
+
+//         </div>
+
+
+//         {/* MY CLASSES */}
+
+//         <div className="bg-white rounded-xl shadow p-6">
+
+//           <FaBookOpen className="text-3xl text-green-600 mb-4" />
+
+//           <h2 className="text-sm font-semibold text-gray-500">
+//             My Classes
+//           </h2>
+
+//           <p className="text-3xl font-bold mt-2 text-gray-800">
+//             {stats.totalClasses || 0}
+//           </p>
+
+//         </div>
+
+
+//         {/* TODAY'S SESSIONS */}
+
+//         <div className="bg-white rounded-xl shadow p-6">
+
+//           <FaCalendarAlt className="text-3xl text-purple-600 mb-4" />
+
+//           <h2 className="text-sm font-semibold text-gray-500">
+//             Today's Sessions
+//           </h2>
+
+//           <p className="text-3xl font-bold mt-2 text-gray-800">
+//             {stats.todaySessions || 0}
+//           </p>
+
+//         </div>
+
+
+//         {/* TOTAL BOOKINGS */}
+
+//         <div className="bg-white rounded-xl shadow p-6">
+
+//           <FaClipboardList className="text-3xl text-orange-500 mb-4" />
+
+//           <h2 className="text-sm font-semibold text-gray-500">
+//             Total Bookings
+//           </h2>
+
+//           <p className="text-3xl font-bold mt-2 text-gray-800">
+//             {stats.totalBookings || 0}
+//           </p>
+
+//         </div>
+
+
+//         {/* RATING */}
+
+//         <div className="bg-white rounded-xl shadow p-6">
+
+//           <FaStar className="text-3xl text-yellow-500 mb-4" />
+
+//           <h2 className="text-sm font-semibold text-gray-500">
+//             Rating
+//           </h2>
+
+//           <p className="text-3xl font-bold mt-2 text-gray-800">
+//             {stats.rating || 0}
+//           </p>
+
+//           <p className="text-sm text-gray-500 mt-1">
+//             ⭐ Excellent
+//           </p>
+
+//         </div>
+
+//       </div>
+
+
+//       {/* =========================================
+//           TODAY'S SCHEDULE
+//       ========================================= */}
+
+//       <div>
+
+//         <div className="flex items-center justify-between mb-6">
+
+//           <div>
+//             <h2 className="text-2xl font-bold text-gray-800">
+//               Today's Schedule
+//             </h2>
+
+//             <p className="text-gray-500 mt-1">
+//               Your classes scheduled for today
+//             </p>
+//           </div>
+
+//           <FaCalendarAlt className="text-2xl text-purple-600" />
+
+//         </div>
+
+
+//         {todayClasses.length === 0 ? (
+
+//           <div className="bg-white shadow rounded-xl p-8 text-center">
+
+//             <FaCalendarAlt className="text-4xl text-gray-300 mx-auto mb-3" />
+
+//             <p className="text-gray-500">
+//               No classes scheduled for today.
+//             </p>
+
+//           </div>
+
+//         ) : (
+
+//           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+//             {todayClasses.map((item) => (
+
+//               <div
+//                 key={item.id}
+//                 className="bg-white shadow rounded-xl p-6 border border-gray-100 hover:shadow-lg transition"
+//               >
+
+//                 {/* CLASS NAME */}
+
+//                 <h3 className="text-xl font-bold text-gray-800">
+//                   {item.className}
+//                 </h3>
+
+
+//                 {/* TIME */}
+
+//                 <div className="flex items-center gap-2 mt-4 text-gray-600">
+
+//                   <FaClock className="text-purple-600" />
+
+//                   <span>
+//                     {item.time}
+//                   </span>
+
+//                 </div>
+
+
+//                 {/* STUDENTS */}
+
+//                 <div className="flex items-center gap-2 mt-3 text-gray-600">
+
+//                   <FaUsers className="text-blue-600" />
+
+//                   <span>
+//                     {item.students || 0} Students
+//                   </span>
+
+//                 </div>
+
+
+//                 {/* STATUS */}
+
+//                 <div className="mt-5">
+
+//                   <span
+//                     className={`inline-block px-4 py-2 rounded-full text-sm font-semibold ${
+//                       item.status === "Completed"
+//                         ? "bg-gray-100 text-gray-600"
+//                         : item.status === "Confirmed"
+//                         ? "bg-green-100 text-green-700"
+//                         : "bg-yellow-100 text-yellow-700"
+//                     }`}
+//                   >
+//                     {item.status}
+//                   </span>
+
+//                 </div>
+
+//               </div>
+
+//             ))}
+
+//           </div>
+
+//         )}
+
+//       </div>
+
+
+//       {/* =========================================
+//           UPCOMING CLASSES
+//       ========================================= */}
+
+//       <div>
+
+//         <div className="mb-6">
+
+//           <h2 className="text-2xl font-bold text-gray-800">
+//             Upcoming Classes
+//           </h2>
+
+//           <p className="text-gray-500 mt-1">
+//             Your upcoming fitness sessions
+//           </p>
+
+//         </div>
+
+
+//         <div className="bg-white shadow rounded-xl overflow-hidden">
+
+//           {upcomingClasses.length === 0 ? (
+
+//             <div className="p-8 text-center">
+
+//               <FaCalendarAlt className="text-4xl text-gray-300 mx-auto mb-3" />
+
+//               <p className="text-gray-500">
+//                 No upcoming classes found.
+//               </p>
+
+//             </div>
+
+//           ) : (
+
+//             upcomingClasses.map((item, index) => (
+
+//               <div
+//                 key={item.id}
+//                 className={`p-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4 ${
+//                   index !== upcomingClasses.length - 1
+//                     ? "border-b"
+//                     : ""
+//                 }`}
+//               >
+
+//                 {/* CLASS INFO */}
+
+//                 <div>
+
+//                   <h3 className="text-lg font-bold text-gray-800">
+//                     {item.className}
+//                   </h3>
+
+//                   <p className="text-gray-500 mt-1">
+//                     {item.date}
+//                   </p>
+
+//                 </div>
+
+
+//                 {/* TIME */}
+
+//                 <div className="flex items-center gap-2 text-gray-600">
+
+//                   <FaClock className="text-purple-600" />
+
+//                   <span>
+//                     {item.time}
+//                   </span>
+
+//                 </div>
+
+
+//                 {/* STUDENTS */}
+
+//                 <div className="flex items-center gap-2 text-gray-600">
+
+//                   <FaUsers className="text-blue-600" />
+
+//                   <span>
+//                     {item.students || 0} Students
+//                   </span>
+
+//                 </div>
+
+
+//                 {/* STATUS */}
+
+//                 <span className="bg-blue-100 text-blue-700 px-4 py-2 rounded-full text-sm font-semibold">
+
+//                   Upcoming
+
+//                 </span>
+
+//               </div>
+
+//             ))
+
+//           )}
+
+//         </div>
+
+//       </div>
+
+//     </div>
+//   );
+// }
+
+// export default TrainerHome;
+
 import { useEffect, useState } from "react";
 
 import {
@@ -16,7 +486,6 @@ function TrainerHome() {
   const [dashboard, setDashboard] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Get logged-in trainer ID
   const getTrainerId = () => {
     const trainerId = localStorage.getItem("trainerId");
 
@@ -35,18 +504,14 @@ function TrainerHome() {
     if (user) {
       try {
         const parsedUser = JSON.parse(user);
-        return parsedUser?._id || parsedUser?.id;
-      } catch (error) {
-        console.log("User parsing error:", error);
+        return parsedUser?._id || parsedUser?.id || null;
+      } catch {
+        return null;
       }
     }
 
     return null;
   };
-
-  // =========================================
-  // FETCH TRAINER DASHBOARD
-  // =========================================
 
   useEffect(() => {
     const fetchDashboard = async () => {
@@ -59,24 +524,19 @@ function TrainerHome() {
           return;
         }
 
-        console.log("Trainer ID:", trainerId);
-
         const response = await api.get(
           `/trainers/dashboard/${trainerId}`
         );
 
-        console.log("Trainer Dashboard Response:", response.data);
-
-        if (response.data.success) {
+        if (response.data?.success) {
           setDashboard(response.data);
         } else {
           toast.error(
-            response.data.message || "Failed to load dashboard"
+            response.data?.message ||
+              "Failed to load dashboard"
           );
         }
       } catch (error) {
-        console.log("Trainer Dashboard Error:", error);
-
         toast.error(
           error.response?.data?.message ||
             "Failed to load trainer dashboard"
@@ -89,251 +549,171 @@ function TrainerHome() {
     fetchDashboard();
   }, []);
 
-  // =========================================
-  // LOADING
-  // =========================================
-
   if (loading) {
     return (
-      <div className="flex justify-center items-center min-h-[400px]">
-        <div className="text-lg text-gray-600">
-          Loading dashboard...
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="flex flex-col items-center gap-3">
+          <div className="w-10 h-10 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin" />
+
+          <p className="text-gray-600 font-medium">
+            Loading dashboard...
+          </p>
         </div>
       </div>
     );
   }
 
-  // =========================================
-  // NO DATA
-  // =========================================
-
   if (!dashboard) {
     return (
-      <div className="bg-white rounded-xl shadow p-8 text-center">
-        <h2 className="text-xl font-bold text-gray-800">
-          Unable to load dashboard
-        </h2>
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="bg-white rounded-xl shadow-lg flex flex-col items-center text-center gap-3">
+          <h2 className="text-xl font-bold text-gray-800">
+            Unable to load dashboard
+          </h2>
 
-        <p className="text-gray-500 mt-2">
-          Please login again and try.
-        </p>
+          <p className="text-gray-500">
+            Please login again and try.
+          </p>
+        </div>
       </div>
     );
   }
 
-  // =========================================
-  // BACKEND DATA
-  // =========================================
-
   const stats = dashboard.stats || {};
-
   const todayClasses = dashboard.todayClasses || [];
-
   const upcomingClasses = dashboard.upcomingClasses || [];
 
   const trainerName =
     dashboard.trainer?.name || "Trainer";
 
+  const dashboardCards = [
+    {
+      title: "Total Students",
+      value: stats.totalStudents ?? 0,
+      icon: <FaUsers />,
+      iconClass: "text-blue-600",
+    },
+    {
+      title: "My Classes",
+      value: stats.totalClasses ?? 0,
+      icon: <FaBookOpen />,
+      iconClass: "text-green-600",
+    },
+    {
+      title: "Today's Sessions",
+      value: stats.todaySessions ?? 0,
+      icon: <FaCalendarAlt />,
+      iconClass: "text-purple-600",
+    },
+    {
+      title: "Total Bookings",
+      value: stats.totalBookings ?? 0,
+      icon: <FaClipboardList />,
+      iconClass: "text-orange-500",
+    },
+    {
+      title: "Rating",
+      value: stats.rating ?? stats.averageRating ?? 0,
+      icon: <FaStar />,
+      iconClass: "text-yellow-500",
+    },
+  ];
+
   return (
-    <div className="space-y-10">
-
-      {/* =========================================
-          WELCOME SECTION
-      ========================================= */}
-
-      <div>
+    <div className="w-full flex flex-col gap-10">
+      {/* WELCOME */}
+      <section className="flex flex-col gap-2">
         <h1 className="text-4xl font-bold text-gray-800">
           Welcome Back, {trainerName} 👋
         </h1>
 
-        <p className="text-gray-600 mt-2">
+        <p className="text-gray-600">
           Manage your online fitness classes efficiently.
         </p>
-      </div>
+      </section>
 
+      {/* DASHBOARD CARDS */}
+      <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
+        {dashboardCards.map((card) => (
+          <div
+            key={card.title}
+            className="bg-white rounded-xl shadow-lg border border-gray-100 flex flex-col gap-4 min-h-40"
+          >
+            <div className={`text-3xl ${card.iconClass}`}>
+              {card.icon}
+            </div>
 
-      {/* =========================================
-          DASHBOARD CARDS
-      ========================================= */}
+            <h2 className="text-sm font-semibold text-gray-500">
+              {card.title}
+            </h2>
 
-      <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-6">
+            <p className="text-3xl font-bold text-gray-800">
+              {card.value}
+            </p>
 
-        {/* TOTAL STUDENTS */}
+            {card.title === "Rating" && (
+              <span className="text-sm text-gray-500">
+                ⭐ Excellent
+              </span>
+            )}
+          </div>
+        ))}
+      </section>
 
-        <div className="bg-white rounded-xl shadow p-6">
-
-          <FaUsers className="text-3xl text-blue-600 mb-4" />
-
-          <h2 className="text-sm font-semibold text-gray-500">
-            Total Students
-          </h2>
-
-          <p className="text-3xl font-bold mt-2 text-gray-800">
-            {stats.totalStudents || 0}
-          </p>
-
-        </div>
-
-
-        {/* MY CLASSES */}
-
-        <div className="bg-white rounded-xl shadow p-6">
-
-          <FaBookOpen className="text-3xl text-green-600 mb-4" />
-
-          <h2 className="text-sm font-semibold text-gray-500">
-            My Classes
-          </h2>
-
-          <p className="text-3xl font-bold mt-2 text-gray-800">
-            {stats.totalClasses || 0}
-          </p>
-
-        </div>
-
-
-        {/* TODAY'S SESSIONS */}
-
-        <div className="bg-white rounded-xl shadow p-6">
-
-          <FaCalendarAlt className="text-3xl text-purple-600 mb-4" />
-
-          <h2 className="text-sm font-semibold text-gray-500">
-            Today's Sessions
-          </h2>
-
-          <p className="text-3xl font-bold mt-2 text-gray-800">
-            {stats.todaySessions || 0}
-          </p>
-
-        </div>
-
-
-        {/* TOTAL BOOKINGS */}
-
-        <div className="bg-white rounded-xl shadow p-6">
-
-          <FaClipboardList className="text-3xl text-orange-500 mb-4" />
-
-          <h2 className="text-sm font-semibold text-gray-500">
-            Total Bookings
-          </h2>
-
-          <p className="text-3xl font-bold mt-2 text-gray-800">
-            {stats.totalBookings || 0}
-          </p>
-
-        </div>
-
-
-        {/* RATING */}
-
-        <div className="bg-white rounded-xl shadow p-6">
-
-          <FaStar className="text-3xl text-yellow-500 mb-4" />
-
-          <h2 className="text-sm font-semibold text-gray-500">
-            Rating
-          </h2>
-
-          <p className="text-3xl font-bold mt-2 text-gray-800">
-            {stats.rating || 0}
-          </p>
-
-          <p className="text-sm text-gray-500 mt-1">
-            ⭐ Excellent
-          </p>
-
-        </div>
-
-      </div>
-
-
-      {/* =========================================
-          TODAY'S SCHEDULE
-      ========================================= */}
-
-      <div>
-
-        <div className="flex items-center justify-between mb-6">
-
-          <div>
+      {/* TODAY'S SCHEDULE */}
+      <section className="flex flex-col gap-6">
+        <div className="flex items-center justify-between gap-4">
+          <div className="flex flex-col gap-1">
             <h2 className="text-2xl font-bold text-gray-800">
               Today's Schedule
             </h2>
 
-            <p className="text-gray-500 mt-1">
+            <p className="text-gray-500">
               Your classes scheduled for today
             </p>
           </div>
 
-          <FaCalendarAlt className="text-2xl text-purple-600" />
-
+          <FaCalendarAlt className="text-2xl text-purple-600 shrink-0" />
         </div>
 
-
         {todayClasses.length === 0 ? (
-
-          <div className="bg-white shadow rounded-xl p-8 text-center">
-
-            <FaCalendarAlt className="text-4xl text-gray-300 mx-auto mb-3" />
+          <div className="bg-white shadow rounded-xl min-h-40 flex flex-col items-center justify-center text-center gap-3">
+            <FaCalendarAlt className="text-4xl text-gray-300" />
 
             <p className="text-gray-500">
               No classes scheduled for today.
             </p>
-
           </div>
-
         ) : (
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {todayClasses.map((item) => (
-
-              <div
-                key={item.id}
-                className="bg-white shadow rounded-xl p-6 border border-gray-100 hover:shadow-lg transition"
+              <article
+                key={item.id || item._id}
+                className="bg-white shadow rounded-xl border border-gray-100 hover:shadow-lg transition flex flex-col gap-5"
               >
-
-                {/* CLASS NAME */}
-
                 <h3 className="text-xl font-bold text-gray-800">
-                  {item.className}
+                  {item.className || item.title || "Fitness Class"}
                 </h3>
 
-
-                {/* TIME */}
-
-                <div className="flex items-center gap-2 mt-4 text-gray-600">
-
-                  <FaClock className="text-purple-600" />
+                <div className="flex items-center gap-3 text-gray-600">
+                  <FaClock className="text-purple-600 shrink-0" />
 
                   <span>
-                    {item.time}
+                    {item.time || "Time not available"}
                   </span>
-
                 </div>
 
-
-                {/* STUDENTS */}
-
-                <div className="flex items-center gap-2 mt-3 text-gray-600">
-
-                  <FaUsers className="text-blue-600" />
+                <div className="flex items-center gap-3 text-gray-600">
+                  <FaUsers className="text-blue-600 shrink-0" />
 
                   <span>
-                    {item.students || 0} Students
+                    {item.students ?? 0} Students
                   </span>
-
                 </div>
 
-
-                {/* STATUS */}
-
-                <div className="mt-5">
-
+                <div>
                   <span
-                    className={`inline-block px-4 py-2 rounded-full text-sm font-semibold ${
+                    className={`inline-flex items-center rounded-full text-sm font-semibold ${
                       item.status === "Completed"
                         ? "bg-gray-100 text-gray-600"
                         : item.status === "Confirmed"
@@ -341,127 +721,88 @@ function TrainerHome() {
                         : "bg-yellow-100 text-yellow-700"
                     }`}
                   >
-                    {item.status}
+                    {item.status || "Upcoming"}
                   </span>
-
                 </div>
-
-              </div>
-
+              </article>
             ))}
-
           </div>
-
         )}
+      </section>
 
-      </div>
-
-
-      {/* =========================================
-          UPCOMING CLASSES
-      ========================================= */}
-
-      <div>
-
-        <div className="mb-6">
-
+      {/* UPCOMING CLASSES */}
+      <section className="flex flex-col gap-6">
+        <div className="flex flex-col gap-1">
           <h2 className="text-2xl font-bold text-gray-800">
             Upcoming Classes
           </h2>
 
-          <p className="text-gray-500 mt-1">
+          <p className="text-gray-500">
             Your upcoming fitness sessions
           </p>
-
         </div>
 
-
         <div className="bg-white shadow rounded-xl overflow-hidden">
-
           {upcomingClasses.length === 0 ? (
-
-            <div className="p-8 text-center">
-
-              <FaCalendarAlt className="text-4xl text-gray-300 mx-auto mb-3" />
+            <div className="min-h-40 flex flex-col items-center justify-center text-center gap-3">
+              <FaCalendarAlt className="text-4xl text-gray-300" />
 
               <p className="text-gray-500">
                 No upcoming classes found.
               </p>
-
             </div>
-
           ) : (
+            <div className="flex flex-col">
+              {upcomingClasses.map((item, index) => (
+                <div
+                  key={item.id || item._id}
+                  className={`flex flex-col md:flex-row md:items-center md:justify-between gap-5 ${
+                    index !== upcomingClasses.length - 1
+                      ? "border-b border-gray-100"
+                      : ""
+                  }`}
+                >
+                  {/* CLASS INFO */}
+                  <div className="flex flex-col gap-1">
+                    <h3 className="text-lg font-bold text-gray-800">
+                      {item.className ||
+                        item.title ||
+                        "Fitness Class"}
+                    </h3>
 
-            upcomingClasses.map((item, index) => (
+                    <p className="text-gray-500">
+                      {item.date || "Date not available"}
+                    </p>
+                  </div>
 
-              <div
-                key={item.id}
-                className={`p-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4 ${
-                  index !== upcomingClasses.length - 1
-                    ? "border-b"
-                    : ""
-                }`}
-              >
+                  {/* TIME */}
+                  <div className="flex items-center gap-3 text-gray-600">
+                    <FaClock className="text-purple-600 shrink-0" />
 
-                {/* CLASS INFO */}
+                    <span>
+                      {item.time || "Time not available"}
+                    </span>
+                  </div>
 
-                <div>
+                  {/* STUDENTS */}
+                  <div className="flex items-center gap-3 text-gray-600">
+                    <FaUsers className="text-blue-600 shrink-0" />
 
-                  <h3 className="text-lg font-bold text-gray-800">
-                    {item.className}
-                  </h3>
+                    <span>
+                      {item.students ?? 0} Students
+                    </span>
+                  </div>
 
-                  <p className="text-gray-500 mt-1">
-                    {item.date}
-                  </p>
-
-                </div>
-
-
-                {/* TIME */}
-
-                <div className="flex items-center gap-2 text-gray-600">
-
-                  <FaClock className="text-purple-600" />
-
-                  <span>
-                    {item.time}
+                  {/* STATUS */}
+                  <span className="bg-blue-100 text-blue-700 rounded-full text-sm font-semibold inline-flex items-center">
+                    Upcoming
                   </span>
-
                 </div>
-
-
-                {/* STUDENTS */}
-
-                <div className="flex items-center gap-2 text-gray-600">
-
-                  <FaUsers className="text-blue-600" />
-
-                  <span>
-                    {item.students || 0} Students
-                  </span>
-
-                </div>
-
-
-                {/* STATUS */}
-
-                <span className="bg-blue-100 text-blue-700 px-4 py-2 rounded-full text-sm font-semibold">
-
-                  Upcoming
-
-                </span>
-
-              </div>
-
-            ))
-
+              ))}
+            </div>
           )}
-
         </div>
-
-      </div>
-
+      </section>
     </div>
   );
 }
