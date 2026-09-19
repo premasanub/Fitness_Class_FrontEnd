@@ -1,6 +1,3 @@
-
-
-
 import { useEffect, useState } from "react";
 import {
   FaUser,
@@ -84,7 +81,7 @@ function TrainerStudents() {
 
   if (loading) {
     return (
-      <div className="min-h-40 flex items-center justify-center">
+      <div className="min-h-40 p-8 flex items-center justify-center">
         <p className="text-lg text-gray-600">
           Loading students...
         </p>
@@ -94,7 +91,7 @@ function TrainerStudents() {
 
   if (error) {
     return (
-      <div className="min-h-32 bg-red-50 border border-red-200 text-red-600 rounded-xl flex flex-col justify-center gap-2">
+      <div className="m-4 sm:m-6 lg:m-8 p-6 bg-red-50 border border-red-200 text-red-600 rounded-xl flex flex-col gap-2">
         <h2 className="font-bold text-lg">
           Unable to load students
         </h2>
@@ -105,8 +102,8 @@ function TrainerStudents() {
   }
 
   return (
-    <div className="w-full flex flex-col gap-8">
-      {/* Header */}
+    <div className="w-full p-4 sm:p-6 lg:p-8 flex flex-col gap-8">
+      {/* HEADER */}
       <div className="flex flex-col gap-2">
         <h1 className="text-3xl font-bold text-gray-800">
           My Students
@@ -117,9 +114,9 @@ function TrainerStudents() {
         </p>
       </div>
 
-      {/* Empty State */}
+      {/* EMPTY STATE */}
       {students.length === 0 ? (
-        <div className="bg-white shadow rounded-xl min-h-64 flex flex-col items-center justify-center gap-4 text-center border border-gray-100">
+        <div className="bg-white shadow rounded-xl p-8 min-h-64 flex flex-col items-center justify-center gap-4 text-center border border-gray-100">
           <FaUser className="text-5xl text-gray-300" />
 
           <h2 className="text-xl font-semibold text-gray-700">
@@ -131,14 +128,13 @@ function TrainerStudents() {
           </p>
         </div>
       ) : (
-        /* Students */
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {students.map((student) => (
             <div
               key={student._id}
-              className="bg-white shadow-lg rounded-xl border border-gray-100 min-h-72 flex flex-col gap-4 hover:shadow-xl transition"
+              className="bg-white shadow-lg rounded-xl border border-gray-100 p-6 min-h-72 flex flex-col gap-4 hover:shadow-xl transition"
             >
-              {/* Profile */}
+              {/* PROFILE */}
               <div className="w-14 h-14 shrink-0 bg-blue-100 rounded-full flex items-center justify-center overflow-hidden">
                 {student.profileImage ? (
                   <img
@@ -151,12 +147,12 @@ function TrainerStudents() {
                 )}
               </div>
 
-              {/* Name */}
+              {/* NAME */}
               <h2 className="text-xl font-bold text-gray-800">
                 {student.name || "Student"}
               </h2>
 
-              {/* Details */}
+              {/* DETAILS */}
               <div className="flex flex-col gap-3">
                 <div className="flex items-center gap-2 text-gray-600">
                   <FaEnvelope className="text-blue-500 shrink-0" />
@@ -183,10 +179,10 @@ function TrainerStudents() {
                 </div>
               </div>
 
-              {/* Recent Classes */}
+              {/* RECENT CLASSES */}
               {Array.isArray(student.bookings) &&
                 student.bookings.length > 0 && (
-                  <div className="border-t border-gray-200 flex flex-col gap-3">
+                  <div className="border-t border-gray-200 pt-4 flex flex-col gap-3">
                     <h3 className="font-semibold text-gray-700">
                       Recent Classes
                     </h3>
@@ -200,7 +196,7 @@ function TrainerStudents() {
                               booking.bookingId ||
                               booking._id
                             }
-                            className="text-sm text-gray-500"
+                            className="text-sm text-gray-500 bg-gray-50 rounded-lg px-3 py-2"
                           >
                             {booking.class?.name ||
                               booking.class?.title ||

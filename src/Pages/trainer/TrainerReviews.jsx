@@ -1,5 +1,3 @@
-
-
 import { useEffect, useState } from "react";
 import { FaStar, FaUser } from "react-icons/fa";
 import api from "../../Service/api";
@@ -82,7 +80,7 @@ function TrainerReviews() {
 
   if (loading) {
     return (
-      <div className="min-h-40 flex items-center justify-center">
+      <div className="min-h-40 p-8 flex items-center justify-center">
         <p className="text-lg text-gray-600">
           Loading reviews...
         </p>
@@ -92,7 +90,7 @@ function TrainerReviews() {
 
   if (error) {
     return (
-      <div className="min-h-32 bg-red-50 border border-red-200 text-red-600 rounded-xl flex flex-col justify-center gap-2">
+      <div className="m-4 sm:m-6 lg:m-8 p-6 bg-red-50 border border-red-200 text-red-600 rounded-xl flex flex-col gap-2">
         <h2 className="font-bold text-lg">
           Unable to load reviews
         </h2>
@@ -103,8 +101,8 @@ function TrainerReviews() {
   }
 
   return (
-    <div className="w-full flex flex-col gap-8">
-      {/* Header */}
+    <div className="w-full p-4 sm:p-6 lg:p-8 flex flex-col gap-8">
+      {/* HEADER */}
       <div className="flex flex-col gap-2">
         <h1 className="text-3xl font-bold text-gray-800">
           Student Reviews
@@ -115,9 +113,9 @@ function TrainerReviews() {
         </p>
       </div>
 
-      {/* Rating Summary */}
-      <div className="bg-white shadow rounded-xl border border-gray-100 min-h-32 flex items-center">
-        <div className="flex items-center gap-6">
+      {/* RATING SUMMARY */}
+      <div className="bg-white shadow rounded-xl border border-gray-100 p-6 md:p-8">
+        <div className="flex flex-col sm:flex-row sm:items-center gap-6">
           <div className="flex flex-col gap-1">
             <p className="text-sm text-gray-500">
               Average Trainer Rating
@@ -150,16 +148,16 @@ function TrainerReviews() {
         </div>
       </div>
 
-      {/* Empty State */}
+      {/* EMPTY */}
       {reviews.length === 0 ? (
-        <div className="bg-white shadow rounded-xl min-h-64 flex flex-col items-center justify-center gap-4 text-center border border-gray-100">
+        <div className="bg-white shadow rounded-xl p-8 min-h-64 flex flex-col items-center justify-center gap-4 text-center border border-gray-100">
           <FaStar className="text-5xl text-gray-300" />
 
           <h2 className="text-xl font-semibold text-gray-700">
             No Reviews Yet
           </h2>
 
-          <p className="text-gray-500">
+          <p className="text-gray-500 max-w-lg">
             Student reviews will appear here after they submit
             feedback.
           </p>
@@ -191,9 +189,9 @@ function TrainerReviews() {
             return (
               <div
                 key={review._id}
-                className="bg-white shadow-lg rounded-xl border border-gray-100 min-h-48 flex flex-col gap-5"
+                className="bg-white shadow-lg rounded-xl border border-gray-100 p-6 md:p-7 flex flex-col gap-5"
               >
-                {/* Student */}
+                {/* STUDENT */}
                 <div className="flex items-center gap-4">
                   <div className="w-12 h-12 shrink-0 bg-blue-100 rounded-full flex items-center justify-center overflow-hidden">
                     {review.user?.profileImage ? (
@@ -218,7 +216,7 @@ function TrainerReviews() {
                   </div>
                 </div>
 
-                {/* Rating */}
+                {/* RATING */}
                 <div className="flex gap-1 text-xl">
                   {[1, 2, 3, 4, 5].map((star) => (
                     <FaStar
@@ -232,12 +230,12 @@ function TrainerReviews() {
                   ))}
                 </div>
 
-                {/* Comment */}
-                <p className="text-gray-700 leading-relaxed">
+                {/* COMMENT */}
+                <p className="text-gray-700 leading-relaxed bg-gray-50 rounded-lg p-4">
                   {comment}
                 </p>
 
-                {/* Class Rating */}
+                {/* CLASS RATING */}
                 {review.classRating !== undefined &&
                   review.classRating !== null && (
                     <p className="text-sm text-gray-500">

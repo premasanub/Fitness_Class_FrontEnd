@@ -1,5 +1,3 @@
-
-
 import { useEffect, useState } from "react";
 
 import {
@@ -21,15 +19,11 @@ function TrainerHome() {
   const getTrainerId = () => {
     const trainerId = localStorage.getItem("trainerId");
 
-    if (trainerId) {
-      return trainerId;
-    }
+    if (trainerId) return trainerId;
 
     const userId = localStorage.getItem("userId");
 
-    if (userId) {
-      return userId;
-    }
+    if (userId) return userId;
 
     const user = localStorage.getItem("user");
 
@@ -51,7 +45,9 @@ function TrainerHome() {
         const trainerId = getTrainerId();
 
         if (!trainerId) {
-          toast.error("Trainer ID not found. Please login again.");
+          toast.error(
+            "Trainer ID not found. Please login again."
+          );
           setLoading(false);
           return;
         }
@@ -83,8 +79,8 @@ function TrainerHome() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="flex flex-col items-center gap-3">
+      <div className="min-h-screen p-8 flex items-center justify-center">
+        <div className="p-8 flex flex-col items-center gap-4">
           <div className="w-10 h-10 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin" />
 
           <p className="text-gray-600 font-medium">
@@ -97,8 +93,8 @@ function TrainerHome() {
 
   if (!dashboard) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="bg-white rounded-xl shadow-lg flex flex-col items-center text-center gap-3">
+      <div className="min-h-screen p-6 flex items-center justify-center">
+        <div className="bg-white rounded-xl shadow-lg p-8 flex flex-col items-center text-center gap-3">
           <h2 className="text-xl font-bold text-gray-800">
             Unable to load dashboard
           </h2>
@@ -152,10 +148,10 @@ function TrainerHome() {
   ];
 
   return (
-    <div className="w-full flex flex-col gap-10">
+    <div className="w-full p-4 sm:p-6 lg:p-8 flex flex-col gap-10">
       {/* WELCOME */}
-      <section className="flex flex-col gap-2">
-        <h1 className="text-4xl font-bold text-gray-800">
+      <section className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 md:p-8 flex flex-col gap-2">
+        <h1 className="text-3xl md:text-4xl font-bold text-gray-800">
           Welcome Back, {trainerName} 👋
         </h1>
 
@@ -169,7 +165,7 @@ function TrainerHome() {
         {dashboardCards.map((card) => (
           <div
             key={card.title}
-            className="bg-white rounded-xl shadow-lg border border-gray-100 flex flex-col gap-4 min-h-40"
+            className="bg-white rounded-xl shadow-lg border border-gray-100 p-6 flex flex-col gap-4 min-h-40"
           >
             <div className={`text-3xl ${card.iconClass}`}>
               {card.icon}
@@ -209,7 +205,7 @@ function TrainerHome() {
         </div>
 
         {todayClasses.length === 0 ? (
-          <div className="bg-white shadow rounded-xl min-h-40 flex flex-col items-center justify-center text-center gap-3">
+          <div className="bg-white shadow rounded-xl p-8 min-h-40 flex flex-col items-center justify-center text-center gap-3">
             <FaCalendarAlt className="text-4xl text-gray-300" />
 
             <p className="text-gray-500">
@@ -221,10 +217,12 @@ function TrainerHome() {
             {todayClasses.map((item) => (
               <article
                 key={item.id || item._id}
-                className="bg-white shadow rounded-xl border border-gray-100 hover:shadow-lg transition flex flex-col gap-5"
+                className="bg-white shadow rounded-xl border border-gray-100 p-6 hover:shadow-lg transition flex flex-col gap-5"
               >
                 <h3 className="text-xl font-bold text-gray-800">
-                  {item.className || item.title || "Fitness Class"}
+                  {item.className ||
+                    item.title ||
+                    "Fitness Class"}
                 </h3>
 
                 <div className="flex items-center gap-3 text-gray-600">
@@ -245,7 +243,7 @@ function TrainerHome() {
 
                 <div>
                   <span
-                    className={`inline-flex items-center rounded-full text-sm font-semibold ${
+                    className={`inline-flex items-center rounded-full text-sm font-semibold px-4 py-1.5 ${
                       item.status === "Completed"
                         ? "bg-gray-100 text-gray-600"
                         : item.status === "Confirmed"
@@ -276,7 +274,7 @@ function TrainerHome() {
 
         <div className="bg-white shadow rounded-xl overflow-hidden">
           {upcomingClasses.length === 0 ? (
-            <div className="min-h-40 flex flex-col items-center justify-center text-center gap-3">
+            <div className="p-8 min-h-40 flex flex-col items-center justify-center text-center gap-3">
               <FaCalendarAlt className="text-4xl text-gray-300" />
 
               <p className="text-gray-500">
@@ -288,13 +286,12 @@ function TrainerHome() {
               {upcomingClasses.map((item, index) => (
                 <div
                   key={item.id || item._id}
-                  className={`flex flex-col md:flex-row md:items-center md:justify-between gap-5 ${
+                  className={`p-5 md:p-6 flex flex-col md:flex-row md:items-center md:justify-between gap-5 ${
                     index !== upcomingClasses.length - 1
                       ? "border-b border-gray-100"
                       : ""
                   }`}
                 >
-                  {/* CLASS INFO */}
                   <div className="flex flex-col gap-1">
                     <h3 className="text-lg font-bold text-gray-800">
                       {item.className ||
@@ -307,7 +304,6 @@ function TrainerHome() {
                     </p>
                   </div>
 
-                  {/* TIME */}
                   <div className="flex items-center gap-3 text-gray-600">
                     <FaClock className="text-purple-600 shrink-0" />
 
@@ -316,7 +312,6 @@ function TrainerHome() {
                     </span>
                   </div>
 
-                  {/* STUDENTS */}
                   <div className="flex items-center gap-3 text-gray-600">
                     <FaUsers className="text-blue-600 shrink-0" />
 
@@ -325,8 +320,7 @@ function TrainerHome() {
                     </span>
                   </div>
 
-                  {/* STATUS */}
-                  <span className="bg-blue-100 text-blue-700 rounded-full text-sm font-semibold inline-flex items-center">
+                  <span className="bg-blue-100 text-blue-700 rounded-full text-sm font-semibold inline-flex items-center px-4 py-1.5 w-fit">
                     Upcoming
                   </span>
                 </div>

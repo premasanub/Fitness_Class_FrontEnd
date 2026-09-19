@@ -1,5 +1,3 @@
-
-
 import { useState } from "react";
 import api from "../../Service/api";
 import { toast } from "react-toastify";
@@ -86,10 +84,7 @@ const AddClass = () => {
         trainer: trainerId,
       };
 
-      const response = await api.post(
-        "/classes",
-        classData
-      );
+      const response = await api.post("/classes", classData);
 
       if (response.data?.success !== false) {
         toast.success("Class added successfully");
@@ -111,8 +106,11 @@ const AddClass = () => {
     }
   };
 
+  const inputClass =
+    "w-full min-h-11 px-4 py-2 border border-gray-300 rounded-lg outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-200 transition";
+
   return (
-    <main className="w-full max-w-5xl mx-auto flex flex-col gap-8">
+    <main className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-8 flex flex-col gap-8">
       {/* HEADER */}
       <section className="flex flex-col gap-2">
         <h1 className="text-3xl md:text-4xl font-bold text-gray-800">
@@ -127,7 +125,7 @@ const AddClass = () => {
       {/* FORM */}
       <form
         onSubmit={handleSubmit}
-        className="bg-white rounded-xl shadow-lg border border-gray-100 flex flex-col gap-6"
+        className="bg-white rounded-xl shadow-lg border border-gray-100 p-5 sm:p-6 lg:p-8 flex flex-col gap-8"
       >
         {/* BASIC INFORMATION */}
         <section className="flex flex-col gap-5">
@@ -142,7 +140,6 @@ const AddClass = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            {/* TITLE */}
             <div className="flex flex-col gap-2">
               <label
                 htmlFor="title"
@@ -158,12 +155,11 @@ const AddClass = () => {
                 placeholder="Example: Zumba Fitness"
                 value={formData.title}
                 onChange={handleChange}
-                className="w-full min-h-11 border border-gray-300 rounded-lg outline-none focus:border-blue-500"
+                className={inputClass}
                 required
               />
             </div>
 
-            {/* CATEGORY */}
             <div className="flex flex-col gap-2">
               <label
                 htmlFor="category"
@@ -177,7 +173,7 @@ const AddClass = () => {
                 name="category"
                 value={formData.category}
                 onChange={handleChange}
-                className="w-full min-h-11 border border-gray-300 rounded-lg outline-none focus:border-blue-500"
+                className={inputClass}
                 required
               >
                 <option value="">Select Category</option>
@@ -189,7 +185,6 @@ const AddClass = () => {
             </div>
           </div>
 
-          {/* DESCRIPTION */}
           <div className="flex flex-col gap-2">
             <label
               htmlFor="description"
@@ -205,60 +200,43 @@ const AddClass = () => {
               value={formData.description}
               onChange={handleChange}
               rows="4"
-              className="w-full border border-gray-300 rounded-lg outline-none focus:border-blue-500"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-200 transition resize-y"
               required
             />
           </div>
         </section>
 
         {/* DATE & TIME */}
-        <section className="flex flex-col gap-5">
+        <section className="border-t border-gray-100 pt-6 flex flex-col gap-5">
           <h2 className="text-xl font-bold text-gray-800">
             Class Schedule
           </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            {/* DATE */}
-            <div className="flex flex-col gap-2">
-              <label
-                htmlFor="date"
-                className="font-semibold text-gray-700"
-              >
-                Class Date
-              </label>
+            {[
+              ["date", "Class Date", "date"],
+              ["time", "Class Time", "time"],
+            ].map(([id, label, type]) => (
+              <div key={id} className="flex flex-col gap-2">
+                <label
+                  htmlFor={id}
+                  className="font-semibold text-gray-700"
+                >
+                  {label}
+                </label>
 
-              <input
-                id="date"
-                type="date"
-                name="date"
-                value={formData.date}
-                onChange={handleChange}
-                className="w-full min-h-11 border border-gray-300 rounded-lg outline-none focus:border-blue-500"
-                required
-              />
-            </div>
+                <input
+                  id={id}
+                  type={type}
+                  name={id}
+                  value={formData[id]}
+                  onChange={handleChange}
+                  className={inputClass}
+                  required
+                />
+              </div>
+            ))}
 
-            {/* TIME */}
-            <div className="flex flex-col gap-2">
-              <label
-                htmlFor="time"
-                className="font-semibold text-gray-700"
-              >
-                Class Time
-              </label>
-
-              <input
-                id="time"
-                type="time"
-                name="time"
-                value={formData.time}
-                onChange={handleChange}
-                className="w-full min-h-11 border border-gray-300 rounded-lg outline-none focus:border-blue-500"
-                required
-              />
-            </div>
-
-            {/* DURATION */}
             <div className="flex flex-col gap-2">
               <label
                 htmlFor="duration"
@@ -275,12 +253,11 @@ const AddClass = () => {
                 value={formData.duration}
                 onChange={handleChange}
                 min="1"
-                className="w-full min-h-11 border border-gray-300 rounded-lg outline-none focus:border-blue-500"
+                className={inputClass}
                 required
               />
             </div>
 
-            {/* SEATS */}
             <div className="flex flex-col gap-2">
               <label
                 htmlFor="seats"
@@ -297,7 +274,7 @@ const AddClass = () => {
                 value={formData.seats}
                 onChange={handleChange}
                 min="1"
-                className="w-full min-h-11 border border-gray-300 rounded-lg outline-none focus:border-blue-500"
+                className={inputClass}
                 required
               />
             </div>
@@ -305,7 +282,7 @@ const AddClass = () => {
         </section>
 
         {/* TIME SLOTS */}
-        <section className="bg-gray-50 border border-gray-200 rounded-xl flex flex-col gap-5">
+        <section className="bg-gray-50 border border-gray-200 rounded-xl p-5 sm:p-6 flex flex-col gap-5">
           <div className="flex flex-col gap-1">
             <h2 className="text-xl font-bold text-gray-800">
               Available Time Slots
@@ -321,13 +298,13 @@ const AddClass = () => {
               type="time"
               value={slot}
               onChange={(e) => setSlot(e.target.value)}
-              className="flex-1 min-h-11 border border-gray-300 rounded-lg bg-white outline-none focus:border-blue-500"
+              className={inputClass}
             />
 
             <button
               type="button"
               onClick={addSlot}
-              className="bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700 transition min-h-11"
+              className="px-5 min-h-11 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700 transition"
             >
               + Add Slot
             </button>
@@ -343,7 +320,7 @@ const AddClass = () => {
                 {formData.timeSlots.map((item) => (
                   <div
                     key={item}
-                    className="flex items-center gap-3 bg-blue-100 border border-blue-300 rounded-lg"
+                    className="flex items-center gap-3 bg-blue-100 border border-blue-300 rounded-lg px-4 py-2"
                   >
                     <span className="font-medium text-blue-800">
                       {item}
@@ -352,7 +329,7 @@ const AddClass = () => {
                     <button
                       type="button"
                       onClick={() => removeSlot(item)}
-                      className="text-red-600 font-bold text-xl hover:text-red-800"
+                      className="text-red-600 font-bold text-xl hover:text-red-800 transition"
                       aria-label={`Remove ${item}`}
                     >
                       ×
@@ -365,13 +342,12 @@ const AddClass = () => {
         </section>
 
         {/* PAYMENT & LINK */}
-        <section className="flex flex-col gap-5">
+        <section className="border-t border-gray-100 pt-6 flex flex-col gap-5">
           <h2 className="text-xl font-bold text-gray-800">
             Class Access
           </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            {/* PRICE */}
             <div className="flex flex-col gap-2">
               <label
                 htmlFor="price"
@@ -388,12 +364,11 @@ const AddClass = () => {
                 value={formData.price}
                 onChange={handleChange}
                 min="0"
-                className="w-full min-h-11 border border-gray-300 rounded-lg outline-none focus:border-blue-500"
+                className={inputClass}
                 required
               />
             </div>
 
-            {/* MEETING LINK */}
             <div className="flex flex-col gap-2">
               <label
                 htmlFor="meetingLink"
@@ -409,7 +384,7 @@ const AddClass = () => {
                 placeholder="https://meet.google.com/..."
                 value={formData.meetingLink}
                 onChange={handleChange}
-                className="w-full min-h-11 border border-gray-300 rounded-lg outline-none focus:border-blue-500"
+                className={inputClass}
                 required
               />
             </div>
@@ -420,7 +395,7 @@ const AddClass = () => {
         <button
           type="submit"
           disabled={saving}
-          className="w-full min-h-12 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 disabled:bg-gray-400 transition"
+          className="w-full min-h-12 px-6 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 disabled:bg-gray-400 transition"
         >
           {saving ? "Adding Class..." : "Add Class"}
         </button>

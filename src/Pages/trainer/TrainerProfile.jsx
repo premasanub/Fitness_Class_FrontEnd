@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import api from "../../Service/api";
 import { toast } from "react-toastify";
@@ -86,16 +85,13 @@ function TrainerProfile() {
         specialization: trainer.specialization || "",
         bio: trainer.bio || "",
         meetingLink: trainer.meetingLink || "",
-
         availableDays: Array.isArray(
           trainer.availableDays
         )
           ? trainer.availableDays.join(", ")
           : trainer.availableDays || "",
-
         availableTime:
           trainer.availableSlots?.[0]?.startTime || "",
-
         height: trainer.height || "",
         weight: trainer.weight || "",
         goal: trainer.goal || "",
@@ -147,7 +143,6 @@ function TrainerProfile() {
       }
 
       const formData = new FormData();
-
       formData.append("profileImage", file);
 
       const response = await api.post(
@@ -213,9 +208,7 @@ function TrainerProfile() {
         specialization: profile.specialization,
         bio: profile.bio,
         meetingLink: profile.meetingLink,
-
         availableDays: availableDaysArray,
-
         availableSlots: profile.availableTime
           ? [
               {
@@ -225,7 +218,6 @@ function TrainerProfile() {
               },
             ]
           : [],
-
         height: profile.height,
         weight: profile.weight,
         goal: profile.goal,
@@ -262,17 +254,14 @@ function TrainerProfile() {
           bio: updatedTrainer.bio || "",
           meetingLink:
             updatedTrainer.meetingLink || "",
-
           availableDays: Array.isArray(
             updatedTrainer.availableDays
           )
             ? updatedTrainer.availableDays.join(", ")
             : "",
-
           availableTime:
             updatedTrainer.availableSlots?.[0]
               ?.startTime || "",
-
           height: updatedTrainer.height || "",
           weight: updatedTrainer.weight || "",
           goal: updatedTrainer.goal || "",
@@ -292,8 +281,8 @@ function TrainerProfile() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="flex flex-col items-center gap-3">
+      <div className="min-h-screen p-8 flex items-center justify-center">
+        <div className="p-8 flex flex-col items-center gap-3">
           <div className="w-10 h-10 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin" />
 
           <p className="text-gray-600 font-medium">
@@ -305,10 +294,10 @@ function TrainerProfile() {
   }
 
   const inputClass =
-    "w-full min-h-11 border border-gray-300 rounded-lg outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-200";
+    "w-full min-h-11 px-4 py-2 border border-gray-300 rounded-lg outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-200 transition";
 
   return (
-    <main className="w-full max-w-5xl mx-auto flex flex-col gap-8">
+    <main className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-8 flex flex-col gap-8">
       {/* HEADER */}
       <section className="flex flex-col gap-2">
         <h1 className="text-3xl md:text-4xl font-bold text-gray-800">
@@ -322,7 +311,7 @@ function TrainerProfile() {
 
       <form
         onSubmit={handleSubmit}
-        className="bg-white rounded-xl shadow-lg border border-gray-100 flex flex-col gap-8"
+        className="bg-white rounded-xl shadow-lg border border-gray-100 p-5 sm:p-6 lg:p-8 flex flex-col gap-8"
       >
         {/* PROFILE PHOTO */}
         <section className="flex flex-col gap-4">
@@ -330,7 +319,7 @@ function TrainerProfile() {
             Profile Photo
           </h2>
 
-          <div className="flex flex-col sm:flex-row items-center gap-6">
+          <div className="flex flex-col sm:flex-row items-center gap-6 p-4 bg-gray-50 rounded-xl">
             {profile.profileImage ? (
               <img
                 src={profile.profileImage}
@@ -357,7 +346,7 @@ function TrainerProfile() {
                 accept="image/*"
                 onChange={handleImageChange}
                 disabled={uploading}
-                className="w-full border border-gray-300 rounded-lg min-h-11"
+                className="w-full border border-gray-300 rounded-lg min-h-11 px-3 py-2 bg-white"
               />
 
               {uploading && (
@@ -370,7 +359,7 @@ function TrainerProfile() {
         </section>
 
         {/* PERSONAL INFORMATION */}
-        <section className="flex flex-col gap-5">
+        <section className="border-t border-gray-100 pt-6 flex flex-col gap-5">
           <h2 className="text-xl font-bold text-gray-800">
             Personal Information
           </h2>
@@ -445,7 +434,7 @@ function TrainerProfile() {
         </section>
 
         {/* PROFESSIONAL INFORMATION */}
-        <section className="flex flex-col gap-5">
+        <section className="border-t border-gray-100 pt-6 flex flex-col gap-5">
           <h2 className="text-xl font-bold text-gray-800">
             Professional Information
           </h2>
@@ -501,14 +490,14 @@ function TrainerProfile() {
               rows="5"
               value={profile.bio}
               onChange={handleChange}
-              className="w-full border border-gray-300 rounded-lg outline-none focus:border-blue-500"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-200 resize-y"
               placeholder="Tell students about your experience and training style"
             />
           </div>
         </section>
 
         {/* AVAILABILITY */}
-        <section className="flex flex-col gap-5">
+        <section className="border-t border-gray-100 pt-6 flex flex-col gap-5">
           <h2 className="text-xl font-bold text-gray-800">
             Availability
           </h2>
@@ -536,7 +525,7 @@ function TrainerProfile() {
         </section>
 
         {/* FITNESS INFORMATION */}
-        <section className="flex flex-col gap-5">
+        <section className="border-t border-gray-100 pt-6 flex flex-col gap-5">
           <h2 className="text-xl font-bold text-gray-800">
             Fitness Information
           </h2>
@@ -575,7 +564,7 @@ function TrainerProfile() {
         <button
           type="submit"
           disabled={saving}
-          className="w-full min-h-12 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 disabled:bg-gray-400 transition"
+          className="w-full min-h-12 px-6 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 disabled:bg-gray-400 transition"
         >
           {saving ? "Saving Profile..." : "Save Profile"}
         </button>

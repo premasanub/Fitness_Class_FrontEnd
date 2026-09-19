@@ -1,6 +1,3 @@
-
-
-
 import { useEffect, useState } from "react";
 import api from "../../Service/api";
 
@@ -35,7 +32,9 @@ function TrainerSchedule() {
       setError("");
 
       if (!trainerId) {
-        setError("Trainer information not found. Please login again.");
+        setError(
+          "Trainer information not found. Please login again."
+        );
         return;
       }
 
@@ -47,7 +46,8 @@ function TrainerSchedule() {
         setSchedules(response.data.schedules || []);
       } else {
         setError(
-          response.data?.message || "Failed to load schedules"
+          response.data?.message ||
+            "Failed to load schedules"
         );
       }
     } catch (err) {
@@ -77,7 +77,9 @@ function TrainerSchedule() {
     e.preventDefault();
 
     if (!trainerId) {
-      setError("Trainer information not found. Please login again.");
+      setError(
+        "Trainer information not found. Please login again."
+      );
       return;
     }
 
@@ -107,7 +109,8 @@ function TrainerSchedule() {
         setShowForm(false);
       } else {
         setError(
-          response.data?.message || "Failed to add schedule"
+          response.data?.message ||
+            "Failed to add schedule"
         );
       }
     } catch (err) {
@@ -147,9 +150,10 @@ function TrainerSchedule() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="flex flex-col items-center gap-3">
+      <div className="min-h-screen p-8 flex items-center justify-center">
+        <div className="p-8 flex flex-col items-center gap-3">
           <div className="w-10 h-10 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin" />
+
           <p className="text-gray-600 font-medium">
             Loading schedule...
           </p>
@@ -158,8 +162,11 @@ function TrainerSchedule() {
     );
   }
 
+  const inputClass =
+    "w-full border border-gray-300 rounded-lg min-h-11 px-4 py-2 outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-200 transition";
+
   return (
-    <div className="w-full max-w-6xl mx-auto flex flex-col gap-8">
+    <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-8 flex flex-col gap-8">
       {/* HEADER */}
       <section className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div className="flex flex-col gap-2">
@@ -178,7 +185,7 @@ function TrainerSchedule() {
             setShowForm((prev) => !prev);
             setError("");
           }}
-          className="bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition min-h-11"
+          className="px-5 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition"
         >
           {showForm ? "Close Form" : "+ Add New Schedule"}
         </button>
@@ -186,8 +193,8 @@ function TrainerSchedule() {
 
       {/* ERROR */}
       {error && (
-        <div className="w-full bg-red-50 border border-red-200 text-red-600 rounded-xl min-h-12 flex items-center">
-          <span>{error}</span>
+        <div className="w-full p-4 bg-red-50 border border-red-200 text-red-600 rounded-xl">
+          {error}
         </div>
       )}
 
@@ -195,7 +202,7 @@ function TrainerSchedule() {
       {showForm && (
         <form
           onSubmit={addSchedule}
-          className="bg-white shadow-lg rounded-xl flex flex-col gap-5"
+          className="bg-white shadow-lg rounded-xl border border-gray-100 p-5 sm:p-6 lg:p-8 flex flex-col gap-6"
         >
           <div className="flex flex-col gap-1">
             <h2 className="text-xl font-bold text-gray-800">
@@ -208,7 +215,6 @@ function TrainerSchedule() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            {/* CLASS */}
             <div className="flex flex-col gap-2">
               <label
                 htmlFor="className"
@@ -224,12 +230,11 @@ function TrainerSchedule() {
                 placeholder="Enter class name"
                 value={newSchedule.className}
                 onChange={handleChange}
-                className="w-full border border-gray-300 rounded-lg min-h-11 outline-none focus:border-blue-500"
+                className={inputClass}
                 required
               />
             </div>
 
-            {/* DAY */}
             <div className="flex flex-col gap-2">
               <label
                 htmlFor="day"
@@ -243,7 +248,7 @@ function TrainerSchedule() {
                 name="day"
                 value={newSchedule.day}
                 onChange={handleChange}
-                className="w-full border border-gray-300 rounded-lg min-h-11 outline-none focus:border-blue-500"
+                className={inputClass}
                 required
               >
                 <option value="">Select Day</option>
@@ -257,7 +262,6 @@ function TrainerSchedule() {
               </select>
             </div>
 
-            {/* TIME */}
             <div className="flex flex-col gap-2">
               <label
                 htmlFor="time"
@@ -273,12 +277,11 @@ function TrainerSchedule() {
                 placeholder="Example: 7:00 AM - 8:00 AM"
                 value={newSchedule.time}
                 onChange={handleChange}
-                className="w-full border border-gray-300 rounded-lg min-h-11 outline-none focus:border-blue-500"
+                className={inputClass}
                 required
               />
             </div>
 
-            {/* DURATION */}
             <div className="flex flex-col gap-2">
               <label
                 htmlFor="duration"
@@ -294,12 +297,11 @@ function TrainerSchedule() {
                 placeholder="Example: 60 mins"
                 value={newSchedule.duration}
                 onChange={handleChange}
-                className="w-full border border-gray-300 rounded-lg min-h-11 outline-none focus:border-blue-500"
+                className={inputClass}
                 required
               />
             </div>
 
-            {/* SEATS */}
             <div className="flex flex-col gap-2">
               <label
                 htmlFor="seats"
@@ -315,18 +317,17 @@ function TrainerSchedule() {
                 placeholder="Enter maximum seats"
                 value={newSchedule.seats}
                 onChange={handleChange}
-                className="w-full border border-gray-300 rounded-lg min-h-11 outline-none focus:border-blue-500"
+                className={inputClass}
                 min="1"
                 required
               />
             </div>
           </div>
 
-          {/* SAVE */}
           <button
             type="submit"
             disabled={saving}
-            className="bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700 disabled:bg-gray-400 transition min-h-11"
+            className="w-full px-6 py-3 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700 disabled:bg-gray-400 transition"
           >
             {saving ? "Saving..." : "Save Schedule"}
           </button>
@@ -335,7 +336,7 @@ function TrainerSchedule() {
 
       {/* NO SCHEDULE */}
       {schedules.length === 0 ? (
-        <div className="bg-white shadow rounded-xl min-h-48 flex flex-col items-center justify-center text-center gap-2">
+        <div className="bg-white shadow rounded-xl p-8 min-h-48 flex flex-col items-center justify-center text-center gap-2">
           <h2 className="text-xl font-semibold text-gray-700">
             No Schedules Found
           </h2>
@@ -345,18 +346,19 @@ function TrainerSchedule() {
           </p>
         </div>
       ) : (
-        /* SCHEDULE LIST */
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {schedules.map((item) => (
             <article
               key={item._id}
-              className="bg-white shadow-lg rounded-xl flex flex-col gap-5 border border-gray-100"
+              className="bg-white shadow-lg rounded-xl p-6 border border-gray-100 flex flex-col gap-5"
             >
               <div className="flex flex-col gap-4">
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex flex-col gap-2">
                     <h2 className="text-2xl font-bold text-gray-800">
-                      {item.title || item.className || "Fitness Class"}
+                      {item.title ||
+                        item.className ||
+                        "Fitness Class"}
                     </h2>
 
                     <span className="text-sm font-semibold text-blue-600">
@@ -364,18 +366,20 @@ function TrainerSchedule() {
                     </span>
                   </div>
 
-                  <span className="bg-green-100 text-green-700 rounded-full text-sm font-semibold">
+                  <span className="bg-green-100 text-green-700 rounded-full text-sm font-semibold px-4 py-1.5">
                     Active
                   </span>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-gray-600">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 text-gray-600">
                   <div className="flex flex-col gap-1">
                     <span className="text-sm font-semibold text-gray-400">
                       Day
                     </span>
                     <span className="font-medium">
-                      {item.day || item.date || "Not Available"}
+                      {item.day ||
+                        item.date ||
+                        "Not Available"}
                     </span>
                   </div>
 
@@ -408,21 +412,23 @@ function TrainerSchedule() {
                 </div>
               </div>
 
-              <div className="border-t border-gray-100 flex items-center justify-between gap-4">
+              <div className="border-t border-gray-100 pt-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div className="flex flex-col gap-1">
                   <span className="text-sm text-gray-400">
                     Students Booked
                   </span>
 
                   <span className="font-bold text-gray-800">
-                    {item.studentsBooked ?? item.bookedSeats ?? 0}
+                    {item.studentsBooked ??
+                      item.bookedSeats ??
+                      0}
                   </span>
                 </div>
 
                 <button
                   type="button"
                   onClick={() => deleteSchedule(item._id)}
-                  className="bg-red-600 text-white rounded-lg font-semibold hover:bg-red-700 transition min-h-10"
+                  className="px-5 py-2.5 bg-red-600 text-white rounded-lg font-semibold hover:bg-red-700 transition"
                 >
                   Delete
                 </button>

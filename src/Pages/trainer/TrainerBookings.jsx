@@ -1,5 +1,3 @@
-
-
 import { useEffect, useState } from "react";
 import api from "../../Service/api";
 
@@ -77,7 +75,7 @@ function TrainerBookings() {
 
   if (loading) {
     return (
-      <div className="min-h-40 flex items-center justify-center">
+      <div className="min-h-40 p-8 flex items-center justify-center">
         <p className="text-lg text-gray-600">
           Loading bookings...
         </p>
@@ -87,7 +85,7 @@ function TrainerBookings() {
 
   if (error) {
     return (
-      <div className="min-h-32 bg-red-50 border border-red-200 text-red-600 rounded-xl flex flex-col justify-center gap-2">
+      <div className="m-4 sm:m-6 lg:m-8 p-6 bg-red-50 border border-red-200 text-red-600 rounded-xl flex flex-col gap-2">
         <h2 className="font-bold text-lg">
           Unable to load bookings
         </h2>
@@ -98,8 +96,8 @@ function TrainerBookings() {
   }
 
   return (
-    <div className="w-full flex flex-col gap-8">
-      {/* Header */}
+    <div className="w-full p-4 sm:p-6 lg:p-8 flex flex-col gap-8">
+      {/* HEADER */}
       <div className="flex flex-col gap-2">
         <h1 className="text-3xl font-bold text-gray-800">
           My Bookings
@@ -110,9 +108,9 @@ function TrainerBookings() {
         </p>
       </div>
 
-      {/* Empty State */}
+      {/* EMPTY STATE */}
       {bookings.length === 0 ? (
-        <div className="bg-white rounded-xl shadow min-h-64 flex flex-col items-center justify-center gap-3 text-center border border-gray-100">
+        <div className="bg-white rounded-xl shadow p-8 min-h-64 flex flex-col items-center justify-center gap-3 text-center border border-gray-100">
           <h2 className="text-xl font-semibold text-gray-700">
             No Bookings Found
           </h2>
@@ -122,29 +120,24 @@ function TrainerBookings() {
           </p>
         </div>
       ) : (
-        /* Bookings */
         <div className="bg-white rounded-xl shadow overflow-hidden border border-gray-100">
           <div className="overflow-x-auto">
-            <table className="w-full min-w-[700px]">
+            <table className="w-full min-w-[750px]">
               <thead className="bg-blue-600 text-white">
                 <tr>
-                  <th className="h-12 text-center font-semibold">
+                  <th className="px-5 py-4 text-center font-semibold">
                     Student
                   </th>
-
-                  <th className="h-12 text-center font-semibold">
+                  <th className="px-5 py-4 text-center font-semibold">
                     Class
                   </th>
-
-                  <th className="h-12 text-center font-semibold">
+                  <th className="px-5 py-4 text-center font-semibold">
                     Date
                   </th>
-
-                  <th className="h-12 text-center font-semibold">
+                  <th className="px-5 py-4 text-center font-semibold">
                     Time
                   </th>
-
-                  <th className="h-12 text-center font-semibold">
+                  <th className="px-5 py-4 text-center font-semibold">
                     Status
                   </th>
                 </tr>
@@ -189,7 +182,7 @@ function TrainerBookings() {
                       key={item._id || item.id}
                       className="border-b border-gray-100 hover:bg-gray-50 transition"
                     >
-                      <td className="h-20 text-center">
+                      <td className="px-5 py-5 text-center">
                         <div className="flex flex-col gap-1 items-center">
                           <span className="font-semibold text-gray-800">
                             {student}
@@ -203,21 +196,21 @@ function TrainerBookings() {
                         </div>
                       </td>
 
-                      <td className="h-20 text-center text-gray-700">
+                      <td className="px-5 py-5 text-center text-gray-700">
                         {className}
                       </td>
 
-                      <td className="h-20 text-center text-gray-700">
+                      <td className="px-5 py-5 text-center text-gray-700">
                         {date}
                       </td>
 
-                      <td className="h-20 text-center text-gray-700">
+                      <td className="px-5 py-5 text-center text-gray-700">
                         {time}
                       </td>
 
-                      <td className="h-20 text-center">
+                      <td className="px-5 py-5 text-center">
                         <span
-                          className={`inline-flex min-h-8 items-center justify-center rounded-full text-sm font-semibold indent-3 pr-3 ${
+                          className={`inline-flex items-center justify-center rounded-full text-sm font-semibold px-4 py-1.5 ${
                             normalizedStatus === "confirmed"
                               ? "bg-green-100 text-green-700"
                               : normalizedStatus === "pending"
