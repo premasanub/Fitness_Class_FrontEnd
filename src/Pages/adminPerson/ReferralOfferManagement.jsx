@@ -98,11 +98,10 @@ const ReferralOfferManagement = () => {
   };
 
   return (
-    <div className="w-full min-h-screen bg-gray-50 flex flex-col gap-8">
-
+    <div className="w-full min-h-screen bg-gray-50 flex flex-col gap-8 p-1">
       {/* Header */}
-      <div className="w-full flex flex-col gap-2">
-        <h1 className="text-3xl font-bold text-gray-800">
+      <div className="flex flex-col gap-2">
+        <h1 className="text-3xl md:text-4xl font-bold text-gray-800">
           Referral Offer Management
         </h1>
 
@@ -112,18 +111,16 @@ const ReferralOfferManagement = () => {
       </div>
 
       {/* Form Card */}
-      <div className="w-full bg-white rounded-2xl shadow-sm border border-gray-200">
-
+      <div className="w-full bg-white rounded-2xl shadow-sm border border-gray-200 p-6 md:p-8">
         <form
           onSubmit={handleSubmit}
-          className="w-[92%] self-center flex flex-col gap-6"
+          className="w-full max-w-4xl mx-auto flex flex-col gap-7"
         >
-
           {/* Title */}
           <div className="flex flex-col gap-2">
             <label
               htmlFor="title"
-              className="font-medium text-gray-700"
+              className="font-semibold text-gray-700"
             >
               Offer Title
             </label>
@@ -135,7 +132,7 @@ const ReferralOfferManagement = () => {
               value={formData.title}
               onChange={handleChange}
               placeholder="Refer a Friend & Get 20% Off"
-              className="w-full h-12 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 indent-3"
+              className="w-full h-12 px-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
             />
           </div>
@@ -144,7 +141,7 @@ const ReferralOfferManagement = () => {
           <div className="flex flex-col gap-2">
             <label
               htmlFor="description"
-              className="font-medium text-gray-700"
+              className="font-semibold text-gray-700"
             >
               Description
             </label>
@@ -156,7 +153,7 @@ const ReferralOfferManagement = () => {
               onChange={handleChange}
               rows="4"
               placeholder="Invite your friends and earn rewards..."
-              className="w-full border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 indent-3"
+              className="w-full p-4 border border-gray-300 rounded-lg resize-y focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
             />
           </div>
@@ -165,7 +162,7 @@ const ReferralOfferManagement = () => {
           <div className="flex flex-col gap-2">
             <label
               htmlFor="discount"
-              className="font-medium text-gray-700"
+              className="font-semibold text-gray-700"
             >
               Discount
             </label>
@@ -177,7 +174,7 @@ const ReferralOfferManagement = () => {
               value={formData.discount}
               onChange={handleChange}
               placeholder="20%"
-              className="w-full h-12 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 indent-3"
+              className="w-full h-12 px-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
             />
           </div>
@@ -186,7 +183,7 @@ const ReferralOfferManagement = () => {
           <div className="flex flex-col gap-2">
             <label
               htmlFor="emailSubject"
-              className="font-medium text-gray-700"
+              className="font-semibold text-gray-700"
             >
               Email Subject
             </label>
@@ -198,7 +195,7 @@ const ReferralOfferManagement = () => {
               value={formData.emailSubject}
               onChange={handleChange}
               placeholder="Refer your friends and earn rewards!"
-              className="w-full h-12 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 indent-3"
+              className="w-full h-12 px-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
 
@@ -206,7 +203,7 @@ const ReferralOfferManagement = () => {
           <div className="flex flex-col gap-2">
             <label
               htmlFor="emailMessage"
-              className="font-medium text-gray-700"
+              className="font-semibold text-gray-700"
             >
               Email Message
             </label>
@@ -218,7 +215,7 @@ const ReferralOfferManagement = () => {
               onChange={handleChange}
               rows="6"
               placeholder="Share your referral link with your friends..."
-              className="w-full border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 indent-3"
+              className="w-full p-4 border border-gray-300 rounded-lg resize-y focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
 
@@ -226,7 +223,7 @@ const ReferralOfferManagement = () => {
           <div className="flex flex-col gap-2">
             <label
               htmlFor="expiryDate"
-              className="font-medium text-gray-700"
+              className="font-semibold text-gray-700"
             >
               Expiry Date
             </label>
@@ -237,17 +234,16 @@ const ReferralOfferManagement = () => {
               name="expiryDate"
               value={formData.expiryDate}
               onChange={handleChange}
-              className="w-full sm:w-72 h-12 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 indent-3"
+              className="w-full sm:w-72 h-12 px-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
 
           {/* Settings */}
-          <div className="border-t border-gray-200 flex flex-col gap-5">
-
+          <div className="border-t border-gray-200 pt-6 flex flex-col gap-2">
             {/* Active */}
-            <label className="min-h-16 flex items-center justify-between gap-6 cursor-pointer">
+            <label className="p-4 rounded-lg bg-gray-50 flex items-center justify-between gap-6 cursor-pointer hover:bg-gray-100 transition">
               <div className="flex flex-col gap-1">
-                <p className="font-medium text-gray-800">
+                <p className="font-semibold text-gray-800">
                   Referral Offer Active
                 </p>
 
@@ -261,14 +257,14 @@ const ReferralOfferManagement = () => {
                 name="isActive"
                 checked={formData.isActive}
                 onChange={handleChange}
-                className="w-5 h-5 shrink-0"
+                className="w-5 h-5 shrink-0 accent-blue-600"
               />
             </label>
 
             {/* Weekly Email */}
-            <label className="min-h-16 flex items-center justify-between gap-6 cursor-pointer">
+            <label className="p-4 rounded-lg bg-gray-50 flex items-center justify-between gap-6 cursor-pointer hover:bg-gray-100 transition">
               <div className="flex flex-col gap-1">
-                <p className="font-medium text-gray-800">
+                <p className="font-semibold text-gray-800">
                   Weekly Email Enabled
                 </p>
 
@@ -282,40 +278,36 @@ const ReferralOfferManagement = () => {
                 name="weeklyEmailEnabled"
                 checked={formData.weeklyEmailEnabled}
                 onChange={handleChange}
-                className="w-5 h-5 shrink-0"
+                className="w-5 h-5 shrink-0 accent-blue-600"
               />
             </label>
-
           </div>
 
           {/* Message */}
           {message && (
             <div
-              className={`min-h-12 rounded-lg flex items-center ${
+              className={`p-4 rounded-lg ${
                 message.includes("successfully")
                   ? "bg-green-100 text-green-700"
                   : "bg-red-100 text-red-700"
               }`}
             >
-              <span className="indent-3">
-                {message}
-              </span>
+              {message}
             </div>
           )}
 
           {/* Save Button */}
-          <div className="flex justify-end">
+          <div className="pt-2 flex justify-end">
             <button
               type="submit"
               disabled={loading}
-              className="w-full sm:w-56 min-h-12 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold disabled:opacity-50 transition flex items-center justify-center"
+              className="w-full sm:w-56 min-h-12 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold disabled:opacity-50 transition flex items-center justify-center"
             >
               {loading
                 ? "Saving..."
                 : "Save Referral Offer"}
             </button>
           </div>
-
         </form>
       </div>
     </div>

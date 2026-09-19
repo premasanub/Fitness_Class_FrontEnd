@@ -36,16 +36,15 @@ function AdminUsers() {
   }, []);
 
   return (
-    <div className="w-full flex flex-col gap-8">
-
+    <div className="w-full flex flex-col gap-8 p-1">
       {/* Header */}
-      <div className="flex items-center gap-3">
-        <div className="w-12 h-12 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center">
+      <div className="flex items-center gap-4">
+        <div className="w-14 h-14 shrink-0 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center">
           <FaUsers className="text-2xl" />
         </div>
 
         <div className="flex flex-col gap-1">
-          <h1 className="text-3xl font-bold text-gray-800">
+          <h1 className="text-3xl md:text-4xl font-bold text-gray-800">
             Users
           </h1>
 
@@ -56,8 +55,8 @@ function AdminUsers() {
       </div>
 
       {/* User Count */}
-      <div className="bg-white rounded-xl shadow border border-gray-100 min-h-28 flex items-center">
-        <div className="w-[90%] self-center flex flex-col gap-2">
+      <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+        <div className="flex flex-col gap-2">
           <p className="text-gray-500 text-sm font-semibold">
             Total Users
           </p>
@@ -70,7 +69,7 @@ function AdminUsers() {
 
       {/* Loading */}
       {loading && (
-        <div className="bg-white rounded-xl shadow border border-gray-100 min-h-48 flex items-center justify-center">
+        <div className="bg-white rounded-xl shadow-sm border border-gray-100 min-h-48 p-6 flex items-center justify-center">
           <p className="text-gray-500 font-medium">
             Loading users...
           </p>
@@ -79,7 +78,7 @@ function AdminUsers() {
 
       {/* Empty */}
       {!loading && users.length === 0 && (
-        <div className="bg-white rounded-xl shadow border border-gray-100 min-h-72 flex flex-col items-center justify-center gap-4 text-center">
+        <div className="bg-white rounded-xl shadow-sm border border-gray-100 min-h-72 p-8 flex flex-col items-center justify-center gap-4 text-center">
           <div className="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center">
             <FaUsers className="text-4xl text-gray-300" />
           </div>
@@ -98,34 +97,25 @@ function AdminUsers() {
 
       {/* Users Table */}
       {!loading && users.length > 0 && (
-        <div className="bg-white rounded-xl shadow border border-gray-100 overflow-hidden">
+        <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
           <div className="overflow-x-auto">
-            <table className="w-full min-w-[760px]">
-
-              <thead className="bg-gray-50 border-b">
+            <table className="w-full min-w-[800px]">
+              <thead className="bg-gray-50 border-b border-gray-200">
                 <tr>
-                  <th className="text-left text-sm font-semibold text-gray-600 h-14">
-                    <div className="w-[90%] self-center">
-                      User
-                    </div>
+                  <th className="text-left px-5 py-4 text-sm font-semibold text-gray-600">
+                    User
                   </th>
 
-                  <th className="text-left text-sm font-semibold text-gray-600 h-14">
-                    <div className="w-[90%] self-center">
-                      Email
-                    </div>
+                  <th className="text-left px-5 py-4 text-sm font-semibold text-gray-600">
+                    Email
                   </th>
 
-                  <th className="text-left text-sm font-semibold text-gray-600 h-14">
-                    <div className="w-[90%] self-center">
-                      Phone
-                    </div>
+                  <th className="text-left px-5 py-4 text-sm font-semibold text-gray-600">
+                    Phone
                   </th>
 
-                  <th className="text-left text-sm font-semibold text-gray-600 h-14">
-                    <div className="w-[90%] self-center">
-                      Role
-                    </div>
+                  <th className="text-left px-5 py-4 text-sm font-semibold text-gray-600">
+                    Role
                   </th>
                 </tr>
               </thead>
@@ -134,11 +124,11 @@ function AdminUsers() {
                 {users.map((user) => (
                   <tr
                     key={user._id}
-                    className="border-b last:border-b-0 hover:bg-gray-50 transition"
+                    className="border-b border-gray-100 last:border-b-0 hover:bg-gray-50 transition"
                   >
                     {/* User */}
-                    <td className="h-20">
-                      <div className="w-[90%] self-center flex items-center gap-3">
+                    <td className="px-5 py-5">
+                      <div className="flex items-center gap-3">
                         {user.profileImage ? (
                           <img
                             src={user.profileImage}
@@ -164,9 +154,9 @@ function AdminUsers() {
                     </td>
 
                     {/* Email */}
-                    <td className="h-20">
-                      <div className="w-[90%] self-center flex items-center gap-2 text-gray-600">
-                        <FaEnvelope className="text-blue-500 shrink-0" />
+                    <td className="px-5 py-5">
+                      <div className="flex items-start gap-2 text-gray-600">
+                        <FaEnvelope className="text-blue-500 shrink-0 mt-1" />
 
                         <span className="break-all">
                           {user.email}
@@ -175,8 +165,8 @@ function AdminUsers() {
                     </td>
 
                     {/* Phone */}
-                    <td className="h-20">
-                      <div className="w-[90%] self-center flex items-center gap-2 text-gray-600">
+                    <td className="px-5 py-5">
+                      <div className="flex items-center gap-2 text-gray-600">
                         <FaPhone className="text-green-500 shrink-0" />
 
                         <span>
@@ -186,17 +176,14 @@ function AdminUsers() {
                     </td>
 
                     {/* Role */}
-                    <td className="h-20">
-                      <div className="w-[90%] self-center flex items-center">
-                        <span className="w-20 min-h-9 bg-blue-100 text-blue-700 rounded-full text-sm font-semibold flex items-center justify-center">
-                          User
-                        </span>
-                      </div>
+                    <td className="px-5 py-5">
+                      <span className="inline-flex px-4 py-2 bg-blue-100 text-blue-700 rounded-full text-sm font-semibold">
+                        User
+                      </span>
                     </td>
                   </tr>
                 ))}
               </tbody>
-
             </table>
           </div>
         </div>

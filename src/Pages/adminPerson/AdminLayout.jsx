@@ -1,4 +1,3 @@
-
 import { Outlet, NavLink } from "react-router-dom";
 import {
   FaTachometerAlt,
@@ -69,7 +68,7 @@ function AdminLayout() {
         {sidebarOpen ? <FaTimes /> : <FaBars />}
       </button>
 
-      {/* Mobile Overlay */}
+      {/* Overlay */}
       {sidebarOpen && (
         <button
           type="button"
@@ -90,6 +89,7 @@ function AdminLayout() {
           bg-gray-900
           text-white
           flex flex-col
+          shadow-xl
           transition-transform duration-300
           ${
             sidebarOpen
@@ -99,23 +99,21 @@ function AdminLayout() {
         `}
       >
         {/* Logo */}
-        <div className="h-20 flex items-center justify-center border-b border-gray-700">
+        <div className="h-20 px-6 flex items-center justify-center border-b border-gray-700">
           <h1 className="text-2xl font-bold">
             Fit<span className="text-blue-400">Admin</span>
           </h1>
         </div>
 
         {/* Admin Info */}
-        <div className="h-24 flex items-center border-b border-gray-700">
-          <div className="w-[84%] self-center flex items-center gap-3">
-            <div className="w-11 h-11 rounded-full bg-blue-600 flex items-center justify-center">
+        <div className="px-5 py-6 border-b border-gray-700">
+          <div className="flex items-center gap-3">
+            <div className="w-11 h-11 rounded-full bg-blue-600 flex items-center justify-center shrink-0">
               <FaUserTie className="text-xl" />
             </div>
 
             <div className="flex flex-col gap-1">
-              <p className="font-semibold">
-                Admin
-              </p>
+              <p className="font-semibold">Admin</p>
 
               <p className="text-sm text-gray-400">
                 Administrator
@@ -125,7 +123,7 @@ function AdminLayout() {
         </div>
 
         {/* Navigation */}
-        <nav className="flex-1 w-[88%] self-center flex flex-col gap-2 py-6">
+        <nav className="flex-1 flex flex-col gap-2 px-4 py-6 overflow-y-auto">
           {menuItems.map((item) => (
             <NavLink
               key={item.path}
@@ -134,15 +132,17 @@ function AdminLayout() {
               onClick={() => setSidebarOpen(false)}
               className={({ isActive }) =>
                 `
-                min-h-12
                 w-full
+                min-h-12
+                px-4
+                py-3
                 flex items-center gap-4
                 rounded-lg
                 font-medium
                 transition
                 ${
                   isActive
-                    ? "bg-blue-600 text-white"
+                    ? "bg-blue-600 text-white shadow-sm"
                     : "text-gray-300 hover:bg-gray-800 hover:text-white"
                 }
                 `
@@ -152,37 +152,31 @@ function AdminLayout() {
                 {item.icon}
               </span>
 
-              <span>
-                {item.name}
-              </span>
+              <span>{item.name}</span>
             </NavLink>
           ))}
         </nav>
 
         {/* Logout */}
-        <div className="h-20 border-t border-gray-700 flex items-center">
-          <div className="w-[88%] self-center">
-            <button
-              type="button"
-              onClick={handleLogout}
-              className="w-full min-h-11 flex items-center gap-4 rounded-lg text-red-400 hover:bg-red-500 hover:text-white transition"
-            >
-              <FaSignOutAlt />
+        <div className="px-4 py-5 border-t border-gray-700">
+          <button
+            type="button"
+            onClick={handleLogout}
+            className="w-full min-h-11 px-4 py-3 flex items-center gap-4 rounded-lg text-red-400 hover:bg-red-500 hover:text-white transition"
+          >
+            <FaSignOutAlt />
 
-              <span>
-                Logout
-              </span>
-            </button>
-          </div>
+            <span>Logout</span>
+          </button>
         </div>
       </aside>
 
       {/* Main */}
       <main className="flex-1 min-w-0">
         {/* Header */}
-        <header className="h-20 bg-white shadow-sm flex items-center justify-between">
-          <div className="w-[92%] self-center flex items-center justify-between">
-            <div className="flex flex-col gap-1">
+        <header className="min-h-20 bg-white shadow-sm px-6 md:px-8 py-4">
+          <div className="flex items-center justify-between gap-6">
+            <div className="flex flex-col gap-1 ml-12 md:ml-0">
               <h2 className="text-xl font-bold text-gray-800">
                 Admin Panel
               </h2>
@@ -211,7 +205,7 @@ function AdminLayout() {
         </header>
 
         {/* Content */}
-        <section className="w-[92%] max-w-[1600px] self-center py-8">
+        <section className="w-full max-w-[1600px] mx-auto px-5 md:px-8 py-8 md:py-10">
           <Outlet />
         </section>
       </main>

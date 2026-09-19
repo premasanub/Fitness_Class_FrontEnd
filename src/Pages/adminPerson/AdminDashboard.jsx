@@ -1,6 +1,4 @@
-
 import { useEffect, useState } from "react";
-
 import {
   FaUsers,
   FaUserTie,
@@ -47,8 +45,8 @@ function AdminDashboard() {
 
   if (loading) {
     return (
-      <div className="min-h-60 flex items-center justify-center">
-        <div className="flex flex-col items-center gap-3">
+      <div className="min-h-60 p-8 flex items-center justify-center">
+        <div className="flex flex-col items-center gap-4">
           <div className="w-10 h-10 border-4 border-gray-200 border-t-blue-600 rounded-full animate-spin" />
 
           <p className="text-lg font-semibold text-gray-600">
@@ -61,8 +59,8 @@ function AdminDashboard() {
 
   if (!dashboard) {
     return (
-      <div className="min-h-60 flex items-center justify-center">
-        <div className="flex flex-col items-center gap-3 text-center">
+      <div className="min-h-60 p-8 flex items-center justify-center">
+        <div className="flex flex-col items-center gap-4 text-center">
           <FaClipboardList className="text-5xl text-gray-300" />
 
           <h2 className="text-xl font-semibold text-gray-700">
@@ -80,11 +78,65 @@ function AdminDashboard() {
   const stats = dashboard.stats || {};
   const recentBookings = dashboard.recentBookings || [];
 
+  const mainStats = [
+    {
+      title: "Total Users",
+      value: stats.totalUsers ?? 0,
+      icon: <FaUsers />,
+      color: "bg-blue-600",
+    },
+    {
+      title: "Total Trainers",
+      value: stats.totalTrainers ?? 0,
+      icon: <FaUserTie />,
+      color: "bg-green-600",
+    },
+    {
+      title: "Total Classes",
+      value: stats.totalClasses ?? 0,
+      icon: <FaBookOpen />,
+      color: "bg-purple-600",
+    },
+    {
+      title: "Total Bookings",
+      value: stats.totalBookings ?? 0,
+      icon: <FaClipboardList />,
+      color: "bg-orange-500",
+    },
+  ];
+
+  const secondaryStats = [
+    {
+      title: "Total Revenue",
+      value: `₹${stats.totalRevenue ?? 0}`,
+      icon: <FaRupeeSign />,
+      color: "text-green-600",
+    },
+    {
+      title: "Paid Bookings",
+      value: stats.paidBookings ?? 0,
+      icon: <FaClipboardList />,
+      color: "text-blue-600",
+    },
+    {
+      title: "Total Feedback",
+      value: stats.totalFeedback ?? 0,
+      icon: <FaStar />,
+      color: "text-yellow-500",
+    },
+    {
+      title: "Today's Bookings",
+      value: stats.todayBookings ?? 0,
+      icon: <FaCalendarDay />,
+      color: "text-purple-600",
+    },
+  ];
+
   return (
-    <div className="w-full flex flex-col gap-10">
+    <div className="w-full flex flex-col gap-10 p-1">
       {/* Welcome */}
       <div className="flex flex-col gap-2">
-        <h1 className="text-4xl font-bold text-gray-800">
+        <h1 className="text-3xl md:text-4xl font-bold text-gray-800">
           Admin Dashboard
         </h1>
 
@@ -95,124 +147,50 @@ function AdminDashboard() {
 
       {/* Main Stats */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div className="min-h-40 bg-blue-600 text-white rounded-xl shadow flex flex-col justify-center gap-3">
-          <div className="w-[82%] self-center flex flex-col gap-3">
-            <FaUsers className="text-3xl" />
+        {mainStats.map((item) => (
+          <div
+            key={item.title}
+            className={`${item.color} text-white rounded-xl shadow-sm p-6 min-h-44 flex flex-col justify-center gap-4`}
+          >
+            <div className="text-3xl">
+              {item.icon}
+            </div>
 
-            <p className="text-sm">
-              Total Users
+            <p className="text-sm font-medium">
+              {item.title}
             </p>
 
             <h2 className="text-4xl font-bold">
-              {stats.totalUsers ?? 0}
+              {item.value}
             </h2>
           </div>
-        </div>
-
-        <div className="min-h-40 bg-green-600 text-white rounded-xl shadow flex flex-col justify-center gap-3">
-          <div className="w-[82%] self-center flex flex-col gap-3">
-            <FaUserTie className="text-3xl" />
-
-            <p className="text-sm">
-              Total Trainers
-            </p>
-
-            <h2 className="text-4xl font-bold">
-              {stats.totalTrainers ?? 0}
-            </h2>
-          </div>
-        </div>
-
-        <div className="min-h-40 bg-purple-600 text-white rounded-xl shadow flex flex-col justify-center gap-3">
-          <div className="w-[82%] self-center flex flex-col gap-3">
-            <FaBookOpen className="text-3xl" />
-
-            <p className="text-sm">
-              Total Classes
-            </p>
-
-            <h2 className="text-4xl font-bold">
-              {stats.totalClasses ?? 0}
-            </h2>
-          </div>
-        </div>
-
-        <div className="min-h-40 bg-orange-500 text-white rounded-xl shadow flex flex-col justify-center gap-3">
-          <div className="w-[82%] self-center flex flex-col gap-3">
-            <FaClipboardList className="text-3xl" />
-
-            <p className="text-sm">
-              Total Bookings
-            </p>
-
-            <h2 className="text-4xl font-bold">
-              {stats.totalBookings ?? 0}
-            </h2>
-          </div>
-        </div>
+        ))}
       </div>
 
       {/* Secondary Stats */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div className="min-h-36 bg-white rounded-xl shadow border flex flex-col justify-center gap-3">
-          <div className="w-[82%] self-center flex flex-col gap-3">
-            <FaRupeeSign className="text-3xl text-green-600" />
+        {secondaryStats.map((item) => (
+          <div
+            key={item.title}
+            className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 min-h-36 flex flex-col justify-center gap-3"
+          >
+            <div className={`text-3xl ${item.color}`}>
+              {item.icon}
+            </div>
 
             <p className="text-sm text-gray-500">
-              Total Revenue
+              {item.title}
             </p>
 
             <h2 className="text-3xl font-bold text-gray-800">
-              ₹{stats.totalRevenue ?? 0}
+              {item.value}
             </h2>
           </div>
-        </div>
-
-        <div className="min-h-36 bg-white rounded-xl shadow border flex flex-col justify-center gap-3">
-          <div className="w-[82%] self-center flex flex-col gap-3">
-            <FaClipboardList className="text-3xl text-blue-600" />
-
-            <p className="text-sm text-gray-500">
-              Paid Bookings
-            </p>
-
-            <h2 className="text-3xl font-bold text-gray-800">
-              {stats.paidBookings ?? 0}
-            </h2>
-          </div>
-        </div>
-
-        <div className="min-h-36 bg-white rounded-xl shadow border flex flex-col justify-center gap-3">
-          <div className="w-[82%] self-center flex flex-col gap-3">
-            <FaStar className="text-3xl text-yellow-500" />
-
-            <p className="text-sm text-gray-500">
-              Total Feedback
-            </p>
-
-            <h2 className="text-3xl font-bold text-gray-800">
-              {stats.totalFeedback ?? 0}
-            </h2>
-          </div>
-        </div>
-
-        <div className="min-h-36 bg-white rounded-xl shadow border flex flex-col justify-center gap-3">
-          <div className="w-[82%] self-center flex flex-col gap-3">
-            <FaCalendarDay className="text-3xl text-purple-600" />
-
-            <p className="text-sm text-gray-500">
-              Today's Bookings
-            </p>
-
-            <h2 className="text-3xl font-bold text-gray-800">
-              {stats.todayBookings ?? 0}
-            </h2>
-          </div>
-        </div>
+        ))}
       </div>
 
       {/* Recent Bookings */}
-      <div className="flex flex-col gap-6">
+      <div className="flex flex-col gap-5">
         <div className="flex flex-col gap-2">
           <h2 className="text-2xl font-bold text-gray-800">
             Recent Bookings
@@ -223,35 +201,35 @@ function AdminDashboard() {
           </p>
         </div>
 
-        <div className="bg-white rounded-xl shadow border overflow-hidden">
+        <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
           {recentBookings.length === 0 ? (
-            <div className="min-h-40 flex items-center justify-center">
+            <div className="min-h-40 p-8 flex items-center justify-center">
               <p className="text-gray-500">
                 No bookings found
               </p>
             </div>
           ) : (
             <div className="overflow-x-auto">
-              <table className="w-full min-w-[750px]">
-                <thead className="bg-gray-100">
+              <table className="w-full min-w-[800px]">
+                <thead className="bg-gray-50 border-b border-gray-200">
                   <tr>
-                    <th className="h-14 text-left indent-4">
+                    <th className="px-5 py-4 text-left text-sm font-semibold text-gray-600">
                       User
                     </th>
 
-                    <th className="h-14 text-left indent-4">
+                    <th className="px-5 py-4 text-left text-sm font-semibold text-gray-600">
                       Class
                     </th>
 
-                    <th className="h-14 text-left indent-4">
+                    <th className="px-5 py-4 text-left text-sm font-semibold text-gray-600">
                       Trainer
                     </th>
 
-                    <th className="h-14 text-left indent-4">
+                    <th className="px-5 py-4 text-left text-sm font-semibold text-gray-600">
                       Payment
                     </th>
 
-                    <th className="h-14 text-left indent-4">
+                    <th className="px-5 py-4 text-left text-sm font-semibold text-gray-600">
                       Status
                     </th>
                   </tr>
@@ -261,53 +239,50 @@ function AdminDashboard() {
                   {recentBookings.map((booking) => (
                     <tr
                       key={booking._id}
-                      className="border-t hover:bg-gray-50 transition"
+                      className="border-b border-gray-100 hover:bg-gray-50 transition"
                     >
-                      <td className="h-16">
+                      <td className="px-5 py-5">
                         <div className="flex flex-col gap-1">
                           <p className="font-semibold text-gray-800">
                             {booking.user?.name ||
                               "Unknown User"}
                           </p>
 
-                          <p className="text-sm text-gray-500">
+                          <p className="text-sm text-gray-500 break-all">
                             {booking.user?.email || ""}
                           </p>
                         </div>
                       </td>
 
-                      <td>
-                        <p className="font-medium">
+                      <td className="px-5 py-5">
+                        <p className="font-medium text-gray-800">
                           {booking.class?.title ||
                             "Fitness Class"}
                         </p>
                       </td>
 
-                      <td>
+                      <td className="px-5 py-5">
                         <span className="text-gray-700">
                           {booking.trainer?.name ||
                             "Unknown Trainer"}
                         </span>
                       </td>
 
-                      <td>
+                      <td className="px-5 py-5">
                         <span
-                          className={`min-h-8 w-fit rounded-full text-sm font-semibold flex items-center ${
+                          className={`inline-flex px-3 py-1.5 rounded-full text-sm font-semibold ${
                             booking.paymentStatus === "Paid"
                               ? "bg-green-100 text-green-700"
                               : "bg-yellow-100 text-yellow-700"
                           }`}
                         >
-                          <span className="indent-3">
-                            {booking.paymentStatus ||
-                              "Pending"}
-                          </span>
+                          {booking.paymentStatus || "Pending"}
                         </span>
                       </td>
 
-                      <td>
+                      <td className="px-5 py-5">
                         <span
-                          className={`min-h-8 w-fit rounded-full text-sm font-semibold flex items-center ${
+                          className={`inline-flex px-3 py-1.5 rounded-full text-sm font-semibold ${
                             booking.bookingStatus ===
                             "Confirmed"
                               ? "bg-green-100 text-green-700"
@@ -320,10 +295,7 @@ function AdminDashboard() {
                               : "bg-yellow-100 text-yellow-700"
                           }`}
                         >
-                          <span className="indent-3">
-                            {booking.bookingStatus ||
-                              "Pending"}
-                          </span>
+                          {booking.bookingStatus || "Pending"}
                         </span>
                       </td>
                     </tr>

@@ -38,16 +38,15 @@ function AdminTrainers() {
   }, []);
 
   return (
-    <div className="w-full flex flex-col gap-8">
-
+    <div className="w-full flex flex-col gap-8 p-1">
       {/* Header */}
-      <div className="flex items-center gap-3">
-        <div className="w-12 h-12 bg-green-100 text-green-600 rounded-xl flex items-center justify-center">
+      <div className="flex items-center gap-4">
+        <div className="w-14 h-14 shrink-0 bg-green-100 text-green-600 rounded-xl flex items-center justify-center">
           <FaUserTie className="text-2xl" />
         </div>
 
         <div className="flex flex-col gap-1">
-          <h1 className="text-3xl font-bold text-gray-800">
+          <h1 className="text-3xl md:text-4xl font-bold text-gray-800">
             Trainers
           </h1>
 
@@ -58,8 +57,8 @@ function AdminTrainers() {
       </div>
 
       {/* Total Trainers */}
-      <div className="bg-white rounded-xl shadow border border-gray-100 min-h-28 flex items-center">
-        <div className="w-[90%] self-center flex flex-col gap-2">
+      <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+        <div className="flex flex-col gap-2">
           <p className="text-gray-500 text-sm font-semibold">
             Total Trainers
           </p>
@@ -72,7 +71,7 @@ function AdminTrainers() {
 
       {/* Loading */}
       {loading && (
-        <div className="bg-white rounded-xl shadow border border-gray-100 min-h-48 flex items-center justify-center">
+        <div className="bg-white rounded-xl shadow-sm border border-gray-100 min-h-48 p-6 flex items-center justify-center">
           <p className="text-gray-500 font-medium">
             Loading trainers...
           </p>
@@ -81,7 +80,7 @@ function AdminTrainers() {
 
       {/* Empty */}
       {!loading && trainers.length === 0 && (
-        <div className="bg-white rounded-xl shadow border border-gray-100 min-h-72 flex flex-col items-center justify-center gap-4 text-center">
+        <div className="bg-white rounded-xl shadow-sm border border-gray-100 min-h-72 p-8 flex flex-col items-center justify-center gap-4 text-center">
           <div className="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center">
             <FaUserTie className="text-4xl text-gray-300" />
           </div>
@@ -104,10 +103,9 @@ function AdminTrainers() {
           {trainers.map((trainer) => (
             <div
               key={trainer._id}
-              className="bg-white rounded-xl shadow border border-gray-100 overflow-hidden hover:shadow-lg transition"
+              className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-lg transition"
             >
-              <div className="w-[88%] self-center flex flex-col gap-5 py-5">
-
+              <div className="flex flex-col gap-6 p-6">
                 {/* Profile */}
                 <div className="flex items-center gap-4">
                   {trainer.profileImage ? (
@@ -127,7 +125,7 @@ function AdminTrainers() {
                       {trainer.name}
                     </h2>
 
-                    <span className="w-fit min-h-7 bg-green-100 text-green-700 rounded-full text-xs font-semibold flex items-center justify-center">
+                    <span className="w-fit px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs font-semibold">
                       Trainer
                     </span>
                   </div>
@@ -135,16 +133,15 @@ function AdminTrainers() {
 
                 {/* Details */}
                 <div className="flex flex-col gap-3">
-
-                  <div className="flex items-center gap-3 text-gray-600 min-h-7">
-                    <FaEnvelope className="text-blue-500 shrink-0" />
+                  <div className="flex items-start gap-3 text-gray-600">
+                    <FaEnvelope className="text-blue-500 shrink-0 mt-1" />
 
                     <span className="text-sm break-all">
                       {trainer.email}
                     </span>
                   </div>
 
-                  <div className="flex items-center gap-3 text-gray-600 min-h-7">
+                  <div className="flex items-center gap-3 text-gray-600">
                     <FaPhone className="text-green-500 shrink-0" />
 
                     <span className="text-sm">
@@ -152,15 +149,16 @@ function AdminTrainers() {
                     </span>
                   </div>
 
-                  <div className="flex items-center gap-3 text-gray-600 min-h-7">
+                  <div className="flex items-center gap-3 text-gray-600">
                     <FaBriefcase className="text-purple-500 shrink-0" />
 
                     <span className="text-sm">
-                      {trainer.specialization || "General Fitness"}
+                      {trainer.specialization ||
+                        "General Fitness"}
                     </span>
                   </div>
 
-                  <div className="flex items-center gap-3 text-gray-600 min-h-7">
+                  <div className="flex items-center gap-3 text-gray-600">
                     <FaUsers className="text-orange-500 shrink-0" />
 
                     <span className="text-sm">
@@ -170,7 +168,7 @@ function AdminTrainers() {
                 </div>
 
                 {/* Rating */}
-                <div className="border-t border-gray-200 min-h-12 flex items-center gap-2">
+                <div className="border-t border-gray-200 pt-4 flex items-center gap-2">
                   <FaStar className="text-yellow-500" />
 
                   <span className="font-bold text-gray-800">
@@ -183,18 +181,17 @@ function AdminTrainers() {
                 </div>
 
                 {/* Status */}
-                <div className="flex items-center">
+                <div>
                   {trainer.isActive !== false ? (
-                    <span className="w-24 min-h-9 bg-green-100 text-green-700 rounded-full text-sm font-semibold flex items-center justify-center">
+                    <span className="inline-flex px-4 py-2 bg-green-100 text-green-700 rounded-full text-sm font-semibold">
                       Active
                     </span>
                   ) : (
-                    <span className="w-24 min-h-9 bg-red-100 text-red-700 rounded-full text-sm font-semibold flex items-center justify-center">
+                    <span className="inline-flex px-4 py-2 bg-red-100 text-red-700 rounded-full text-sm font-semibold">
                       Inactive
                     </span>
                   )}
                 </div>
-
               </div>
             </div>
           ))}

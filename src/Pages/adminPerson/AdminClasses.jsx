@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import api from "../../Service/api";
 import { toast } from "react-toastify";
@@ -60,15 +59,15 @@ function AdminClasses() {
   }, []);
 
   return (
-    <div className="w-full flex flex-col gap-8">
+    <div className="w-full flex flex-col gap-8 p-1">
       {/* Header */}
       <div className="flex items-center gap-4">
-        <div className="w-14 h-14 bg-purple-100 text-purple-600 rounded-xl flex items-center justify-center">
+        <div className="w-14 h-14 shrink-0 bg-purple-100 text-purple-600 rounded-xl flex items-center justify-center">
           <FaBookOpen className="text-2xl" />
         </div>
 
         <div className="flex flex-col gap-1">
-          <h1 className="text-3xl font-bold text-gray-800">
+          <h1 className="text-3xl md:text-4xl font-bold text-gray-800">
             Classes
           </h1>
 
@@ -79,8 +78,8 @@ function AdminClasses() {
       </div>
 
       {/* Total Classes */}
-      <div className="bg-white rounded-xl shadow border border-gray-100 min-h-28 flex items-center">
-        <div className="w-[92%] self-center flex flex-col gap-2">
+      <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+        <div className="flex flex-col gap-2">
           <p className="text-gray-500 text-sm font-semibold">
             Total Classes
           </p>
@@ -93,7 +92,7 @@ function AdminClasses() {
 
       {/* Loading */}
       {loading && (
-        <div className="bg-white rounded-xl shadow border border-gray-100 min-h-48 flex items-center justify-center">
+        <div className="bg-white rounded-xl shadow-sm border border-gray-100 min-h-48 p-6 flex items-center justify-center">
           <p className="text-gray-600 font-semibold">
             Loading classes...
           </p>
@@ -102,17 +101,21 @@ function AdminClasses() {
 
       {/* Empty */}
       {!loading && classes.length === 0 && (
-        <div className="bg-white rounded-xl shadow border border-gray-100 min-h-64 flex items-center justify-center">
-          <div className="flex flex-col items-center gap-3 text-center">
-            <FaBookOpen className="text-5xl text-gray-300" />
+        <div className="bg-white rounded-xl shadow-sm border border-gray-100 min-h-64 p-8 flex items-center justify-center">
+          <div className="flex flex-col items-center gap-4 text-center">
+            <div className="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center">
+              <FaBookOpen className="text-4xl text-gray-300" />
+            </div>
 
-            <h2 className="text-xl font-semibold text-gray-700">
-              No Classes Found
-            </h2>
+            <div className="flex flex-col gap-1">
+              <h2 className="text-xl font-semibold text-gray-700">
+                No Classes Found
+              </h2>
 
-            <p className="text-gray-500">
-              No fitness classes are available.
-            </p>
+              <p className="text-gray-500">
+                No fitness classes are available.
+              </p>
+            </div>
           </div>
         </div>
       )}
@@ -123,25 +126,23 @@ function AdminClasses() {
           {classes.map((item) => (
             <div
               key={item._id}
-              className="bg-white rounded-xl shadow border border-gray-100 overflow-hidden hover:shadow-lg transition flex flex-col"
+              className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-lg transition flex flex-col"
             >
               <img
                 src={getClassImage(item.image)}
                 alt={item.title}
-                className="w-full h-48 object-cover"
+                className="w-full h-52 object-cover"
               />
 
-              <div className="w-[88%] self-center flex flex-col gap-4 min-h-80 justify-center">
+              <div className="flex flex-col gap-5 p-6">
                 {/* Title */}
-                <div className="flex flex-col gap-2">
+                <div className="flex flex-col gap-3">
                   <h2 className="text-xl font-bold text-gray-800">
                     {item.title}
                   </h2>
 
-                  <span className="w-fit min-h-7 bg-purple-100 text-purple-700 rounded-full text-xs font-semibold flex items-center">
-                    <span className="indent-3">
-                      {item.category || "Fitness"}
-                    </span>
+                  <span className="w-fit px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-xs font-semibold">
+                    {item.category || "Fitness"}
                   </span>
                 </div>
 
@@ -151,10 +152,10 @@ function AdminClasses() {
                     <img
                       src={item.trainer.profileImage}
                       alt={item.trainer.name}
-                      className="w-9 h-9 rounded-full object-cover"
+                      className="w-10 h-10 rounded-full object-cover"
                     />
                   ) : (
-                    <div className="w-9 h-9 rounded-full bg-green-100 text-green-600 flex items-center justify-center">
+                    <div className="w-10 h-10 rounded-full bg-green-100 text-green-600 flex items-center justify-center">
                       <FaUserTie />
                     </div>
                   )}
@@ -170,49 +171,43 @@ function AdminClasses() {
                   </div>
                 </div>
 
-                {/* Date */}
-                <div className="flex items-center gap-3 text-gray-600">
-                  <FaCalendarAlt className="text-blue-500" />
+                {/* Details */}
+                <div className="flex flex-col gap-3 text-gray-600">
+                  <div className="flex items-center gap-3">
+                    <FaCalendarAlt className="text-blue-500 shrink-0" />
+                    <span>
+                      {item.date || "Date not available"}
+                    </span>
+                  </div>
 
-                  <span>
-                    {item.date || "Date not available"}
-                  </span>
-                </div>
+                  <div className="flex items-center gap-3">
+                    <FaClock className="text-purple-500 shrink-0" />
+                    <span>
+                      {item.time || "Time not available"}
+                    </span>
+                  </div>
 
-                {/* Time */}
-                <div className="flex items-center gap-3 text-gray-600">
-                  <FaClock className="text-purple-500" />
-
-                  <span>
-                    {item.time || "Time not available"}
-                  </span>
-                </div>
-
-                {/* Duration */}
-                <div className="flex items-center gap-3 text-gray-600">
-                  <FaClock className="text-orange-500" />
-
-                  <span>
-                    {item.duration || "Duration not available"}
-                  </span>
+                  <div className="flex items-center gap-3">
+                    <FaClock className="text-orange-500 shrink-0" />
+                    <span>
+                      {item.duration ||
+                        "Duration not available"}
+                    </span>
+                  </div>
                 </div>
 
                 {/* Seats and Price */}
-                <div className="flex items-center justify-between min-h-12 border-t">
+                <div className="border-t border-gray-200 pt-4 flex items-center justify-between gap-4">
                   <div className="flex items-center gap-2 text-gray-600">
                     <FaUsers className="text-blue-500" />
 
-                    <span>
-                      {item.seats ?? 0} Seats
-                    </span>
+                    <span>{item.seats ?? 0} Seats</span>
                   </div>
 
                   <div className="flex items-center gap-1 font-bold text-green-600">
                     <FaRupeeSign />
 
-                    <span>
-                      {item.price ?? 0}
-                    </span>
+                    <span>{item.price ?? 0}</span>
                   </div>
                 </div>
               </div>
