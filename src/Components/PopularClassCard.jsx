@@ -1,17 +1,15 @@
-
-
 import { FaClock, FaSignal } from "react-icons/fa";
 
 function PopularClassCard({ item, onLearnMore }) {
   return (
-    <div className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition duration-300 border border-gray-100">
+    <div className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition duration-300 border border-gray-100 flex flex-col h-full">
       <img
         src={item.image}
         alt={item.title}
         className="w-full h-56 object-cover"
       />
 
-      <div className="flex flex-col gap-5 min-h-64">
+      <div className="flex flex-col gap-5 flex-1 p-6">
         <div className="flex flex-col gap-3">
           <h2 className="text-2xl font-bold text-gray-900">
             {item.title}
@@ -22,7 +20,7 @@ function PopularClassCard({ item, onLearnMore }) {
           </p>
         </div>
 
-        <div className="flex items-center justify-between gap-4 text-gray-700">
+        <div className="flex items-center justify-between gap-4 text-gray-700 mt-auto">
           <div className="flex items-center gap-2">
             <FaClock className="text-blue-600" />
             <span>{item.duration}</span>
@@ -35,8 +33,9 @@ function PopularClassCard({ item, onLearnMore }) {
         </div>
 
         <button
+          type="button"
           onClick={onLearnMore}
-          className="w-full min-h-11 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition flex items-center justify-center"
+          className="w-full min-h-11 px-4 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition flex items-center justify-center"
         >
           Learn More
         </button>

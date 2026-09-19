@@ -5,19 +5,21 @@ import {
   FaYoutube,
 } from "react-icons/fa";
 import { Link } from "react-router-dom";
-  
 
 function Footer() {
   return (
-    <footer className="bg-black text-white w-full">
+    <footer className="bg-black text-white w-full py-12">
 
-      <div className="w-[92%] max-w-7xl mx-auto grid md:grid-cols-3 gap-10 min-h-64 items-center">
+      <div className="w-[92%] max-w-7xl mx-auto grid md:grid-cols-3 gap-10">
 
         {/* Brand */}
         <div className="flex flex-col gap-4">
-          <h1 className="text-3xl font-bold text-blue-500">
+          <Link
+            to="/"
+            className="text-3xl font-bold text-blue-500 hover:text-blue-400 transition"
+          >
             FitBook
-          </h1>
+          </Link>
 
           <p className="text-gray-400 leading-relaxed max-w-md">
             Book fitness classes and certified trainers
@@ -32,31 +34,55 @@ function Footer() {
           </h2>
 
           <ul className="flex flex-col gap-2 text-gray-400">
-            <li className="hover:text-white transition cursor-pointer">
-              <Link to="/">Home</Link>
+
+            <li>
+              <Link
+                to="/"
+                className="hover:text-white transition"
+              >
+                Home
+              </Link>
             </li>
 
-            <li className="hover:text-white transition cursor-pointer">
-              <Link to="/classes">Classes</Link>
+            <li>
+              <Link
+                to="/dashboard/classes"
+                className="hover:text-white transition"
+              >
+                Classes
+              </Link>
             </li>
 
-            <li className="hover:text-white transition cursor-pointer">
-              <Link to="/trainers">Trainers</Link>
+            <li>
+              <Link
+                to="/dashboard/trainers"
+                className="hover:text-white transition"
+              >
+                Trainers
+              </Link>
             </li>
 
-            <li className="hover:text-white transition cursor-pointer">
-              <Link to="/contact">Contact</Link>
+            <li>
+              <Link
+                to="/contact"
+                className="hover:text-white transition"
+              >
+                Contact
+              </Link>
             </li>
+
           </ul>
         </div>
 
         {/* Social Media */}
         <div className="flex flex-col gap-4">
+
           <h2 className="text-xl font-bold">
             Follow Us
           </h2>
 
           <div className="flex items-center gap-5 text-2xl text-gray-300">
+
             <FaFacebook className="hover:text-blue-500 transition cursor-pointer" />
 
             <FaInstagram className="hover:text-pink-500 transition cursor-pointer" />
@@ -64,20 +90,20 @@ function Footer() {
             <FaTwitter className="hover:text-sky-400 transition cursor-pointer" />
 
             <FaYoutube className="hover:text-red-500 transition cursor-pointer" />
+
           </div>
+
         </div>
 
       </div>
 
       {/* Divider */}
-      <div className="w-[92%] max-w-7xl mx-auto border-t border-gray-700" />
+      <hr className="w-[92%] max-w-7xl mx-auto my-8 border-gray-700" />
 
       {/* Copyright */}
-      <div className="w-full min-h-16 flex items-center justify-center">
-        <p className="text-center text-gray-400 text-sm">
-          © 2026 FitBook. All Rights Reserved.
-        </p>
-      </div>
+      <p className="text-center text-gray-400 px-4">
+        © 2026 FitBook. All Rights Reserved.
+      </p>
 
     </footer>
   );

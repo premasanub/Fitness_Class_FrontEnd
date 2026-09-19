@@ -1,5 +1,3 @@
-
-
 import { useEffect, useState } from "react";
 import DashboardCard from "./DashboardCard";
 import api from "../../Service/api";
@@ -42,17 +40,21 @@ function DashboardHome() {
       const dashboardStats = response.data?.stats;
 
       setStats({
-        totalBookings: dashboardStats?.totalBookings ?? 0,
+        totalBookings:
+          dashboardStats?.totalBookings ?? 0,
+
         upcomingBookings:
           dashboardStats?.upcomingBookings ?? 0,
+
         completedBookings:
           dashboardStats?.completedBookings ?? 0,
+
         feedbackGiven:
           dashboardStats?.feedbackGiven ?? 0,
       });
     } catch (error) {
       toast.error(
-        error.response?.data?.message ||
+        error?.response?.data?.message ||
           "Failed to load dashboard"
       );
     } finally {
@@ -61,7 +63,7 @@ function DashboardHome() {
   };
 
   return (
-    <main className="flex-1 bg-gray-100 min-h-screen flex flex-col gap-8">
+    <main className="flex-1 bg-gray-100 min-h-screen flex flex-col gap-8 p-6 md:p-8">
 
       {/* Header */}
       <section className="flex flex-col gap-2">
@@ -74,46 +76,30 @@ function DashboardHome() {
         </p>
       </section>
 
-      {/* Dashboard Statistics */}
+      {/* Statistics */}
       <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
 
         <DashboardCard
           title="Total Bookings"
-          value={
-            loading
-              ? "..."
-              : stats.totalBookings
-          }
+          value={loading ? "..." : stats.totalBookings}
           color="bg-blue-600"
         />
 
         <DashboardCard
           title="Upcoming"
-          value={
-            loading
-              ? "..."
-              : stats.upcomingBookings
-          }
+          value={loading ? "..." : stats.upcomingBookings}
           color="bg-green-600"
         />
 
         <DashboardCard
           title="Completed"
-          value={
-            loading
-              ? "..."
-              : stats.completedBookings
-          }
+          value={loading ? "..." : stats.completedBookings}
           color="bg-purple-600"
         />
 
         <DashboardCard
           title="Feedback Given"
-          value={
-            loading
-              ? "..."
-              : stats.feedbackGiven
-          }
+          value={loading ? "..." : stats.feedbackGiven}
           color="bg-orange-500"
         />
 

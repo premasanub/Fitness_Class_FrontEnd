@@ -1,5 +1,3 @@
-
-
 import { FaStar } from "react-icons/fa";
 
 function Testimonials() {
@@ -25,8 +23,8 @@ function Testimonials() {
   ];
 
   return (
-    <section className="w-full bg-gray-100">
-      <div className="w-full max-w-7xl flex flex-col gap-10">
+    <section className="w-full bg-gray-100 px-5 sm:px-8 lg:px-12 py-16">
+      <div className="w-full max-w-7xl mx-auto flex flex-col gap-10">
         <div className="text-center flex flex-col gap-3">
           <p className="text-blue-600 font-semibold text-lg">
             TESTIMONIALS
@@ -41,7 +39,7 @@ function Testimonials() {
           {reviews.map((item, index) => (
             <div
               key={index}
-              className="bg-white rounded-2xl shadow-md min-h-[230px] flex flex-col gap-5 justify-center hover:shadow-xl transition-all duration-300"
+              className="bg-white rounded-2xl shadow-md min-h-[230px] p-6 flex flex-col gap-5 justify-center hover:shadow-xl transition-all duration-300"
             >
               <div className="flex gap-1">
                 {[...Array(item.rating)].map((_, i) => (

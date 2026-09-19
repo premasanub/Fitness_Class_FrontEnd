@@ -1,6 +1,3 @@
-
-
-
 function Pricing() {
   const plans = [
     {
@@ -33,8 +30,8 @@ function Pricing() {
   ];
 
   return (
-    <section className="bg-white">
-      <div className="w-full max-w-7xl flex flex-col gap-10">
+    <section className="bg-white px-5 sm:px-8 lg:px-12 py-16">
+      <div className="w-full max-w-7xl mx-auto flex flex-col gap-10">
         <div className="text-center flex flex-col gap-3">
           <p className="text-blue-600 font-semibold text-lg">
             MEMBERSHIP
@@ -49,7 +46,7 @@ function Pricing() {
           {plans.map((plan, index) => (
             <div
               key={index}
-              className="bg-white border border-gray-200 rounded-2xl shadow-md min-h-[390px] flex flex-col gap-6 text-center hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+              className="bg-white border border-gray-200 rounded-2xl shadow-md min-h-[390px] p-6 md:p-8 flex flex-col gap-6 text-center hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
             >
               <h2 className="text-3xl font-bold text-gray-900">
                 {plan.title}
@@ -74,7 +71,8 @@ function Pricing() {
               </div>
 
               <button
-                className="w-full min-h-11 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition duration-300 flex items-center justify-center"
+                type="button"
+                className="w-full min-h-11 px-4 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition duration-300 flex items-center justify-center"
               >
                 Choose Plan
               </button>

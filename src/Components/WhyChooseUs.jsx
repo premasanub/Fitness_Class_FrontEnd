@@ -1,5 +1,3 @@
-
-
 import {
   FaUserTie,
   FaDumbbell,
@@ -36,8 +34,9 @@ function WhyChooseUs() {
   ];
 
   return (
-    <section className="w-full bg-gray-100">
-      <div className="w-full max-w-7xl flex flex-col gap-10">
+    <section className="w-full bg-gray-100 px-5 sm:px-8 lg:px-12 py-16">
+      <div className="w-full max-w-7xl mx-auto flex flex-col gap-10">
+        {/* Section Header */}
         <div className="text-center flex flex-col gap-3">
           <p className="text-blue-600 font-semibold text-lg">
             WHY CHOOSE US
@@ -46,15 +45,21 @@ function WhyChooseUs() {
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900">
             Your Fitness, Our Priority
           </h1>
+
+          <p className="text-gray-500 max-w-2xl mx-auto leading-relaxed">
+            Everything you need to make your fitness journey
+            effective, flexible, and enjoyable.
+          </p>
         </div>
 
+        {/* Feature Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
           {features.map((feature, index) => (
             <div
               key={index}
-              className="bg-white rounded-2xl shadow-md min-h-[240px] flex flex-col items-center justify-center gap-5 text-center hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border border-gray-100"
+              className="bg-white rounded-2xl shadow-md min-h-[250px] p-6 flex flex-col items-center justify-center gap-5 text-center hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border border-gray-100"
             >
-              <div className="text-blue-600 text-4xl">
+              <div className="w-16 h-16 rounded-full bg-blue-50 text-blue-600 text-3xl flex items-center justify-center">
                 {feature.icon}
               </div>
 

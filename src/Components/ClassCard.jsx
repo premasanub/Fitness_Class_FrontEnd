@@ -30,7 +30,7 @@ function ClassCard({ item }) {
 
   return (
     <article className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition duration-300 flex flex-col h-full">
-      
+
       {/* Class Image */}
       <img
         src={classImages[item?.image] || strength}
@@ -39,15 +39,15 @@ function ClassCard({ item }) {
       />
 
       {/* Class Content */}
-      <div className="flex flex-col gap-4 flex-1">
+      <div className="flex flex-col gap-5 flex-1 p-6">
 
         {/* Title */}
         <h2 className="text-2xl font-bold text-gray-800">
           {item?.title || "Fitness Class"}
         </h2>
 
-        {/* Class Information */}
-        <div className="flex flex-col gap-2 text-gray-600">
+        {/* Information */}
+        <div className="flex flex-col gap-3 text-gray-600">
 
           <p>
             <span className="font-semibold text-gray-800">
@@ -101,12 +101,12 @@ function ClassCard({ item }) {
         </div>
 
         {/* Buttons */}
-        <div className="flex flex-wrap gap-3">
+        <div className="flex flex-wrap gap-3 mt-auto pt-3">
 
           <button
             type="button"
             onClick={handleViewDetails}
-            className="bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition"
+            className="px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition"
           >
             View Details
           </button>
@@ -115,7 +115,7 @@ function ClassCard({ item }) {
             <button
               type="button"
               onClick={handleBooking}
-              className="bg-green-600 text-white rounded-lg font-medium hover:bg-green-700 transition"
+              className="px-4 py-2 bg-green-600 text-white rounded-lg font-medium hover:bg-green-700 transition"
             >
               Book Now
             </button>
@@ -123,7 +123,7 @@ function ClassCard({ item }) {
             <button
               type="button"
               disabled
-              className="bg-gray-400 text-white rounded-lg font-medium cursor-not-allowed"
+              className="px-4 py-2 bg-gray-400 text-white rounded-lg font-medium cursor-not-allowed"
             >
               Class Full
             </button>

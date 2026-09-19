@@ -1,4 +1,3 @@
-
 import { useNavigate } from "react-router-dom";
 import api from "../Service/api";
 import { toast } from "react-toastify";
@@ -27,7 +26,7 @@ function BookingCard({ booking }) {
       window.location.reload();
     } catch (error) {
       toast.error(
-        error.response?.data?.message ||
+        error?.response?.data?.message ||
           "Unable to cancel booking"
       );
     }
@@ -58,13 +57,10 @@ function BookingCard({ booking }) {
     switch (status) {
       case "Confirmed":
         return "text-green-600";
-
       case "Completed":
         return "text-blue-600";
-
       case "Cancelled":
         return "text-red-600";
-
       default:
         return "text-yellow-600";
     }
@@ -77,7 +73,7 @@ function BookingCard({ booking }) {
   };
 
   return (
-    <article className="bg-white rounded-xl shadow-lg overflow-hidden flex flex-col h-full">
+    <article className="bg-white rounded-xl shadow-lg overflow-hidden flex flex-col h-full hover:shadow-xl transition duration-300">
 
       {/* Class Image */}
       <img
@@ -90,15 +86,15 @@ function BookingCard({ booking }) {
       />
 
       {/* Card Content */}
-      <div className="flex flex-col gap-4 flex-1">
+      <div className="flex flex-col gap-5 flex-1 p-6">
 
-        {/* Class Title */}
+        {/* Title */}
         <h2 className="text-2xl font-bold text-gray-800">
           {booking.class?.title || "Fitness Class"}
         </h2>
 
         {/* Booking Information */}
-        <div className="flex flex-col gap-2 text-gray-700">
+        <div className="flex flex-col gap-3 text-gray-700">
 
           <p>
             <span className="font-semibold">
@@ -150,21 +146,20 @@ function BookingCard({ booking }) {
               {booking.bookingStatus || "Pending"}
             </span>
           </p>
+
         </div>
 
         {/* Actions */}
-        <div className="flex flex-wrap gap-3">
+        <div className="flex flex-wrap gap-3 mt-auto pt-3">
 
-          {/* View Details */}
           <button
             type="button"
             onClick={handleViewDetails}
-            className="bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition"
+            className="px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition"
           >
             View Details
           </button>
 
-          {/* Confirmed Booking Actions */}
           {booking.bookingStatus === "Confirmed" && (
             <>
               <button
@@ -174,7 +169,7 @@ function BookingCard({ booking }) {
                     `/dashboard/change-slot/${booking._id}`
                   )
                 }
-                className="bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700 transition"
+                className="px-4 py-2 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700 transition"
               >
                 Change Slot
               </button>
@@ -182,29 +177,28 @@ function BookingCard({ booking }) {
               <button
                 type="button"
                 onClick={handleCancel}
-                className="bg-red-600 text-white rounded-lg font-medium hover:bg-red-700 transition"
+                className="px-4 py-2 bg-red-600 text-white rounded-lg font-medium hover:bg-red-700 transition"
               >
                 Cancel Booking
               </button>
             </>
           )}
 
-          {/* Completed Booking */}
-          {booking.bookingStatus === "Completed" && (
-            booking.feedbackGiven ? (
-              <span className="bg-green-100 text-green-700 rounded-lg font-semibold flex items-center">
+          {booking.bookingStatus === "Completed" &&
+            (booking.feedbackGiven ? (
+              <span className="px-4 py-2 bg-green-100 text-green-700 rounded-lg font-semibold flex items-center">
                 ✓ Feedback Submitted
               </span>
             ) : (
               <button
                 type="button"
                 onClick={handleFeedback}
-                className="bg-yellow-500 text-white rounded-lg font-medium hover:bg-yellow-600 transition"
+                className="px-4 py-2 bg-yellow-500 text-white rounded-lg font-medium hover:bg-yellow-600 transition"
               >
                 Give Feedback
               </button>
-            )
-          )}
+            ))}
+
         </div>
       </div>
     </article>

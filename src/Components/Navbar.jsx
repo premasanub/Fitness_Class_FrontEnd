@@ -1,6 +1,3 @@
-
-
-
 import { FaDumbbell, FaTachometerAlt } from "react-icons/fa";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate, Link } from "react-router-dom";
@@ -15,8 +12,7 @@ function Navbar() {
   };
 
   return (
-    <nav className="bg-black text-white flex items-center justify-between gap-6 min-h-16">
-
+    <nav className="bg-black text-white w-full min-h-16 px-5 sm:px-8 lg:px-12 py-3 flex items-center justify-between gap-6">
       {/* Logo */}
       <Link
         to="/"
@@ -34,7 +30,7 @@ function Navbar() {
         <li>
           <Link
             to="/"
-            className="hover:text-blue-500 transition"
+            className="px-2 py-2 hover:text-blue-500 transition"
           >
             Home
           </Link>
@@ -43,7 +39,7 @@ function Navbar() {
         <li>
           <Link
             to="/classes"
-            className="hover:text-blue-500 transition"
+            className="px-2 py-2 hover:text-blue-500 transition"
           >
             Classes
           </Link>
@@ -52,7 +48,7 @@ function Navbar() {
         <li>
           <Link
             to="/trainers"
-            className="hover:text-blue-500 transition"
+            className="px-2 py-2 hover:text-blue-500 transition"
           >
             Trainers
           </Link>
@@ -61,7 +57,7 @@ function Navbar() {
         <li>
           <Link
             to="/about"
-            className="hover:text-blue-500 transition"
+            className="px-2 py-2 hover:text-blue-500 transition"
           >
             About
           </Link>
@@ -70,7 +66,7 @@ function Navbar() {
         <li>
           <Link
             to="/contact"
-            className="hover:text-blue-500 transition"
+            className="px-2 py-2 hover:text-blue-500 transition"
           >
             Contact
           </Link>
@@ -78,7 +74,7 @@ function Navbar() {
       </ul>
 
       {/* Right Side */}
-      <div className="flex items-center gap-4 shrink-0">
+      <div className="flex items-center gap-3 shrink-0">
         {user ? (
           <>
             <Link
@@ -92,7 +88,7 @@ function Navbar() {
             <button
               type="button"
               onClick={handleLogout}
-              className="bg-red-600 text-white rounded-lg hover:bg-red-700 transition"
+              className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition font-medium"
             >
               Logout
             </button>
@@ -101,14 +97,14 @@ function Navbar() {
           <>
             <Link
               to="/login"
-              className="border border-white rounded-lg hover:bg-white hover:text-black transition"
+              className="px-4 py-2 border border-white rounded-lg hover:bg-white hover:text-black transition font-medium"
             >
               Login
             </Link>
 
             <Link
               to="/register"
-              className="bg-blue-600 rounded-lg hover:bg-blue-700 transition"
+              className="px-4 py-2 bg-blue-600 rounded-lg hover:bg-blue-700 transition font-medium"
             >
               Register
             </Link>
