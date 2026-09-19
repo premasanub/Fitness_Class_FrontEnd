@@ -1,5 +1,3 @@
-
-
 import { useEffect, useState } from "react";
 import {
   useLocation,
@@ -55,7 +53,9 @@ function ClassDetails() {
           const bookingData = response.data;
 
           setBooking(bookingData);
-          setSelectedClass(bookingData?.class || null);
+          setSelectedClass(
+            bookingData?.class || null
+          );
         } else {
           const response = await api.get(
             `/classes/${id}`
@@ -206,13 +206,17 @@ function ClassDetails() {
 
   if (loading) {
     return (
-      <div className="min-h-[60vh] flex items-center justify-center">
-        <div className="text-center flex flex-col gap-3">
-          <div className="w-10 h-10 border-4 border-gray-200 border-t-blue-600 rounded-full animate-spin mx-auto" />
+      <div className="min-h-[70vh] flex items-center justify-center px-4 py-10">
+        <div className="bg-white rounded-2xl shadow-md border border-gray-100 p-8 text-center">
+          <div className="w-12 h-12 border-4 border-gray-200 border-t-blue-600 rounded-full animate-spin mx-auto mb-5" />
 
           <h2 className="text-xl font-semibold text-gray-700">
             Loading class details...
           </h2>
+
+          <p className="text-gray-500 mt-2">
+            Please wait while we load the class.
+          </p>
         </div>
       </div>
     );
@@ -220,9 +224,13 @@ function ClassDetails() {
 
   if (error || !selectedClass) {
     return (
-      <div className="min-h-[60vh] flex items-center justify-center">
-        <div className="text-center flex flex-col gap-4">
-          <h2 className="text-2xl font-bold text-red-500">
+      <div className="min-h-[70vh] flex items-center justify-center px-4 py-10">
+        <div className="w-full max-w-lg bg-white rounded-2xl shadow-md border border-gray-100 p-8 text-center">
+          <div className="w-14 h-14 mx-auto mb-5 rounded-full bg-red-100 flex items-center justify-center text-red-600 text-2xl font-bold">
+            !
+          </div>
+
+          <h2 className="text-2xl font-bold text-gray-900">
             {error || "Class details not found"}
           </h2>
 
@@ -230,7 +238,7 @@ function ClassDetails() {
             onClick={() =>
               navigate("/dashboard/classes")
             }
-            className="min-h-11 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition flex items-center justify-center"
+            className="w-full min-h-12 mt-6 px-6 py-3 bg-blue-600 text-white rounded-xl font-semibold hover:bg-blue-700 transition"
           >
             Back to Classes
           </button>
@@ -256,308 +264,338 @@ function ClassDetails() {
     fromBookings && isChangeAllowed();
 
   return (
-    <div className="w-full max-w-5xl flex flex-col gap-8">
-      <div className="overflow-hidden rounded-2xl shadow-lg">
-        <img
-          src={
-            classImages[selectedClass.image] ||
-            strength
-          }
-          alt={selectedClass.title}
-          className="w-full h-80 md:h-96 object-cover"
-        />
-      </div>
+    <div className="w-full px-4 sm:px-6 lg:px-8 py-8 lg:py-10">
+      <div className="max-w-6xl mx-auto">
 
-      <div className="flex flex-col gap-3">
-        <h1 className="text-3xl md:text-4xl font-bold text-gray-900">
-          {selectedClass.title}
-        </h1>
+        {/* IMAGE */}
+        <div className="relative overflow-hidden rounded-2xl shadow-lg mb-8">
+          <img
+            src={
+              classImages[selectedClass.image] ||
+              strength
+            }
+            alt={selectedClass.title}
+            className="w-full h-72 md:h-96 object-cover"
+          />
 
-        <p className="text-gray-600 leading-relaxed">
-          {selectedClass.description ||
-            "Professional fitness class designed to help you reach your goals."}
-        </p>
-      </div>
+          <div className="absolute top-5 left-5">
+            <span className="px-4 py-2 bg-white/95 rounded-full text-sm font-semibold text-blue-600 shadow">
+              {selectedClass.category ||
+                "Fitness"}
+            </span>
+          </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-        <div className="border border-gray-200 rounded-xl min-h-16 flex flex-col justify-center">
-          <span className="text-sm text-gray-500">
-            Trainer
-          </span>
+          <div className="absolute bottom-5 right-5 bg-white rounded-xl shadow-lg px-5 py-3">
+            <p className="text-xs text-gray-500">
+              Price
+            </p>
 
-          <strong className="text-gray-800">
-            {selectedClass.trainer?.name ||
+            <p className="text-2xl font-bold text-blue-600">
+              ₹{selectedClass.price || 0}
+            </p>
+          </div>
+        </div>
+
+        {/* HEADER */}
+        <div className="mb-8">
+          <h1 className="text-3xl md:text-4xl font-bold text-gray-900">
+            {selectedClass.title}
+          </h1>
+
+          <p className="text-gray-600 mt-3 leading-7 max-w-4xl">
+            {selectedClass.description ||
+              "Professional fitness class designed to help you reach your goals."}
+          </p>
+        </div>
+
+        {/* INFORMATION */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+          <DetailItem
+            label="Trainer"
+            value={
+              selectedClass.trainer?.name ||
               booking?.trainer?.name ||
-              "Not Assigned"}
-          </strong>
-        </div>
+              "Not Assigned"
+            }
+          />
 
-        <div className="border border-gray-200 rounded-xl min-h-16 flex flex-col justify-center">
-          <span className="text-sm text-gray-500">
-            Category
-          </span>
+          <DetailItem
+            label="Category"
+            value={
+              selectedClass.category || "N/A"
+            }
+          />
 
-          <strong className="text-gray-800">
-            {selectedClass.category || "N/A"}
-          </strong>
-        </div>
+          <DetailItem
+            label="Date"
+            value={
+              selectedClass.date || "N/A"
+            }
+          />
 
-        <div className="border border-gray-200 rounded-xl min-h-16 flex flex-col justify-center">
-          <span className="text-sm text-gray-500">
-            Date
-          </span>
+          <DetailItem
+            label="Time"
+            value={
+              selectedClass.time || "N/A"
+            }
+          />
 
-          <strong className="text-gray-800">
-            {selectedClass.date || "N/A"}
-          </strong>
-        </div>
+          <DetailItem
+            label="Duration"
+            value={`${selectedClass.duration || 0} mins`}
+          />
 
-        <div className="border border-gray-200 rounded-xl min-h-16 flex flex-col justify-center">
-          <span className="text-sm text-gray-500">
-            Time
-          </span>
+          <DetailItem
+            label="Price"
+            value={`₹${selectedClass.price || 0}`}
+            highlight
+          />
 
-          <strong className="text-gray-800">
-            {selectedClass.time || "N/A"}
-          </strong>
-        </div>
-
-        <div className="border border-gray-200 rounded-xl min-h-16 flex flex-col justify-center">
-          <span className="text-sm text-gray-500">
-            Duration
-          </span>
-
-          <strong className="text-gray-800">
-            {selectedClass.duration || 0} mins
-          </strong>
-        </div>
-
-        <div className="border border-gray-200 rounded-xl min-h-16 flex flex-col justify-center">
-          <span className="text-sm text-gray-500">
-            Price
-          </span>
-
-          <strong className="text-blue-600">
-            ₹{selectedClass.price || 0}
-          </strong>
-        </div>
-
-        <div className="border border-gray-200 rounded-xl min-h-16 flex flex-col justify-center">
-          <span className="text-sm text-gray-500">
-            Seats Available
-          </span>
-
-          <strong
-            className={
+          <DetailItem
+            label="Seats Available"
+            value={seatsAvailable}
+            valueClass={
               seatsAvailable > 0
                 ? "text-green-600"
                 : "text-red-600"
             }
-          >
-            {seatsAvailable}
-          </strong>
+          />
+
+          {booking && (
+            <DetailItem
+              label="Booked Slot"
+              value={
+                booking.selectedSlot ||
+                "Not Selected"
+              }
+              highlight
+            />
+          )}
+
+          {booking && (
+            <DetailItem
+              label="Booking Status"
+              value={
+                booking.bookingStatus || "N/A"
+              }
+              valueClass="text-green-600"
+            />
+          )}
         </div>
 
-        {booking && (
-          <div className="border border-gray-200 rounded-xl min-h-16 flex flex-col justify-center">
-            <span className="text-sm text-gray-500">
-              Booked Slot
-            </span>
+        {/* BOOKING CONTENT */}
+        {fromBookings ? (
+          <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6 sm:p-8">
+            <div className="flex flex-col gap-5">
 
-            <strong className="text-blue-600">
-              {booking.selectedSlot ||
-                "Not Selected"}
-            </strong>
+              {selectedClass.meetingLink && (
+                <a
+                  href={selectedClass.meetingLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full min-h-12 px-6 py-3 bg-green-600 text-white rounded-xl font-semibold hover:bg-green-700 transition flex items-center justify-center"
+                >
+                  Join Meeting
+                </a>
+              )}
+
+              {canChange ? (
+                !showSlots ? (
+                  <button
+                    onClick={() =>
+                      setShowSlots(true)
+                    }
+                    className="w-full min-h-12 px-6 py-3 bg-blue-600 text-white rounded-xl font-semibold hover:bg-blue-700 transition"
+                  >
+                    Change Slot
+                  </button>
+                ) : (
+                  <div className="bg-gray-50 border border-gray-200 rounded-xl p-5 sm:p-6">
+                    <h2 className="text-xl font-bold text-gray-900 mb-5">
+                      Select New Time Slot
+                    </h2>
+
+                    {timeSlots.length === 0 ? (
+                      <p className="text-red-500">
+                        No time slots available.
+                      </p>
+                    ) : (
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        {timeSlots.map(
+                          (slot, index) => (
+                            <label
+                              key={`${slot}-${index}`}
+                              className={`flex items-center gap-4 p-4 border-2 rounded-xl cursor-pointer transition ${
+                                selectedSlot ===
+                                slot
+                                  ? "border-blue-500 bg-blue-50"
+                                  : "border-gray-200 bg-white hover:border-blue-300"
+                              }`}
+                            >
+                              <input
+                                type="radio"
+                                name="newSlot"
+                                value={slot}
+                                checked={
+                                  selectedSlot ===
+                                  slot
+                                }
+                                onChange={(e) =>
+                                  setSelectedSlot(
+                                    e.target.value
+                                  )
+                                }
+                                className="w-5 h-5 accent-blue-600"
+                              />
+
+                              <span className="font-semibold text-gray-800">
+                                {slot}
+                              </span>
+                            </label>
+                          )
+                        )}
+                      </div>
+                    )}
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6">
+                      <button
+                        onClick={
+                          handleChangeSlot
+                        }
+                        disabled={
+                          !selectedSlot ||
+                          changingSlot
+                        }
+                        className={`min-h-12 px-6 py-3 rounded-xl text-white font-semibold transition ${
+                          selectedSlot &&
+                          !changingSlot
+                            ? "bg-green-600 hover:bg-green-700"
+                            : "bg-gray-300 cursor-not-allowed"
+                        }`}
+                      >
+                        {changingSlot
+                          ? "Changing..."
+                          : "Confirm New Slot"}
+                      </button>
+
+                      <button
+                        onClick={() => {
+                          setShowSlots(false);
+                          setSelectedSlot("");
+                        }}
+                        className="min-h-12 px-6 py-3 rounded-xl border border-gray-300 font-semibold text-gray-700 hover:bg-gray-100 transition"
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  </div>
+                )
+              ) : (
+                <div className="bg-red-50 border border-red-200 rounded-xl p-5">
+                  <h3 className="text-lg font-bold text-red-600">
+                    Schedule Cannot Be Changed
+                  </h3>
+
+                  <p className="text-red-500 mt-1">
+                    Time slot changes are allowed
+                    only before 24 hours of the
+                    class.
+                  </p>
+                </div>
+              )}
+            </div>
           </div>
-        )}
+        ) : (
+          <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6 sm:p-8">
+            {seatsAvailable <= 0 ? (
+              <div className="flex flex-col gap-5">
+                <StatusMessage
+                  title="Class Full"
+                  message="Sorry, there are no available seats for this class."
+                />
 
-        {booking && (
-          <div className="border border-gray-200 rounded-xl min-h-16 flex flex-col justify-center">
-            <span className="text-sm text-gray-500">
-              Booking Status
-            </span>
+                <button
+                  disabled
+                  className="w-full min-h-12 px-6 py-3 bg-gray-300 text-gray-500 rounded-xl cursor-not-allowed font-semibold"
+                >
+                  No Seats Available
+                </button>
+              </div>
+            ) : !isBookingAllowed() ? (
+              <div className="flex flex-col gap-5">
+                <StatusMessage
+                  title="Booking Closed"
+                  message="Booking is allowed only when the class is at least 24 hours away."
+                />
 
-            <strong className="text-green-600">
-              {booking.bookingStatus || "N/A"}
-            </strong>
+                <button
+                  disabled
+                  className="w-full min-h-12 px-6 py-3 bg-gray-300 text-gray-500 rounded-xl cursor-not-allowed font-semibold"
+                >
+                  Booking Closed
+                </button>
+              </div>
+            ) : (
+              <button
+                onClick={() => {
+                  if (canBook) {
+                    navigate(
+                      `/dashboard/booking/${selectedClass._id}`
+                    );
+                  }
+                }}
+                disabled={!canBook}
+                className={`w-full min-h-12 px-6 py-3 rounded-xl text-white font-semibold transition ${
+                  canBook
+                    ? "bg-green-600 hover:bg-green-700"
+                    : "bg-gray-300 cursor-not-allowed"
+                }`}
+              >
+                Book Now
+              </button>
+            )}
           </div>
         )}
       </div>
+    </div>
+  );
+}
 
-      {fromBookings ? (
-        <div className="flex flex-col gap-6">
-          {selectedClass.meetingLink && (
-            <a
-              href={selectedClass.meetingLink}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="min-h-11 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700 transition flex items-center justify-center"
-            >
-              Join Meeting
-            </a>
-          )}
+function DetailItem({
+  label,
+  value,
+  highlight,
+  valueClass = "",
+}) {
+  return (
+    <div className="bg-gray-50 border border-gray-200 rounded-xl p-5">
+      <p className="text-sm text-gray-500 mb-2">
+        {label}
+      </p>
 
-          {canChange ? (
-            !showSlots ? (
-              <button
-                onClick={() => setShowSlots(true)}
-                className="min-h-11 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition flex items-center justify-center"
-              >
-                Change Slot
-              </button>
-            ) : (
-              <div className="border border-gray-200 rounded-xl bg-gray-50 flex flex-col gap-6">
-                <h2 className="text-xl font-bold text-gray-900">
-                  Select New Time Slot
-                </h2>
+      <p
+        className={`font-semibold ${
+          highlight
+            ? "text-blue-600"
+            : valueClass || "text-gray-800"
+        }`}
+      >
+        {value}
+      </p>
+    </div>
+  );
+}
 
-                {timeSlots.length === 0 ? (
-                  <p className="text-red-500">
-                    No time slots available.
-                  </p>
-                ) : (
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    {timeSlots.map(
-                      (slot, index) => (
-                        <label
-                          key={`${slot}-${index}`}
-                          className={`min-h-14 flex items-center gap-3 border rounded-lg cursor-pointer transition ${
-                            selectedSlot === slot
-                              ? "border-blue-500 bg-blue-50"
-                              : "border-gray-300 bg-white hover:bg-gray-50"
-                          }`}
-                        >
-                          <input
-                            type="radio"
-                            name="newSlot"
-                            value={slot}
-                            checked={
-                              selectedSlot === slot
-                            }
-                            onChange={(e) =>
-                              setSelectedSlot(
-                                e.target.value
-                              )
-                            }
-                            className="accent-blue-600"
-                          />
+function StatusMessage({ title, message }) {
+  return (
+    <div className="bg-red-50 border border-red-200 rounded-xl p-5">
+      <h3 className="text-lg font-bold text-red-600">
+        {title}
+      </h3>
 
-                          <span className="font-medium">
-                            {slot}
-                          </span>
-                        </label>
-                      )
-                    )}
-                  </div>
-                )}
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <button
-                    onClick={handleChangeSlot}
-                    disabled={
-                      !selectedSlot ||
-                      changingSlot
-                    }
-                    className={`min-h-11 rounded-lg text-white font-semibold flex items-center justify-center ${
-                      selectedSlot &&
-                      !changingSlot
-                        ? "bg-green-600 hover:bg-green-700"
-                        : "bg-gray-400 cursor-not-allowed"
-                    }`}
-                  >
-                    {changingSlot
-                      ? "Changing..."
-                      : "Confirm New Slot"}
-                  </button>
-
-                  <button
-                    onClick={() => {
-                      setShowSlots(false);
-                      setSelectedSlot("");
-                    }}
-                    className="min-h-11 rounded-lg border border-gray-300 font-semibold hover:bg-gray-100 flex items-center justify-center"
-                  >
-                    Cancel
-                  </button>
-                </div>
-              </div>
-            )
-          ) : (
-            <div className="bg-red-50 border border-red-200 rounded-xl min-h-24 flex flex-col justify-center gap-2">
-              <h3 className="text-lg font-bold text-red-600">
-                Schedule Cannot Be Changed
-              </h3>
-
-              <p className="text-red-500">
-                Time slot changes are allowed only
-                before 24 hours of the class.
-              </p>
-            </div>
-          )}
-        </div>
-      ) : (
-        <div className="flex flex-col gap-5">
-          {seatsAvailable <= 0 ? (
-            <div className="flex flex-col gap-4">
-              <div className="bg-red-50 border border-red-200 rounded-xl min-h-24 flex flex-col justify-center gap-2">
-                <h3 className="text-lg font-bold text-red-600">
-                  Class Full
-                </h3>
-
-                <p className="text-red-500">
-                  Sorry, there are no available seats
-                  for this class.
-                </p>
-              </div>
-
-              <button
-                disabled
-                className="min-h-11 bg-gray-400 text-white rounded-lg cursor-not-allowed font-semibold flex items-center justify-center"
-              >
-                No Seats Available
-              </button>
-            </div>
-          ) : !isBookingAllowed() ? (
-            <div className="flex flex-col gap-4">
-              <div className="bg-red-50 border border-red-200 rounded-xl min-h-24 flex flex-col justify-center gap-2">
-                <h3 className="text-lg font-bold text-red-600">
-                  Booking Closed
-                </h3>
-
-                <p className="text-red-500">
-                  Booking is allowed only when the
-                  class is at least 24 hours away.
-                </p>
-              </div>
-
-              <button
-                disabled
-                className="min-h-11 bg-gray-400 text-white rounded-lg cursor-not-allowed font-semibold flex items-center justify-center"
-              >
-                Booking Closed
-              </button>
-            </div>
-          ) : (
-            <button
-              onClick={() => {
-                if (canBook) {
-                  navigate(
-                    `/dashboard/booking/${selectedClass._id}`
-                  );
-                }
-              }}
-              disabled={!canBook}
-              className={`min-h-11 rounded-lg text-white font-semibold flex items-center justify-center ${
-                canBook
-                  ? "bg-green-600 hover:bg-green-700"
-                  : "bg-gray-400 cursor-not-allowed"
-              }`}
-            >
-              Book Now
-            </button>
-          )}
-        </div>
-      )}
+      <p className="text-red-500 mt-1">
+        {message}
+      </p>
     </div>
   );
 }

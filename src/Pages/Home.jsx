@@ -10,7 +10,7 @@ import Pricing from "../Components/Pricing";
 
 function Home() {
   return (
-    <div className="min-h-screen">
+     <div className="w-full min-h-screen overflow-x-hidden">
       <Hero />
       <PopularClasses />
       <TopTrainers />

@@ -1,5 +1,3 @@
-
-
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -23,16 +21,12 @@ function ChangeSlot() {
         setLoading(true);
         setError("");
 
-        const response = await api.get(
-          `/bookings/${id}`
-        );
+        const response = await api.get(`/bookings/${id}`);
 
         const bookingData = response.data;
 
         setBooking(bookingData);
-        setSelectedSlot(
-          bookingData?.selectedSlot || ""
-        );
+        setSelectedSlot(bookingData?.selectedSlot || "");
 
         setTimeSlots(
           Array.isArray(bookingData?.class?.timeSlots)
@@ -188,13 +182,17 @@ function ChangeSlot() {
 
   if (loading) {
     return (
-      <div className="min-h-[60vh] flex items-center justify-center">
-        <div className="text-center flex flex-col gap-3">
-          <div className="w-10 h-10 border-4 border-gray-200 border-t-blue-600 rounded-full animate-spin mx-auto" />
+      <div className="w-full min-h-[70vh] flex items-center justify-center px-4 py-10">
+        <div className="bg-white rounded-2xl shadow-md border border-gray-100 p-8 text-center">
+          <div className="w-12 h-12 border-4 border-gray-200 border-t-blue-600 rounded-full animate-spin mx-auto mb-5" />
 
           <h2 className="text-xl font-semibold text-gray-700">
             Loading booking...
           </h2>
+
+          <p className="text-gray-500 mt-2">
+            Please wait while we load your booking.
+          </p>
         </div>
       </div>
     );
@@ -202,17 +200,25 @@ function ChangeSlot() {
 
   if (!booking || error) {
     return (
-      <div className="min-h-[60vh] flex items-center justify-center">
-        <div className="text-center flex flex-col gap-4">
-          <h2 className="text-2xl font-bold text-red-500">
+      <div className="w-full min-h-[70vh] flex items-center justify-center px-4 py-10">
+        <div className="w-full max-w-lg bg-white rounded-2xl shadow-md border border-gray-100 p-8 text-center">
+          <div className="w-14 h-14 mx-auto mb-5 rounded-full bg-red-100 flex items-center justify-center text-red-600 text-2xl font-bold">
+            !
+          </div>
+
+          <h2 className="text-2xl font-bold text-gray-900">
             {error || "Booking not found"}
           </h2>
+
+          <p className="text-gray-500 mt-3 mb-6">
+            We could not load the requested booking.
+          </p>
 
           <button
             onClick={() =>
               navigate("/dashboard/bookings")
             }
-            className="min-h-11 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition flex items-center justify-center"
+            className="w-full min-h-12 px-6 py-3 bg-blue-600 text-white rounded-xl font-semibold hover:bg-blue-700 transition"
           >
             Back to Bookings
           </button>
@@ -224,164 +230,246 @@ function ChangeSlot() {
   const changeAllowed = isChangeAllowed();
 
   return (
-    <div className="w-full max-w-3xl flex flex-col gap-8">
-      <div className="flex flex-col gap-2">
-        <h1 className="text-3xl font-bold text-gray-900">
-          Change Time Slot
-        </h1>
+    <div className="w-full px-4 sm:px-6 lg:px-8 py-8 lg:py-10">
+      <div className="max-w-4xl mx-auto">
 
-        <p className="text-gray-500">
-          Select another available time slot for your
-          booking.
-        </p>
-      </div>
+        {/* HEADER */}
+        <div className="mb-8">
+          <h1 className="text-3xl md:text-4xl font-bold text-gray-900">
+            Change Time Slot
+          </h1>
 
-      <div className="bg-white rounded-2xl shadow-xl border border-gray-100 flex flex-col gap-8">
-        <div className="bg-gray-50 border border-gray-200 rounded-xl flex flex-col gap-3">
-          <p>
-            <strong>Class:</strong>{" "}
-            {booking.class?.title || "Not Available"}
-          </p>
-
-          <p>
-            <strong>Trainer:</strong>{" "}
-            {booking.trainer?.name ||
-              booking.class?.trainer?.name ||
-              "Not Assigned"}
-          </p>
-
-          <p>
-            <strong>Date:</strong>{" "}
-            {booking.class?.date || "Not Available"}
-          </p>
-
-          <p>
-            <strong>Current Slot:</strong>{" "}
-            <span className="font-semibold text-blue-600">
-              {booking.selectedSlot || "Not Selected"}
-            </span>
-          </p>
-
-          <p>
-            <strong>Status:</strong>{" "}
-            <span className="font-semibold text-green-600">
-              {booking.bookingStatus || "N/A"}
-            </span>
+          <p className="text-gray-500 mt-2">
+            Select another available time slot for your
+            booking.
           </p>
         </div>
 
-        {!changeAllowed && (
-          <div className="bg-red-50 border border-red-200 rounded-xl min-h-24 flex flex-col justify-center gap-2">
-            <h3 className="font-bold text-red-600">
-              Schedule Cannot Be Changed
-            </h3>
+        {/* MAIN CARD */}
+        <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
 
-            <p className="text-red-500">
-              Time slot changes are allowed only before
-              24 hours of the class.
+          {/* CARD HEADER */}
+          <div className="bg-gradient-to-r from-blue-600 to-blue-700 px-6 sm:px-8 py-6 text-white">
+            <p className="text-blue-100 text-sm font-medium">
+              Booking Details
             </p>
+
+            <h2 className="text-2xl font-bold mt-1">
+              {booking.class?.title || "Fitness Class"}
+            </h2>
           </div>
-        )}
 
-        <div className="flex flex-col gap-4">
-          <h2 className="text-xl font-bold text-gray-900">
-            Available Time Slots
-          </h2>
+          <div className="p-6 sm:p-8 flex flex-col gap-8">
 
-          {timeSlots.length === 0 ? (
-            <div className="border border-red-200 bg-red-50 rounded-xl min-h-20 flex items-center">
-              <p className="text-red-600 font-semibold">
-                No time slots are available for this
-                class.
-              </p>
+            {/* BOOKING INFORMATION */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <InfoItem
+                label="Class"
+                value={
+                  booking.class?.title ||
+                  "Not Available"
+                }
+              />
+
+              <InfoItem
+                label="Trainer"
+                value={
+                  booking.trainer?.name ||
+                  booking.class?.trainer?.name ||
+                  "Not Assigned"
+                }
+              />
+
+              <InfoItem
+                label="Date"
+                value={
+                  booking.class?.date ||
+                  "Not Available"
+                }
+              />
+
+              <InfoItem
+                label="Current Slot"
+                value={
+                  booking.selectedSlot ||
+                  "Not Selected"
+                }
+                highlight
+              />
+
+              <InfoItem
+                label="Status"
+                value={
+                  booking.bookingStatus || "N/A"
+                }
+                status
+              />
             </div>
-          ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              {timeSlots.map((slot, index) => {
-                const isCurrentSlot =
-                  slot === booking.selectedSlot;
 
-                const isSelected =
-                  slot === selectedSlot;
+            {/* WARNING */}
+            {!changeAllowed && (
+              <div className="bg-red-50 border border-red-200 rounded-xl p-5">
+                <div className="flex items-start gap-4">
+                  <div className="w-10 h-10 shrink-0 rounded-full bg-red-100 flex items-center justify-center text-red-600 font-bold">
+                    !
+                  </div>
 
-                return (
-                  <label
-                    key={`${slot}-${index}`}
-                    className={`min-h-14 flex items-center justify-between gap-3 border rounded-xl cursor-pointer transition ${
-                      isSelected
-                        ? "border-blue-500 bg-blue-50"
-                        : "border-gray-300 bg-white hover:bg-gray-50"
-                    }`}
-                  >
-                    <div className="flex items-center gap-3">
-                      <input
-                        type="radio"
-                        name="timeSlot"
-                        value={slot}
-                        checked={isSelected}
-                        disabled={!changeAllowed}
-                        onChange={(e) =>
-                          setSelectedSlot(
-                            e.target.value
-                          )
-                        }
-                        className="accent-blue-600"
-                      />
+                  <div>
+                    <h3 className="font-bold text-red-700 text-lg">
+                      Schedule Cannot Be Changed
+                    </h3>
 
-                      <span className="font-medium text-gray-800">
-                        {slot}
-                      </span>
-                    </div>
+                    <p className="text-red-600 mt-1 leading-6">
+                      Time slot changes are allowed
+                      only before 24 hours of the
+                      class.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
 
-                    {isCurrentSlot && (
-                      <span className="text-sm text-blue-600 font-semibold">
-                        Current
-                      </span>
-                    )}
-                  </label>
-                );
-              })}
+            {/* SLOTS */}
+            <div>
+              <div className="mb-5">
+                <h2 className="text-xl font-bold text-gray-900">
+                  Available Time Slots
+                </h2>
+
+                <p className="text-sm text-gray-500 mt-1">
+                  Choose a different slot for your
+                  booking.
+                </p>
+              </div>
+
+              {timeSlots.length === 0 ? (
+                <div className="bg-red-50 border border-red-200 rounded-xl p-5">
+                  <p className="text-red-600 font-semibold">
+                    No time slots are available for
+                    this class.
+                  </p>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {timeSlots.map((slot, index) => {
+                    const isCurrentSlot =
+                      slot === booking.selectedSlot;
+
+                    const isSelected =
+                      slot === selectedSlot;
+
+                    return (
+                      <label
+                        key={`${slot}-${index}`}
+                        className={`flex items-center justify-between gap-4 p-4 border-2 rounded-xl transition ${
+                          !changeAllowed
+                            ? "cursor-not-allowed opacity-60"
+                            : "cursor-pointer"
+                        } ${
+                          isSelected
+                            ? "border-blue-500 bg-blue-50"
+                            : "border-gray-200 bg-white hover:border-blue-300 hover:bg-blue-50"
+                        }`}
+                      >
+                        <div className="flex items-center gap-4">
+                          <input
+                            type="radio"
+                            name="timeSlot"
+                            value={slot}
+                            checked={isSelected}
+                            disabled={!changeAllowed}
+                            onChange={(e) =>
+                              setSelectedSlot(
+                                e.target.value
+                              )
+                            }
+                            className="w-5 h-5 accent-blue-600"
+                          />
+
+                          <span className="font-semibold text-gray-800">
+                            {slot}
+                          </span>
+                        </div>
+
+                        {isCurrentSlot && (
+                          <span className="px-3 py-1 rounded-full bg-blue-100 text-blue-700 text-xs font-semibold">
+                            Current
+                          </span>
+                        )}
+                      </label>
+                    );
+                  })}
+                </div>
+              )}
             </div>
-          )}
-        </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <button
-            type="button"
-            onClick={() =>
-              navigate("/dashboard/bookings")
-            }
-            className="min-h-11 border border-gray-300 rounded-lg font-semibold text-gray-700 hover:bg-gray-100 transition flex items-center justify-center"
-          >
-            Cancel
-          </button>
+            {/* ACTIONS */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2 border-t border-gray-200">
+              <button
+                type="button"
+                onClick={() =>
+                  navigate("/dashboard/bookings")
+                }
+                className="min-h-12 px-6 py-3 border border-gray-300 rounded-xl font-semibold text-gray-700 hover:bg-gray-50 transition"
+              >
+                Cancel
+              </button>
 
-          <button
-            type="button"
-            onClick={handleUpdate}
-            disabled={
-              updating ||
-              !changeAllowed ||
-              timeSlots.length === 0 ||
-              !selectedSlot ||
-              selectedSlot === booking.selectedSlot
-            }
-            className={`min-h-11 rounded-lg text-white font-semibold transition flex items-center justify-center ${
-              updating ||
-              !changeAllowed ||
-              timeSlots.length === 0 ||
-              !selectedSlot ||
-              selectedSlot === booking.selectedSlot
-                ? "bg-gray-400 cursor-not-allowed"
-                : "bg-blue-600 hover:bg-blue-700"
-            }`}
-          >
-            {updating
-              ? "Updating..."
-              : "Update Time Slot"}
-          </button>
+              <button
+                type="button"
+                onClick={handleUpdate}
+                disabled={
+                  updating ||
+                  !changeAllowed ||
+                  timeSlots.length === 0 ||
+                  !selectedSlot ||
+                  selectedSlot === booking.selectedSlot
+                }
+                className={`min-h-12 px-6 py-3 rounded-xl text-white font-semibold transition ${
+                  updating ||
+                  !changeAllowed ||
+                  timeSlots.length === 0 ||
+                  !selectedSlot ||
+                  selectedSlot === booking.selectedSlot
+                    ? "bg-gray-300 cursor-not-allowed"
+                    : "bg-blue-600 hover:bg-blue-700"
+                }`}
+              >
+                {updating
+                  ? "Updating..."
+                  : "Update Time Slot"}
+              </button>
+            </div>
+          </div>
         </div>
       </div>
+    </div>
+  );
+}
+
+function InfoItem({
+  label,
+  value,
+  highlight,
+  status,
+}) {
+  return (
+    <div className="bg-gray-50 border border-gray-200 rounded-xl p-5">
+      <p className="text-sm text-gray-500 mb-2">
+        {label}
+      </p>
+
+      <p
+        className={`font-semibold ${
+          highlight
+            ? "text-blue-600"
+            : status
+            ? "text-green-600"
+            : "text-gray-800"
+        }`}
+      >
+        {value}
+      </p>
     </div>
   );
 }

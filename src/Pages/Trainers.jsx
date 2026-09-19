@@ -1,83 +1,81 @@
-
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import api from "../Service/api";
-import { toast } from "react-toastify";
-import TrainerCard from "../Components/TrainerCard";
+import TrainerCard from "../components/TrainerCard";
 
 function Trainers() {
+  const navigate = useNavigate();
+
   const [trainers, setTrainers] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    const fetchTrainers = async () => {
+      try {
+        const response = await api.get("/trainers");
+
+        setTrainers(response.data.trainers || []);
+      } catch (error) {
+        setTrainers([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
     fetchTrainers();
   }, []);
 
-  const fetchTrainers = async () => {
-    try {
-      setLoading(true);
-
-      const response = await api.get("/trainers");
-
-      const trainerList = Array.isArray(response.data?.trainers)
-        ? response.data.trainers
-        : [];
-
-      setTrainers(trainerList);
-    } catch (error) {
-      toast.error(
-        error?.response?.data?.message ||
-          "Failed to load trainers"
-      );
-
-      setTrainers([]);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   return (
-    <div className="w-full min-h-screen bg-gray-50">
-      <div className="w-[92%] max-w-7xl self-center flex flex-col gap-8">
-
-        <div className="flex flex-col items-center justify-center gap-3 text-center min-h-40">
-          <h1 className="text-4xl font-bold text-gray-900">
-            Our Expert Trainers
+    <div className="w-full min-h-screen bg-gray-50 px-4 sm:px-6 lg:px-8 py-10 lg:py-14">
+      <div className="w-full max-w-7xl mx-auto">
+        {/* Heading */}
+        <div className="text-center px-4 py-6 mb-8">
+          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+            Our Trainers
           </h1>
 
-          <div className="w-20 h-1 bg-blue-600 rounded-full" />
-
-          <p className="max-w-2xl text-gray-600 leading-7">
-            Meet our certified fitness trainers who will guide you
-            through your online fitness journey.
+          <p className="max-w-2xl mx-auto text-gray-600 leading-7">
+            Meet our experienced fitness trainers and find the right
+            professional to support your fitness journey.
           </p>
         </div>
 
-        {loading ? (
-          <div className="min-h-60 flex items-center justify-center">
-            <div className="flex flex-col items-center gap-3">
-              <div className="w-10 h-10 border-4 border-gray-200 border-t-blue-600 rounded-full animate-spin" />
-              <p className="text-gray-600">
-                Loading trainers...
-              </p>
-            </div>
-          </div>
-        ) : trainers.length === 0 ? (
-          <div className="min-h-60 bg-white border border-gray-200 rounded-xl shadow-sm flex items-center justify-center">
-            <p className="text-gray-600 text-lg">
-              No trainers available at the moment.
+        {/* Loading */}
+        {loading && (
+          <div className="bg-white rounded-2xl shadow-sm p-10 text-center">
+            <p className="text-gray-600">
+              Loading trainers...
             </p>
           </div>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        )}
+
+        {/* Empty */}
+        {!loading && trainers.length === 0 && (
+          <div className="bg-white rounded-2xl shadow-sm p-10 text-center">
+            <h2 className="text-2xl font-bold text-gray-900 mb-3">
+              No Trainers Available
+            </h2>
+
+            <p className="text-gray-600">
+              Trainers will appear here once they are available.
+            </p>
+          </div>
+        )}
+
+        {/* Trainers */}
+        {!loading && trainers.length > 0 && (
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 lg:gap-8">
             {trainers.map((trainer) => (
               <TrainerCard
                 key={trainer._id}
                 trainer={trainer}
+                onClick={() =>
+                  navigate(`/trainers/${trainer._id}`)
+                }
               />
             ))}
           </div>
         )}
-
       </div>
     </div>
   );

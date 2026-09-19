@@ -1,130 +1,121 @@
-
-import {
-  FaDumbbell,
-  FaUsers,
-  FaCalendarCheck,
-  FaVideo,
-} from "react-icons/fa";
-
 function About() {
   const features = [
     {
-      icon: <FaUsers />,
       title: "Expert Trainers",
-      description: "Learn from experienced fitness trainers.",
+      description:
+        "Learn from experienced and certified fitness trainers.",
     },
     {
-      icon: <FaCalendarCheck />,
+      title: "Flexible Classes",
+      description:
+        "Choose classes that fit your schedule and fitness goals.",
+    },
+    {
       title: "Easy Booking",
-      description: "Book your preferred fitness class easily.",
+      description:
+        "Book your favorite fitness classes quickly and easily.",
     },
     {
-      icon: <FaVideo />,
-      title: "Online Classes",
-      description: "Join your classes online from anywhere.",
-    },
-    {
-      icon: <FaDumbbell />,
-      title: "Stay Fit",
-      description: "Build a healthier and stronger lifestyle.",
+      title: "Track Progress",
+      description:
+        "Monitor your fitness journey and stay motivated.",
     },
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col gap-16">
-
+    <div className="w-full min-h-screen bg-gray-50 flex flex-col">
       {/* Hero */}
-      <section className="bg-black text-white text-center min-h-80 flex flex-col items-center justify-center gap-5">
-        <h1 className="text-4xl md:text-5xl font-bold">
-          About <span className="text-blue-500">FitBook</span>
-        </h1>
+      <section className="w-full bg-black text-white px-6 py-16 md:py-20">
+        <div className="w-full max-w-6xl mx-auto text-center">
+          <h1 className="text-4xl md:text-5xl font-bold mb-6">
+            About FitBook
+          </h1>
 
-        <p className="w-[90%] max-w-3xl text-gray-300 text-lg leading-7">
-          FitBook is an online fitness class platform that helps users
-          discover, book and attend fitness classes with professional
-          trainers from anywhere.
-        </p>
+          <p className="max-w-3xl mx-auto text-base md:text-lg text-gray-300 leading-7">
+            FitBook is an online fitness class booking platform designed to
+            make your fitness journey simple, flexible, and convenient.
+          </p>
+        </div>
       </section>
 
       {/* About Content */}
-      <section className="w-full max-w-6xl self-center">
-        <div className="w-[92%] self-center grid md:grid-cols-2 gap-12 items-center">
+      <section className="w-full px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
+        <div className="w-full max-w-6xl mx-auto grid md:grid-cols-2 gap-8 lg:gap-12">
+          {/* Left */}
+          <div className="flex flex-col justify-center p-2 sm:p-4">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
+              Your Fitness Journey Starts Here
+            </h2>
 
-          <div className="flex flex-col gap-5">
-            <div className="flex items-center gap-3">
-              <FaDumbbell className="text-blue-600 text-4xl shrink-0" />
-
-              <h2 className="text-3xl font-bold">
-                Your Fitness Journey Starts Here
-              </h2>
-            </div>
-
-            <p className="text-gray-600 leading-7">
-              FitBook makes fitness simple and accessible. Users can
-              explore different fitness classes, check available seats,
-              choose a suitable time slot and book their classes online.
+            <p className="text-gray-600 leading-7 mb-5">
+              FitBook connects fitness enthusiasts with professional trainers
+              and a variety of fitness classes. Users can explore classes,
+              select suitable time slots, make bookings, and manage their
+              fitness schedules from one place.
             </p>
 
             <p className="text-gray-600 leading-7">
-              Our platform connects users with professional trainers
-              offering classes such as Yoga, Zumba, Cardio and Strength
-              Training.
+              Our goal is to make fitness accessible and convenient by
+              providing an easy-to-use platform for both users and trainers.
             </p>
           </div>
 
-          <div className="bg-white rounded-2xl shadow-lg min-h-80 flex flex-col justify-center gap-5">
-            <div className="w-[90%] self-center flex flex-col gap-5">
-              <h3 className="text-2xl font-bold">
-                Why Choose FitBook?
-              </h3>
+          {/* Right */}
+          <div className="bg-white rounded-2xl shadow-lg p-6 sm:p-8 lg:p-10 flex flex-col justify-center">
+            <h3 className="text-2xl font-bold text-gray-900 mb-6">
+              Why FitBook?
+            </h3>
 
-              <ul className="flex flex-col gap-4 text-gray-600">
-                <li>✓ Easy online class booking</li>
-                <li>✓ Professional trainers</li>
-                <li>✓ Multiple fitness categories</li>
-                <li>✓ Flexible time slots</li>
-                <li>✓ Online fitness sessions</li>
-                <li>✓ Booking and payment management</li>
-              </ul>
-            </div>
+            <ul className="space-y-4">
+              <li className="flex gap-3 text-gray-600">
+                <span className="text-blue-600 font-bold">✓</span>
+                Easy online class booking
+              </li>
+
+              <li className="flex gap-3 text-gray-600">
+                <span className="text-blue-600 font-bold">✓</span>
+                Professional and experienced trainers
+              </li>
+
+              <li className="flex gap-3 text-gray-600">
+                <span className="text-blue-600 font-bold">✓</span>
+                Flexible class schedules
+              </li>
+
+              <li className="flex gap-3 text-gray-600">
+                <span className="text-blue-600 font-bold">✓</span>
+                Simple and user-friendly experience
+              </li>
+            </ul>
           </div>
-
         </div>
       </section>
 
       {/* Features */}
-      <section className="bg-white min-h-96 flex flex-col justify-center gap-10">
-        <div className="w-full max-w-6xl self-center flex flex-col gap-10">
-
-          <h2 className="text-3xl font-bold text-center">
+      <section className="w-full bg-white px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
+        <div className="w-full max-w-6xl mx-auto">
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-10">
             What We Offer
           </h2>
 
-          <div className="w-[92%] self-center grid sm:grid-cols-2 md:grid-cols-4 gap-6">
-
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {features.map((feature) => (
               <div
                 key={feature.title}
-                className="rounded-xl shadow-lg border border-gray-100 min-h-52 flex flex-col items-center justify-center gap-4 text-center"
+                className="bg-gray-50 rounded-xl shadow-sm p-6 text-center hover:shadow-md transition"
               >
-                <div className="text-blue-600 text-4xl">
-                  {feature.icon}
-                </div>
-
-                <h3 className="font-bold text-xl">
+                <h3 className="text-xl font-semibold text-gray-900 mb-4">
                   {feature.title}
                 </h3>
 
-                <p className="text-gray-500 w-[90%]">
+                <p className="text-gray-600 leading-6">
                   {feature.description}
                 </p>
               </div>
             ))}
-
           </div>
         </div>
       </section>
-
     </div>
   );
 }

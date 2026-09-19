@@ -1,5 +1,3 @@
-
-
 import { useEffect, useState } from "react";
 import {
   useLocation,
@@ -179,129 +177,132 @@ function Feedback() {
 
   if (fetching) {
     return (
-      <div className="min-h-[60vh] flex items-center justify-center">
-        <div className="text-center flex flex-col gap-3">
-          <div className="w-10 h-10 border-4 border-gray-200 border-t-blue-600 rounded-full animate-spin mx-auto" />
+      <div className="min-h-[70vh] flex items-center justify-center px-4 py-10">
+        <div className="bg-white rounded-2xl shadow-md border border-gray-100 p-8 text-center">
+          <div className="w-12 h-12 border-4 border-gray-200 border-t-blue-600 rounded-full animate-spin mx-auto mb-5" />
 
           <h2 className="text-xl font-semibold text-gray-700">
             Loading feedback...
           </h2>
+
+          <p className="text-gray-500 mt-2">
+            Please wait while we load your completed
+            classes.
+          </p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="w-full max-w-4xl flex flex-col gap-8">
-      <div className="flex flex-col gap-2">
-        <h1 className="text-3xl md:text-4xl font-bold text-gray-900">
-          Class Feedback
-        </h1>
+    <div className="w-full px-4 sm:px-6 lg:px-8 py-8 lg:py-10">
+      <div className="max-w-4xl mx-auto">
 
-        <p className="text-gray-500">
-          Share your experience and help us improve.
-        </p>
-      </div>
+        {/* HEADER */}
+        <div className="mb-8">
+          <h1 className="text-3xl md:text-4xl font-bold text-gray-900">
+            Class Feedback
+          </h1>
 
-      <div className="bg-white shadow-lg rounded-xl border border-gray-100 flex flex-col gap-5">
-        <h2 className="text-xl font-bold text-gray-900">
-          Select Completed Class
-        </h2>
+          <p className="text-gray-500 mt-2">
+            Share your experience and help us improve.
+          </p>
+        </div>
 
-        {bookings.length === 0 ? (
-          <div className="min-h-20 bg-gray-50 border border-gray-200 rounded-lg flex items-center">
-            <p className="text-gray-500">
-              No completed classes are available for
+        {/* SELECT CLASS */}
+        <div className="bg-white shadow-md rounded-2xl border border-gray-100 p-6 sm:p-7 mb-6">
+          <div className="mb-5">
+            <h2 className="text-xl font-bold text-gray-900">
+              Select Completed Class
+            </h2>
+
+            <p className="text-sm text-gray-500 mt-1">
+              Choose a completed class to leave your
               feedback.
             </p>
           </div>
-        ) : (
-          <select
-            value={selectedBooking?._id || ""}
-            onChange={(e) => {
-              const booking =
-                bookings.find(
-                  (item) =>
-                    item._id === e.target.value
-                );
 
-              setSelectedBooking(
-                booking || null
-              );
-            }}
-            className="w-full h-11 border border-gray-300 rounded-lg bg-white indent-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          >
-            <option value="">
-              Select your completed class
-            </option>
-
-            {bookings.map((booking) => (
-              <option
-                key={booking._id}
-                value={booking._id}
-              >
-                {booking.class?.title || "Class"} -{" "}
-                {booking.selectedSlot || "Time"}
-              </option>
-            ))}
-          </select>
-        )}
-      </div>
-
-      {selectedBooking && (
-        <form
-          onSubmit={handleSubmit}
-          className="bg-white shadow-lg rounded-xl border border-gray-100 flex flex-col gap-8"
-        >
-          <div className="flex flex-col gap-2">
-            <h2 className="text-2xl font-bold text-gray-900">
-              {selectedBooking.class?.title}
-            </h2>
-
-            <p className="text-gray-600">
-              Trainer:{" "}
-              {selectedBooking.trainer?.name ||
-                "Not assigned"}
-            </p>
-
-            <p className="text-gray-600">
-              Time:{" "}
-              {selectedBooking.selectedSlot ||
-                "Not available"}
-            </p>
-          </div>
-
-          <div className="flex flex-col gap-3">
-            <label className="font-semibold text-gray-800">
-              Trainer Rating
-            </label>
-
-            <div className="flex gap-2">
-              {[1, 2, 3, 4, 5].map((star) => (
-                <button
-                  type="button"
-                  key={star}
-                  onClick={() =>
-                    setTrainerRating(star)
-                  }
-                  className={`text-3xl transition ${
-                    star <= trainerRating
-                      ? "text-yellow-400"
-                      : "text-gray-300"
-                  }`}
-                >
-                  ★
-                </button>
-              ))}
+          {bookings.length === 0 ? (
+            <div className="bg-gray-50 border border-gray-200 rounded-xl p-5">
+              <p className="text-gray-500">
+                No completed classes are available for
+                feedback.
+              </p>
             </div>
-          </div>
+          ) : (
+            <select
+              value={selectedBooking?._id || ""}
+              onChange={(e) => {
+                const booking =
+                  bookings.find(
+                    (item) =>
+                      item._id === e.target.value
+                  );
 
-          <div className="flex flex-col gap-3">
-            <label className="font-semibold text-gray-800">
-              Trainer Feedback
-            </label>
+                setSelectedBooking(
+                  booking || null
+                );
+              }}
+              className="w-full h-12 px-4 border border-gray-300 rounded-xl bg-white text-gray-700 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+            >
+              <option value="">
+                Select your completed class
+              </option>
 
-            <textarea
+              {bookings.map((booking) => (
+                <option
+                  key={booking._id}
+                  value={booking._id}
+                >
+                  {booking.class?.title || "Class"} -{" "}
+                  {booking.selectedSlot || "Time"}
+                </option>
+              ))}
+            </select>
+          )}
+        </div>
+
+        {/* FORM */}
+        {selectedBooking && (
+          <form
+            onSubmit={handleSubmit}
+            className="bg-white shadow-md rounded-2xl border border-gray-100 p-6 sm:p-8 flex flex-col gap-8"
+          >
+            {/* CLASS INFO */}
+            <div className="bg-blue-50 border border-blue-100 rounded-xl p-5">
+              <h2 className="text-2xl font-bold text-gray-900">
+                {selectedBooking.class?.title}
+              </h2>
+
+              <div className="mt-3 flex flex-col gap-1">
+                <p className="text-gray-600">
+                  <span className="font-semibold">
+                    Trainer:
+                  </span>{" "}
+                  {selectedBooking.trainer?.name ||
+                    "Not assigned"}
+                </p>
+
+                <p className="text-gray-600">
+                  <span className="font-semibold">
+                    Time:
+                  </span>{" "}
+                  {selectedBooking.selectedSlot ||
+                    "Not available"}
+                </p>
+              </div>
+            </div>
+
+            {/* TRAINER RATING */}
+            <RatingSection
+              label="Trainer Rating"
+              rating={trainerRating}
+              setRating={setTrainerRating}
+            />
+
+            {/* TRAINER FEEDBACK */}
+            <FeedbackTextarea
+              label="Trainer Feedback"
               value={trainerFeedback}
               onChange={(e) =>
                 setTrainerFeedback(
@@ -309,42 +310,18 @@ function Feedback() {
                 )
               }
               placeholder="Write your feedback about the trainer..."
-              rows="4"
-              className="w-full border border-gray-300 rounded-lg indent-3 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
             />
-          </div>
 
-          <div className="flex flex-col gap-3">
-            <label className="font-semibold text-gray-800">
-              Class Rating
-            </label>
+            {/* CLASS RATING */}
+            <RatingSection
+              label="Class Rating"
+              rating={classRating}
+              setRating={setClassRating}
+            />
 
-            <div className="flex gap-2">
-              {[1, 2, 3, 4, 5].map((star) => (
-                <button
-                  type="button"
-                  key={star}
-                  onClick={() =>
-                    setClassRating(star)
-                  }
-                  className={`text-3xl transition ${
-                    star <= classRating
-                      ? "text-yellow-400"
-                      : "text-gray-300"
-                  }`}
-                >
-                  ★
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <div className="flex flex-col gap-3">
-            <label className="font-semibold text-gray-800">
-              Class Feedback
-            </label>
-
-            <textarea
+            {/* CLASS FEEDBACK */}
+            <FeedbackTextarea
+              label="Class Feedback"
               value={classFeedback}
               onChange={(e) =>
                 setClassFeedback(
@@ -352,26 +329,85 @@ function Feedback() {
                 )
               }
               placeholder="Write your feedback about the class..."
-              rows="4"
-              className="w-full border border-gray-300 rounded-lg indent-3 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
             />
-          </div>
 
+            {/* SUBMIT */}
+            <button
+              type="submit"
+              disabled={loading}
+              className={`w-full min-h-12 px-6 py-3 rounded-xl text-white font-semibold flex items-center justify-center transition ${
+                loading
+                  ? "bg-gray-300 cursor-not-allowed"
+                  : "bg-blue-600 hover:bg-blue-700"
+              }`}
+            >
+              {loading
+                ? "Submitting..."
+                : "Submit Feedback"}
+            </button>
+          </form>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function RatingSection({
+  label,
+  rating,
+  setRating,
+}) {
+  return (
+    <div className="flex flex-col gap-3">
+      <label className="font-semibold text-gray-800">
+        {label}
+      </label>
+
+      <div className="flex items-center gap-2">
+        {[1, 2, 3, 4, 5].map((star) => (
           <button
-            type="submit"
-            disabled={loading}
-            className={`w-full min-h-12 rounded-lg text-white font-semibold flex items-center justify-center transition ${
-              loading
-                ? "bg-gray-400 cursor-not-allowed"
-                : "bg-blue-600 hover:bg-blue-700"
+            type="button"
+            key={star}
+            onClick={() => setRating(star)}
+            className={`w-10 h-10 rounded-lg text-2xl transition ${
+              star <= rating
+                ? "text-yellow-400 bg-yellow-50"
+                : "text-gray-300 bg-gray-50 hover:bg-gray-100"
             }`}
           >
-            {loading
-              ? "Submitting..."
-              : "Submit Feedback"}
+            ★
           </button>
-        </form>
-      )}
+        ))}
+      </div>
+
+      <p className="text-sm text-gray-500">
+        {rating === 0
+          ? "Select a rating"
+          : `${rating} out of 5`}
+      </p>
+    </div>
+  );
+}
+
+function FeedbackTextarea({
+  label,
+  value,
+  onChange,
+  placeholder,
+}) {
+  return (
+    <div className="flex flex-col gap-3">
+      <label className="font-semibold text-gray-800">
+        {label}
+      </label>
+
+      <textarea
+        value={value}
+        onChange={onChange}
+        placeholder={placeholder}
+        rows="4"
+        className="w-full px-4 py-3 border border-gray-300 rounded-xl text-gray-800 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 resize-none"
+      />
     </div>
   );
 }

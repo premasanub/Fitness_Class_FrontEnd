@@ -101,156 +101,194 @@ function ReferralOffer() {
 
   if (loading) {
     return (
-      <div className="min-h-40 flex items-center justify-center">
-        <div className="w-10 h-10 border-4 border-red-500 border-t-transparent rounded-full animate-spin"></div>
+      <div className="min-h-[60vh] flex items-center justify-center px-4 py-10">
+        <div className="bg-white rounded-2xl shadow-md border border-gray-100 p-8 text-center">
+          <div className="w-12 h-12 border-4 border-red-200 border-t-red-500 rounded-full animate-spin mx-auto" />
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="w-full flex flex-col gap-8">
-      {/* HEADER */}
-      <div className="flex flex-col gap-2">
-        <h1 className="text-4xl font-bold text-gray-900">
-          Refer Friends & Family
-        </h1>
+    <div className="w-full px-4 sm:px-6 lg:px-8 py-8 lg:py-10">
+      <div className="max-w-6xl mx-auto">
 
-        <p className="text-gray-500">
-          Invite your friends and earn exciting rewards.
-        </p>
-      </div>
+        {/* HEADER */}
+        <div className="mb-8">
+          <p className="text-red-500 font-semibold text-sm uppercase tracking-wide">
+            Referral Program
+          </p>
 
-      {/* OFFER */}
-      {offer && (
-        <div className="bg-red-500 text-white rounded-xl shadow min-h-32 flex items-center">
-          <div className="flex items-center gap-4">
-            <div className="w-14 h-14 shrink-0 bg-white/20 rounded-full flex items-center justify-center">
-              <FaGift className="text-2xl" />
+          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mt-1">
+            Refer Friends & Family
+          </h1>
+
+          <p className="text-gray-500 mt-2">
+            Invite your friends and earn exciting rewards.
+          </p>
+        </div>
+
+        {/* OFFER */}
+        {offer && (
+          <div className="bg-gradient-to-r from-red-500 to-red-600 text-white rounded-2xl shadow-lg p-6 sm:p-8 mb-8">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-5">
+              <div className="w-16 h-16 shrink-0 bg-white/20 rounded-2xl flex items-center justify-center">
+                <FaGift className="text-3xl" />
+              </div>
+
+              <div>
+                <h2 className="text-2xl font-bold">
+                  {offer.title ||
+                    "Referral Offer"}
+                </h2>
+
+                <p className="text-red-100 mt-2 leading-6">
+                  {offer.description ||
+                    "Refer your friends and enjoy exciting rewards."}
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* STATS */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+          <div className="bg-blue-600 text-white rounded-2xl shadow-lg p-6 sm:p-7">
+            <div className="flex items-center justify-between gap-4">
+              <div>
+                <p className="text-blue-100 text-sm font-medium">
+                  Successful Referrals
+                </p>
+
+                <h2 className="text-4xl font-bold mt-2">
+                  {referral.referralCount}
+                </h2>
+              </div>
+
+              <div className="w-14 h-14 rounded-2xl bg-white/20 flex items-center justify-center">
+                <FaUsers className="text-2xl" />
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-purple-600 text-white rounded-2xl shadow-lg p-6 sm:p-7">
+            <div className="flex items-center justify-between gap-4">
+              <div className="min-w-0">
+                <p className="text-purple-100 text-sm font-medium">
+                  Your Referral Code
+                </p>
+
+                <h2 className="text-2xl sm:text-3xl font-bold tracking-wider break-all mt-2">
+                  {referral.referralCode ||
+                    "N/A"}
+                </h2>
+              </div>
+
+              <div className="w-14 h-14 shrink-0 rounded-2xl bg-white/20 flex items-center justify-center">
+                <FaGift className="text-2xl" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* REFERRAL LINK */}
+        <div className="bg-white rounded-2xl shadow-md border border-gray-100 p-6 sm:p-8 mb-8">
+          <div className="flex items-center gap-3 mb-3">
+            <div className="w-10 h-10 rounded-xl bg-red-50 flex items-center justify-center">
+              <FaLink className="text-red-500" />
             </div>
 
-            <div className="flex flex-col gap-1">
-              <h2 className="text-2xl font-bold">
-                {offer.title || "Referral Offer"}
-              </h2>
+            <h2 className="text-xl font-bold text-gray-900">
+              Your Referral Link
+            </h2>
+          </div>
 
-              <p className="text-red-100">
-                {offer.description ||
-                  "Refer your friends and enjoy exciting rewards."}
+          <p className="text-gray-500 mb-5">
+            Share this link with your friends to invite
+            them.
+          </p>
+
+          <div className="flex flex-col md:flex-row gap-3">
+            <div className="flex-1 min-h-12 px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl flex items-center">
+              <p className="text-sm text-gray-700 break-all">
+                {referral.referralLink ||
+                  "No referral link available"}
               </p>
             </div>
-          </div>
-        </div>
-      )}
 
-      {/* STATS */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="bg-blue-600 text-white rounded-xl shadow min-h-36 flex items-center justify-between gap-4">
-          <div className="flex flex-col gap-2">
-            <h2>Successful Referrals</h2>
-
-            <h1 className="text-4xl font-bold">
-              {referral.referralCount}
-            </h1>
-          </div>
-
-          <FaUsers className="text-4xl opacity-80" />
-        </div>
-
-        <div className="bg-purple-600 text-white rounded-xl shadow min-h-36 flex items-center justify-between gap-4">
-          <div className="flex flex-col gap-2">
-            <h2>Your Referral Code</h2>
-
-            <h1 className="text-3xl font-bold tracking-wider break-all">
-              {referral.referralCode || "N/A"}
-            </h1>
-          </div>
-
-          <FaGift className="text-4xl opacity-80 shrink-0" />
-        </div>
-      </div>
-
-      {/* REFERRAL LINK */}
-      <div className="bg-white rounded-xl shadow border border-gray-100 flex flex-col gap-5">
-        <div className="flex items-center gap-3">
-          <FaLink className="text-red-500 text-xl" />
-
-          <h2 className="text-xl font-bold">
-            Your Referral Link
-          </h2>
-        </div>
-
-        <p className="text-gray-500">
-          Share this link with your friends to invite them.
-        </p>
-
-        <div className="flex flex-col md:flex-row gap-3">
-          <div className="flex-1 min-h-12 bg-gray-100 border border-gray-200 rounded-lg flex items-center">
-            <p className="text-sm text-gray-700 break-all">
-              {referral.referralLink ||
-                "No referral link available"}
-            </p>
+            <button
+              type="button"
+              onClick={handleCopy}
+              className="min-h-12 px-6 py-3 bg-red-500 hover:bg-red-600 text-white rounded-xl flex items-center justify-center gap-2 font-semibold transition"
+            >
+              <FaCopy />
+              Copy Link
+            </button>
           </div>
 
           <button
             type="button"
-            onClick={handleCopy}
-            className="min-h-12 bg-red-500 hover:bg-red-600 text-white rounded-lg flex items-center justify-center gap-2 transition"
+            onClick={handleShare}
+            className="w-full min-h-12 mt-4 px-6 py-3 bg-gray-900 hover:bg-gray-800 text-white rounded-xl flex items-center justify-center gap-2 font-semibold transition"
           >
-            <FaCopy />
-            Copy Link
+            <FaShareAlt />
+            Share Referral Link
           </button>
         </div>
 
-        <button
-          type="button"
-          onClick={handleShare}
-          className="min-h-12 bg-gray-900 hover:bg-gray-800 text-white rounded-lg flex items-center justify-center gap-2 transition"
-        >
-          <FaShareAlt />
-          Share Referral Link
-        </button>
-      </div>
+        {/* HOW IT WORKS */}
+        <div className="bg-white rounded-2xl shadow-md border border-gray-100 p-6 sm:p-8">
+          <div className="mb-7">
+            <h2 className="text-2xl font-bold text-gray-900">
+              How It Works
+            </h2>
 
-      {/* HOW IT WORKS */}
-      <div className="bg-white rounded-xl shadow border border-gray-100 flex flex-col gap-6">
-        <h2 className="text-2xl font-bold">
-          How It Works
-        </h2>
+            <p className="text-gray-500 mt-1">
+              Refer friends in three simple steps.
+            </p>
+          </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <Step
-            number="1"
-            title="Share Your Link"
-            description="Copy your referral link and share it with your friends and family."
-          />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <Step
+              number="1"
+              title="Share Your Link"
+              description="Copy your referral link and share it with your friends and family."
+            />
 
-          <Step
-            number="2"
-            title="Friend Registers"
-            description="Your friend creates an account using your referral link."
-          />
+            <Step
+              number="2"
+              title="Friend Registers"
+              description="Your friend creates an account using your referral link."
+            />
 
-          <Step
-            number="3"
-            title="Earn Rewards"
-            description="Once the referral is completed, you can receive the applicable reward."
-          />
+            <Step
+              number="3"
+              title="Earn Rewards"
+              description="Once the referral is completed, you can receive the applicable reward."
+            />
+          </div>
         </div>
       </div>
     </div>
   );
 }
 
-function Step({ number, title, description }) {
+function Step({
+  number,
+  title,
+  description,
+}) {
   return (
-    <div className="text-center flex flex-col items-center gap-3">
-      <div className="w-12 h-12 bg-red-100 text-red-500 rounded-full flex items-center justify-center font-bold text-xl">
+    <div className="bg-gray-50 border border-gray-200 rounded-xl p-6 text-center">
+      <div className="w-12 h-12 mx-auto bg-red-100 text-red-500 rounded-full flex items-center justify-center font-bold text-xl mb-4">
         {number}
       </div>
 
-      <h3 className="font-bold">{title}</h3>
+      <h3 className="font-bold text-gray-900">
+        {title}
+      </h3>
 
-      <p className="text-gray-500 text-sm">
+      <p className="text-gray-500 text-sm mt-2 leading-6">
         {description}
       </p>
     </div>

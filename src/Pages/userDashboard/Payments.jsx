@@ -1,5 +1,3 @@
-
-
 import { useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { toast } from "react-toastify";
@@ -31,13 +29,17 @@ function Payments() {
 
   if (!classData || !selectedSlot) {
     return (
-      <div className="min-h-[60vh] flex items-center justify-center">
-        <div className="text-center flex flex-col gap-4">
-          <h2 className="text-2xl font-bold text-red-500">
+      <div className="min-h-[70vh] flex items-center justify-center px-4 py-10">
+        <div className="w-full max-w-lg bg-white rounded-2xl shadow-md border border-gray-100 p-8 text-center">
+          <div className="w-14 h-14 mx-auto mb-5 rounded-full bg-red-100 flex items-center justify-center text-red-600 text-2xl">
+            !
+          </div>
+
+          <h2 className="text-2xl font-bold text-gray-900">
             Booking Details Not Found
           </h2>
 
-          <p className="text-gray-600">
+          <p className="text-gray-500 mt-3">
             Please select a class and time slot first.
           </p>
 
@@ -45,7 +47,7 @@ function Payments() {
             onClick={() =>
               navigate("/dashboard/classes")
             }
-            className="min-h-11 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition flex items-center justify-center"
+            className="w-full min-h-12 mt-6 px-6 py-3 bg-blue-600 text-white rounded-xl font-semibold hover:bg-blue-700 transition"
           >
             Go to Classes
           </button>
@@ -99,15 +101,10 @@ function Payments() {
 
       const options = {
         key: import.meta.env.VITE_RAZORPAY_KEY_ID,
-
         amount: order.amount,
-
         currency: order.currency,
-
         name: "Fitness Booking",
-
         description: `${classData.title} Booking`,
-
         order_id: order.id,
 
         handler: async function (response) {
@@ -137,7 +134,6 @@ function Payments() {
 
             const bookingData = {
               user: user._id,
-
               classId: classData._id,
 
               trainer:
@@ -145,7 +141,6 @@ function Payments() {
                 classData.trainer,
 
               selectedSlot,
-
               paymentStatus: "Paid",
 
               razorpayOrderId:
@@ -169,6 +164,7 @@ function Payments() {
                 bookingResponse.data?.message ||
                   "Booking could not be created."
               );
+
               setLoading(false);
               return;
             }
@@ -237,125 +233,147 @@ function Payments() {
   };
 
   return (
-    <div className="w-full max-w-3xl flex flex-col gap-8">
-      <div className="flex flex-col gap-2">
-        <h1 className="text-3xl md:text-4xl font-bold text-gray-900">
-          Payment
-        </h1>
+    <div className="w-full px-4 sm:px-6 lg:px-8 py-8 lg:py-10">
+      <div className="max-w-4xl mx-auto">
 
-        <p className="text-gray-500">
-          Review your booking before completing payment.
-        </p>
-      </div>
+        {/* HEADER */}
+        <div className="mb-8">
+          <h1 className="text-3xl md:text-4xl font-bold text-gray-900">
+            Payment
+          </h1>
 
-      <div className="bg-white shadow-lg rounded-xl border border-gray-100 flex flex-col gap-6">
-        <h2 className="text-2xl font-bold text-gray-900">
-          Booking Summary
-        </h2>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div className="border border-gray-200 rounded-lg min-h-16 flex flex-col justify-center">
-            <span className="text-sm text-gray-500">
-              Class
-            </span>
-
-            <strong className="text-gray-800">
-              {classData.title}
-            </strong>
-          </div>
-
-          <div className="border border-gray-200 rounded-lg min-h-16 flex flex-col justify-center">
-            <span className="text-sm text-gray-500">
-              Category
-            </span>
-
-            <strong className="text-gray-800">
-              {classData.category}
-            </strong>
-          </div>
-
-          <div className="border border-gray-200 rounded-lg min-h-16 flex flex-col justify-center">
-            <span className="text-sm text-gray-500">
-              Trainer
-            </span>
-
-            <strong className="text-gray-800">
-              {classData.trainer?.name ||
-                "Not assigned"}
-            </strong>
-          </div>
-
-          <div className="border border-gray-200 rounded-lg min-h-16 flex flex-col justify-center">
-            <span className="text-sm text-gray-500">
-              Date
-            </span>
-
-            <strong className="text-gray-800">
-              {classData.date}
-            </strong>
-          </div>
-
-          <div className="border border-gray-200 rounded-lg min-h-16 flex flex-col justify-center">
-            <span className="text-sm text-gray-500">
-              Selected Slot
-            </span>
-
-            <strong className="text-blue-600">
-              {selectedSlot}
-            </strong>
-          </div>
-
-          <div className="border border-gray-200 rounded-lg min-h-16 flex flex-col justify-center">
-            <span className="text-sm text-gray-500">
-              Duration
-            </span>
-
-            <strong className="text-gray-800">
-              {classData.duration} mins
-            </strong>
-          </div>
-        </div>
-
-        <div className="border-t border-gray-200 min-h-16 flex items-center justify-between gap-4">
-          <span className="font-semibold text-gray-700">
-            Total Amount
-          </span>
-
-          <strong className="text-2xl text-blue-600">
-            ₹{classData.price}
-          </strong>
-        </div>
-      </div>
-
-      <div className="bg-gray-50 border border-gray-200 rounded-xl flex flex-col gap-6">
-        <h2 className="text-xl font-bold text-gray-900">
-          Payment Method
-        </h2>
-
-        <div className="border border-gray-200 rounded-lg bg-white min-h-20 flex flex-col justify-center gap-1">
-          <p className="font-semibold text-gray-800">
-            Razorpay
-          </p>
-
-          <p className="text-gray-500 text-sm">
-            UPI, Credit/Debit Card, Net Banking
+          <p className="text-gray-500 mt-2">
+            Review your booking before completing
+            payment.
           </p>
         </div>
 
-        <button
-          onClick={handlePayment}
-          disabled={loading}
-          className={`w-full min-h-12 rounded-lg text-white font-semibold flex items-center justify-center transition ${
-            loading
-              ? "bg-gray-400 cursor-not-allowed"
-              : "bg-green-600 hover:bg-green-700"
-          }`}
-        >
-          {loading
-            ? "Processing..."
-            : `Pay ₹${classData.price}`}
-        </button>
+        {/* BOOKING SUMMARY */}
+        <div className="bg-white shadow-lg rounded-2xl border border-gray-100 p-6 sm:p-8 mb-6">
+          <div className="flex items-center justify-between gap-4 mb-6">
+            <div>
+              <p className="text-sm text-blue-600 font-semibold uppercase tracking-wide">
+                Booking Summary
+              </p>
+
+              <h2 className="text-2xl font-bold text-gray-900 mt-1">
+                {classData.title}
+              </h2>
+            </div>
+
+            <div className="hidden sm:flex w-12 h-12 rounded-xl bg-blue-50 items-center justify-center text-blue-600 text-xl">
+              ₹
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <InfoItem
+              label="Class"
+              value={classData.title}
+            />
+
+            <InfoItem
+              label="Category"
+              value={classData.category}
+            />
+
+            <InfoItem
+              label="Trainer"
+              value={
+                classData.trainer?.name ||
+                "Not assigned"
+              }
+            />
+
+            <InfoItem
+              label="Date"
+              value={classData.date}
+            />
+
+            <InfoItem
+              label="Selected Slot"
+              value={selectedSlot}
+              highlight
+            />
+
+            <InfoItem
+              label="Duration"
+              value={`${classData.duration} mins`}
+            />
+          </div>
+
+          <div className="mt-6 pt-6 border-t border-gray-200 flex items-center justify-between gap-4">
+            <span className="font-semibold text-gray-700">
+              Total Amount
+            </span>
+
+            <strong className="text-2xl text-blue-600">
+              ₹{classData.price}
+            </strong>
+          </div>
+        </div>
+
+        {/* PAYMENT METHOD */}
+        <div className="bg-gray-50 border border-gray-200 rounded-2xl p-6 sm:p-8">
+          <div className="mb-5">
+            <p className="text-sm text-green-600 font-semibold uppercase tracking-wide">
+              Secure Payment
+            </p>
+
+            <h2 className="text-xl font-bold text-gray-900 mt-1">
+              Payment Method
+            </h2>
+          </div>
+
+          <div className="bg-white border border-gray-200 rounded-xl p-5 mb-5">
+            <p className="font-semibold text-gray-800">
+              Razorpay
+            </p>
+
+            <p className="text-gray-500 text-sm mt-1">
+              UPI, Credit/Debit Card, Net Banking
+            </p>
+          </div>
+
+          <button
+            onClick={handlePayment}
+            disabled={loading}
+            className={`w-full min-h-12 px-6 py-3 rounded-xl text-white font-semibold flex items-center justify-center transition ${
+              loading
+                ? "bg-gray-300 cursor-not-allowed"
+                : "bg-green-600 hover:bg-green-700"
+            }`}
+          >
+            {loading
+              ? "Processing..."
+              : `Pay ₹${classData.price}`}
+          </button>
+        </div>
       </div>
+    </div>
+  );
+}
+
+function InfoItem({
+  label,
+  value,
+  highlight,
+}) {
+  return (
+    <div className="bg-gray-50 border border-gray-200 rounded-xl p-5">
+      <p className="text-sm text-gray-500 mb-2">
+        {label}
+      </p>
+
+      <p
+        className={`font-semibold ${
+          highlight
+            ? "text-blue-600"
+            : "text-gray-800"
+        }`}
+      >
+        {value || "N/A"}
+      </p>
     </div>
   );
 }

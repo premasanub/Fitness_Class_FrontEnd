@@ -1,5 +1,3 @@
-
-
 import { useEffect, useState } from "react";
 import api from "../../Service/api";
 import { toast } from "react-toastify";
@@ -86,35 +84,55 @@ function DashboardHome() {
   ];
 
   return (
-    <main className="w-full flex flex-col gap-8">
-      {/* HEADER */}
-      <section className="flex flex-col gap-2">
-        <h1 className="text-4xl font-bold text-gray-800">
-          Welcome 👋
-        </h1>
+    <main className="w-full px-4 sm:px-6 lg:px-8 py-8 lg:py-10">
+      <div className="max-w-7xl mx-auto">
 
-        <p className="text-gray-500">
-          Track your fitness journey here.
-        </p>
-      </section>
+        {/* HEADER */}
+        <section className="mb-8">
+          <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 sm:p-8">
+            <p className="text-blue-600 font-semibold text-sm uppercase tracking-wide">
+              Dashboard
+            </p>
 
-      {/* STATS */}
-      <section className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
-        {cards.map((card) => (
-          <div
-            key={card.title}
-            className={`${card.className} text-white rounded-xl shadow-lg min-h-40 flex flex-col justify-center gap-3`}
-          >
-            <h2 className="text-lg font-semibold">
-              {card.title}
-            </h2>
+            <h1 className="text-3xl md:text-4xl font-bold text-gray-800 mt-2">
+              Welcome 👋
+            </h1>
 
-            <p className="text-4xl font-bold">
-              {loading ? "..." : card.value}
+            <p className="text-gray-500 mt-2">
+              Track your fitness journey and manage your
+              bookings from here.
             </p>
           </div>
-        ))}
-      </section>
+        </section>
+
+        {/* STATS */}
+        <section>
+          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5 lg:gap-6">
+            {cards.map((card) => (
+              <div
+                key={card.title}
+                className={`${card.className} text-white rounded-2xl shadow-lg p-6 min-h-40 flex flex-col justify-between`}
+              >
+                <div className="flex items-center justify-between gap-3">
+                  <h2 className="text-base font-semibold">
+                    {card.title}
+                  </h2>
+
+                  <div className="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center">
+                    <span className="text-sm font-bold">
+                      #
+                    </span>
+                  </div>
+                </div>
+
+                <p className="text-4xl font-bold">
+                  {loading ? "..." : card.value}
+                </p>
+              </div>
+            ))}
+          </div>
+        </section>
+      </div>
     </main>
   );
 }

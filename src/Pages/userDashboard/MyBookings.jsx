@@ -1,5 +1,3 @@
-
-
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import api from "../../Service/api";
@@ -62,50 +60,66 @@ function MyBookings() {
 
   if (loading) {
     return (
-      <div className="min-h-[60vh] flex items-center justify-center">
-        <div className="text-center flex flex-col gap-3">
-          <div className="w-10 h-10 border-4 border-gray-200 border-t-blue-600 rounded-full animate-spin mx-auto" />
+      <div className="min-h-[70vh] flex items-center justify-center px-4 py-10">
+        <div className="bg-white rounded-2xl shadow-md border border-gray-100 p-8 text-center">
+          <div className="w-12 h-12 border-4 border-gray-200 border-t-blue-600 rounded-full animate-spin mx-auto mb-5" />
 
           <h2 className="text-xl font-semibold text-gray-700">
             Loading bookings...
           </h2>
+
+          <p className="text-gray-500 mt-2">
+            Please wait while we load your bookings.
+          </p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="w-full flex flex-col gap-8">
-      <div className="flex flex-col gap-2">
-        <h1 className="text-3xl md:text-4xl font-bold text-gray-900">
-          My Bookings
-        </h1>
+    <div className="w-full px-4 sm:px-6 lg:px-8 py-8 lg:py-10">
+      <div className="max-w-7xl mx-auto">
 
-        <p className="text-gray-500">
-          View and manage your fitness class bookings.
-        </p>
-      </div>
+        {/* HEADER */}
+        <div className="mb-8">
+          <h1 className="text-3xl md:text-4xl font-bold text-gray-900">
+            My Bookings
+          </h1>
 
-      {bookings.length === 0 ? (
-        <div className="min-h-56 bg-white rounded-xl shadow border border-gray-100 flex flex-col items-center justify-center gap-3 text-center">
-          <h2 className="text-xl font-semibold text-gray-700">
-            No Bookings Found
-          </h2>
-
-          <p className="text-gray-500">
-            You haven't booked any fitness classes yet.
+          <p className="text-gray-500 mt-2">
+            View and manage your fitness class bookings.
           </p>
         </div>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {bookings.map((booking) => (
-            <BookingCard
-              key={booking._id}
-              booking={booking}
-            />
-          ))}
-        </div>
-      )}
+
+        {/* BOOKINGS */}
+        {bookings.length === 0 ? (
+          <div className="bg-white rounded-2xl shadow-md border border-gray-100 min-h-64 flex flex-col items-center justify-center p-8 text-center">
+            <div className="w-16 h-16 rounded-full bg-blue-50 flex items-center justify-center mb-4">
+              <span className="text-blue-600 text-2xl">
+                📅
+              </span>
+            </div>
+
+            <h2 className="text-xl font-semibold text-gray-700">
+              No Bookings Found
+            </h2>
+
+            <p className="text-gray-500 mt-2">
+              You haven't booked any fitness classes
+              yet.
+            </p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {bookings.map((booking) => (
+              <BookingCard
+                key={booking._id}
+                booking={booking}
+              />
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 }

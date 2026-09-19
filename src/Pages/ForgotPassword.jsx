@@ -1,139 +1,104 @@
-
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { Link } from "react-router-dom";
 import api from "../Service/api";
 
-const ForgotPassword = () => {
-  const navigate = useNavigate();
-
+function ForgotPassword() {
   const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const trimmedEmail = email.trim();
-
-    if (!trimmedEmail) {
-      toast.error("Please enter your email");
-      return;
-    }
+    setError("");
+    setMessage("");
 
     try {
       setLoading(true);
-      setError("");
 
-      const response = await api.post(
-        "/auth/forgot-password",
-        {
-          email: trimmedEmail,
-        },
-        {
-          timeout: 15000,
-        }
+      const response = await api.post("/auth/forgot-password", {
+        email,
+      });
+
+      setMessage(response.data.message);
+    } catch (err) {
+      setError(
+        err.response?.data?.message ||
+          "Unable to send reset link. Please try again."
       );
-
-      toast.success(
-        response.data?.message ||
-          "Password reset link sent to your email"
-      );
-
-      setEmail("");
-
-      setTimeout(() => {
-        navigate("/login", { replace: true });
-      }, 1000);
-    } catch (error) {
-      let message = "Something went wrong. Please try again.";
-
-      if (error?.code === "ECONNABORTED") {
-        message = "Request timed out. Please try again.";
-      } else if (error?.response?.data?.message) {
-        message = error.response.data.message;
-      } else if (error?.message) {
-        message = error.message;
-      }
-
-      setError(message);
-      toast.error(message);
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-[80vh] bg-gradient-to-br from-blue-50 via-white to-indigo-50 flex items-center justify-center">
-
-      <form
-        onSubmit={handleSubmit}
-        className="w-[92%] max-w-md bg-white shadow-xl rounded-2xl border border-gray-100 flex flex-col gap-6"
-      >
-        <div className="w-[88%] self-center flex flex-col gap-6">
-
-          <h2 className="text-3xl font-bold text-center font-serif">
+    <div className="w-full min-h-[80vh] bg-gray-50 flex items-center justify-center px-4 sm:px-6 py-12">
+      <div className="w-full max-w-md">
+        <form
+          onSubmit={handleSubmit}
+          className="w-full bg-white rounded-2xl shadow-lg p-6 sm:p-8"
+        >
+          <h1 className="text-3xl font-bold text-gray-900 text-center mb-3">
             Forgot Password
-          </h2>
+          </h1>
+
+          <p className="text-gray-600 text-center leading-6 mb-8">
+            Enter your registered email address and we will send you a
+            password reset link.
+          </p>
 
           {error && (
-            <div className="w-full min-h-12 bg-red-50 border border-red-200 rounded-lg text-red-600 text-sm flex items-center">
-              <span className="indent-3">
-                {error}
-              </span>
+            <div className="bg-red-50 border border-red-200 text-red-600 rounded-lg px-4 py-3 mb-5">
+              {error}
             </div>
           )}
 
-          <div className="flex flex-col gap-2">
-            <label
-              className="font-bold font-serif"
-              htmlFor="email"
-            >
+          {message && (
+            <div className="bg-green-50 border border-green-200 text-green-600 rounded-lg px-4 py-3 mb-5">
+              {message}
+            </div>
+          )}
+
+          <div className="mb-6">
+            <label className="block text-sm font-medium text-gray-700 mb-2">
               Email
             </label>
 
             <input
-              className="w-full h-12 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 indent-3"
               type="email"
-              id="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="Enter Your Email"
-              autoComplete="email"
-              disabled={loading}
+              placeholder="Enter your email"
               required
+              className="w-full border border-gray-300 rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
 
           <button
             type="submit"
             disabled={loading}
-            className={`w-full min-h-12 text-white rounded-lg font-bold font-serif text-lg flex items-center justify-center transition ${
-              loading
-                ? "bg-gray-400 cursor-not-allowed"
-                : "bg-blue-600 hover:bg-blue-700"
-            }`}
+            className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-semibold rounded-lg px-6 py-3 transition"
           >
-            {loading ? "Sending..." : "Submit"}
+            {loading ? "Sending..." : "Send Reset Link"}
           </button>
 
-          <div className="w-full min-h-12 bg-blue-50 border border-blue-100 text-gray-700 font-bold font-serif rounded-lg flex items-center justify-center text-center">
-            Password Remembered?{" "}
-            <Link
-              to="/login"
-              className="text-blue-600 underline"
-            >
-              Login
-            </Link>
+          <div className="bg-gray-50 rounded-lg p-4 mt-6 text-center">
+            <p className="text-gray-600 text-sm">
+              Remember your password?{" "}
+              <Link
+                to="/login"
+                className="text-blue-600 font-semibold hover:underline"
+              >
+                Login
+              </Link>
+            </p>
           </div>
-
-        </div>
-      </form>
-
+        </form>
+      </div>
     </div>
   );
-};
+}
 
 export default ForgotPassword;
 
