@@ -1,5 +1,5 @@
 import { FaDumbbell, FaTachometerAlt } from "react-icons/fa";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../Context/AuthContext";
 import { useNavigate, Link } from "react-router-dom";
 
 function Navbar() {
