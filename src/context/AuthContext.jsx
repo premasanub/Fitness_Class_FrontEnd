@@ -47,5 +47,5 @@ export function AuthProvider({ children }) {
 
 const useAuth = () => useContext(AuthContext);
 
-export { useAuth };
+export default useAuth;
 // export const useAuth = () => useContext(AuthContext);
