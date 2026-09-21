@@ -119,6 +119,29 @@ frontend/
 ├── vite.config.js
 └── README.md
 
-deployment Link:https://fitness-class-front-end-hb3y.vercel.app/
+## deployment Link:  https://fitness-class-front-end-hb3y.vercel.app/
+
+
+#### testing data for login and register:
+user login:
+           email: premasanub@gmail.com
+           password: 123456
+
+trainer login:
+           email:trainer1@gmailcom
+              password: 123456
+
+            email:trainer2@gmailcom
+              password: 123456
+
+            email:trainer3@gmailcom
+              password: 123456
+
+            email:trainer4@gmailcom
+              password: 123456
+Admin login:
+           email: admin@gmailcom
+              password: 123456
+           
                 
                 
