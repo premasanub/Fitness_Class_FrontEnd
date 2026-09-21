@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaDumbbell, FaEye, FaEyeSlash } from "react-icons/fa";
 import api from "../Service/api";
-import { useAuth } from "../Context/AuthContext";
+import { useAuth } from "../context/AuthContext";
 
 function Login() {
   const navigate = useNavigate();

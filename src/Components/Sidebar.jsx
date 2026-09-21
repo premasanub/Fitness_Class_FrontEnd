@@ -10,7 +10,7 @@ import {
 } from "react-icons/fa";
 
 import { NavLink, useNavigate } from "react-router-dom";
-import { useAuth } from "../Context/AuthContext";
+import { useAuth } from "../context/AuthContext";
 
 function Sidebar() {
   const { logout } = useAuth();
