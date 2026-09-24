@@ -33,17 +33,17 @@ function BookingCard({ booking }) {
   };
 
   const handleViewDetails = () => {
-    if (!booking.class?._id) {
-      toast.error("Class details are unavailable");
-      return;
-    }
+  if (!booking?._id) {
+    toast.error("Booking details are unavailable");
+    return;
+  }
 
-    navigate(`/dashboard/classes/${booking.class._id}`, {
-      state: {
-        fromBookings: true,
-      },
-    });
-  };
+  navigate(`/dashboard/classes/${booking._id}`, {
+    state: {
+      fromBookings: true,
+    },
+  });
+};
 
   const handleFeedback = () => {
     navigate("/dashboard/feedback", {
