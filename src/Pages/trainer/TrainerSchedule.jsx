@@ -458,7 +458,7 @@ function TrainerSchedule() {
 
   const [newSchedule, setNewSchedule] = useState({
     className: "",
-    day: "",
+    date: "",
     time: "",
     duration: "",
     seats: "",
@@ -499,9 +499,7 @@ function TrainerSchedule() {
       );
 
       if (response.data?.success) {
-        setSchedules(
-          response.data.schedules || []
-        );
+        setSchedules(response.data.schedules || []);
       } else {
         setError(
           response.data?.message ||
@@ -542,7 +540,7 @@ function TrainerSchedule() {
   const resetForm = () => {
     setNewSchedule({
       className: "",
-      day: "",
+      date: "",
       time: "",
       duration: "",
       seats: "",
@@ -642,16 +640,25 @@ function TrainerSchedule() {
   const handleEdit = (item) => {
     setEditingId(item._id);
 
+    let formattedDate = "";
+
+    if (item.date) {
+      const dateValue = new Date(item.date);
+
+      if (!Number.isNaN(dateValue.getTime())) {
+        formattedDate = dateValue
+          .toISOString()
+          .split("T")[0];
+      }
+    }
+
     setNewSchedule({
       className:
         item.title ||
         item.className ||
         "",
 
-      day:
-        item.day ||
-        item.date ||
-        "",
+      date: formattedDate,
 
       time:
         item.time ||
@@ -694,7 +701,6 @@ function TrainerSchedule() {
           (item) => item._id !== id
         )
       );
-
     } catch (err) {
       setError(
         err.response?.data?.message ||
@@ -735,9 +741,7 @@ function TrainerSchedule() {
   return (
     <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-8 flex flex-col gap-8">
 
-      {/* ==================================================
-          HEADER
-      ================================================== */}
+      {/* HEADER */}
 
       <section className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
 
@@ -770,9 +774,7 @@ function TrainerSchedule() {
 
       </section>
 
-      {/* ==================================================
-          ERROR
-      ================================================== */}
+      {/* ERROR */}
 
       {error && (
         <div className="w-full p-4 bg-red-50 border border-red-200 text-red-600 rounded-xl">
@@ -780,9 +782,7 @@ function TrainerSchedule() {
         </div>
       )}
 
-      {/* ==================================================
-          ADD / UPDATE FORM
-      ================================================== */}
+      {/* ADD / UPDATE FORM */}
 
       {showForm && (
         <form
@@ -830,56 +830,25 @@ function TrainerSchedule() {
               />
             </div>
 
-            {/* DAY */}
+            {/* DATE */}
 
             <div className="flex flex-col gap-2">
               <label
-                htmlFor="day"
+                htmlFor="date"
                 className="font-semibold text-gray-700"
               >
-                Day
+                Date
               </label>
 
-              <select
-                id="day"
-                name="day"
-                value={newSchedule.day}
+              <input
+                id="date"
+                type="date"
+                name="date"
+                value={newSchedule.date}
                 onChange={handleChange}
                 className={inputClass}
                 required
-              >
-                <option value="">
-                  Select Day
-                </option>
-
-                <option value="Monday">
-                  Monday
-                </option>
-
-                <option value="Tuesday">
-                  Tuesday
-                </option>
-
-                <option value="Wednesday">
-                  Wednesday
-                </option>
-
-                <option value="Thursday">
-                  Thursday
-                </option>
-
-                <option value="Friday">
-                  Friday
-                </option>
-
-                <option value="Saturday">
-                  Saturday
-                </option>
-
-                <option value="Sunday">
-                  Sunday
-                </option>
-              </select>
+              />
             </div>
 
             {/* TIME */}
@@ -948,6 +917,7 @@ function TrainerSchedule() {
                 required
               />
             </div>
+
           </div>
 
           {/* SUBMIT */}
@@ -967,9 +937,7 @@ function TrainerSchedule() {
         </form>
       )}
 
-      {/* ==================================================
-          NO SCHEDULE
-      ================================================== */}
+      {/* NO SCHEDULE */}
 
       {schedules.length === 0 ? (
         <div className="bg-white shadow rounded-xl p-8 min-h-48 flex flex-col items-center justify-center text-center gap-2">
@@ -985,9 +953,7 @@ function TrainerSchedule() {
         </div>
       ) : (
 
-        /* ==================================================
-           SCHEDULE CARDS
-        ================================================== */
+        /* SCHEDULE CARDS */
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
@@ -1046,17 +1012,21 @@ function TrainerSchedule() {
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 text-gray-600">
 
-                    {/* DAY */}
+                    {/* DATE */}
 
                     <div className="flex flex-col gap-1">
                       <span className="text-sm font-semibold text-gray-400">
-                        Day
+                        Date
                       </span>
 
                       <span className="font-medium">
-                        {item.day ||
-                          item.date ||
-                          "Not Available"}
+                        {item.date
+                          ? new Date(
+                              item.date
+                            ).toLocaleDateString(
+                              "en-GB"
+                            )
+                          : "Not Available"}
                       </span>
                     </div>
 
