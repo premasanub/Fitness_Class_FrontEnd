@@ -464,9 +464,9 @@ function TrainerSchedule() {
     seats: "",
   });
 
-  // ==================================================
+  // ==============================
   // GET TRAINER
-  // ==================================================
+  // ==============================
 
   const storedUser =
     JSON.parse(localStorage.getItem("user") || "null") ||
@@ -478,9 +478,9 @@ function TrainerSchedule() {
     storedUser?.id ||
     localStorage.getItem("userId");
 
-  // ==================================================
+  // ==============================
   // FETCH SCHEDULES
-  // ==================================================
+  // ==============================
 
   const fetchSchedules = async () => {
     try {
@@ -488,9 +488,7 @@ function TrainerSchedule() {
       setError("");
 
       if (!trainerId) {
-        setError(
-          "Trainer information not found. Please login again."
-        );
+        setError("Trainer information not found. Please login again.");
         return;
       }
 
@@ -502,8 +500,7 @@ function TrainerSchedule() {
         setSchedules(response.data.schedules || []);
       } else {
         setError(
-          response.data?.message ||
-            "Failed to load schedules"
+          response.data?.message || "Failed to load schedules"
         );
       }
     } catch (err) {
@@ -520,9 +517,9 @@ function TrainerSchedule() {
     fetchSchedules();
   }, [trainerId]);
 
-  // ==================================================
+  // ==============================
   // HANDLE INPUT
-  // ==================================================
+  // ==============================
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -533,9 +530,9 @@ function TrainerSchedule() {
     }));
   };
 
-  // ==================================================
+  // ==============================
   // RESET FORM
-  // ==================================================
+  // ==============================
 
   const resetForm = () => {
     setNewSchedule({
@@ -550,17 +547,15 @@ function TrainerSchedule() {
     setShowForm(false);
   };
 
-  // ==================================================
-  // ADD / UPDATE SCHEDULE
-  // ==================================================
+  // ==============================
+  // ADD / UPDATE
+  // ==============================
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!trainerId) {
-      setError(
-        "Trainer information not found. Please login again."
-      );
+      setError("Trainer information not found. Please login again.");
       return;
     }
 
@@ -568,9 +563,9 @@ function TrainerSchedule() {
       setSaving(true);
       setError("");
 
-      // ==================================================
+      // ==============================
       // UPDATE
-      // ==================================================
+      // ==============================
 
       if (editingId) {
         const response = await api.put(
@@ -598,9 +593,9 @@ function TrainerSchedule() {
         return;
       }
 
-      // ==================================================
+      // ==============================
       // CREATE
-      // ==================================================
+      // ==============================
 
       const response = await api.post(
         `/trainers/schedule/${trainerId}`,
@@ -608,11 +603,8 @@ function TrainerSchedule() {
       );
 
       if (response.data?.success) {
-        const newScheduleData =
-          response.data.schedule;
-
         setSchedules((prev) => [
-          newScheduleData,
+          response.data.schedule,
           ...prev,
         ]);
 
@@ -633,9 +625,9 @@ function TrainerSchedule() {
     }
   };
 
-  // ==================================================
-  // EDIT SCHEDULE
-  // ==================================================
+  // ==============================
+  // EDIT
+  // ==============================
 
   const handleEdit = (item) => {
     setEditingId(item._id);
@@ -653,41 +645,27 @@ function TrainerSchedule() {
     }
 
     setNewSchedule({
-      className:
-        item.title ||
-        item.className ||
-        "",
-
+      className: item.title || item.className || "",
       date: formattedDate,
-
-      time:
-        item.time ||
-        item.timeSlots?.[0] ||
-        "",
-
-      duration:
-        item.duration || "",
-
-      seats:
-        item.seats ?? "",
+      time: item.time || item.timeSlots?.[0] || "",
+      duration: item.duration || "",
+      seats: item.seats ?? "",
     });
 
     setShowForm(true);
     setError("");
   };
 
-  // ==================================================
+  // ==============================
   // DELETE
-  // ==================================================
+  // ==============================
 
   const deleteSchedule = async (id) => {
     const confirmDelete = window.confirm(
       "Are you sure you want to delete this schedule?"
     );
 
-    if (!confirmDelete) {
-      return;
-    }
+    if (!confirmDelete) return;
 
     try {
       setError("");
@@ -697,9 +675,7 @@ function TrainerSchedule() {
       );
 
       setSchedules((prev) =>
-        prev.filter(
-          (item) => item._id !== id
-        )
+        prev.filter((item) => item._id !== id)
       );
     } catch (err) {
       setError(
@@ -709,16 +685,15 @@ function TrainerSchedule() {
     }
   };
 
-  // ==================================================
+  // ==============================
   // LOADING
-  // ==================================================
+  // ==============================
 
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="flex flex-col items-center gap-3">
           <div className="w-10 h-10 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin" />
-
           <p className="text-gray-600 font-medium">
             Loading schedule...
           </p>
@@ -727,16 +702,12 @@ function TrainerSchedule() {
     );
   }
 
-  // ==================================================
-  // INPUT STYLE
-  // ==================================================
-
   const inputClass =
     "w-full border border-gray-300 rounded-lg min-h-11 px-4 py-2 outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-200 transition";
 
-  // ==================================================
+  // ==============================
   // UI
-  // ==================================================
+  // ==============================
 
   return (
     <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-8 flex flex-col gap-8">
@@ -761,15 +732,22 @@ function TrainerSchedule() {
             if (showForm) {
               resetForm();
             } else {
+              setNewSchedule({
+                className: "",
+                date: "",
+                time: "",
+                duration: "",
+                seats: "",
+              });
+
+              setEditingId(null);
               setShowForm(true);
               setError("");
             }
           }}
           className="px-5 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition"
         >
-          {showForm
-            ? "Close Form"
-            : "+ Add New Schedule"}
+          {showForm ? "Close Form" : "+ Add New Schedule"}
         </button>
 
       </section>
@@ -782,7 +760,7 @@ function TrainerSchedule() {
         </div>
       )}
 
-      {/* ADD / UPDATE FORM */}
+      {/* FORM */}
 
       {showForm && (
         <form
@@ -791,6 +769,7 @@ function TrainerSchedule() {
         >
 
           <div className="flex flex-col gap-1">
+
             <h2 className="text-xl font-bold text-gray-800">
               {editingId
                 ? "Update Schedule"
@@ -802,15 +781,15 @@ function TrainerSchedule() {
                 ? "Update your fitness class schedule."
                 : "Create a new fitness class schedule."}
             </p>
-          </div>
 
-          {/* FORM GRID */}
+          </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
 
             {/* CLASS NAME */}
 
             <div className="flex flex-col gap-2">
+
               <label
                 htmlFor="className"
                 className="font-semibold text-gray-700"
@@ -828,11 +807,13 @@ function TrainerSchedule() {
                 className={inputClass}
                 required
               />
+
             </div>
 
-            {/* DATE */}
+            {/* DATE - NO DAY */}
 
             <div className="flex flex-col gap-2">
+
               <label
                 htmlFor="date"
                 className="font-semibold text-gray-700"
@@ -849,11 +830,13 @@ function TrainerSchedule() {
                 className={inputClass}
                 required
               />
+
             </div>
 
             {/* TIME */}
 
             <div className="flex flex-col gap-2">
+
               <label
                 htmlFor="time"
                 className="font-semibold text-gray-700"
@@ -871,11 +854,13 @@ function TrainerSchedule() {
                 className={inputClass}
                 required
               />
+
             </div>
 
             {/* DURATION */}
 
             <div className="flex flex-col gap-2">
+
               <label
                 htmlFor="duration"
                 className="font-semibold text-gray-700"
@@ -893,11 +878,13 @@ function TrainerSchedule() {
                 className={inputClass}
                 required
               />
+
             </div>
 
-            {/* SEATS */}
+            {/* MAXIMUM SEATS */}
 
             <div className="flex flex-col gap-2">
+
               <label
                 htmlFor="seats"
                 className="font-semibold text-gray-700"
@@ -916,6 +903,7 @@ function TrainerSchedule() {
                 min="1"
                 required
               />
+
             </div>
 
           </div>
@@ -937,7 +925,7 @@ function TrainerSchedule() {
         </form>
       )}
 
-      {/* NO SCHEDULE */}
+      {/* SCHEDULE LIST */}
 
       {schedules.length === 0 ? (
         <div className="bg-white shadow rounded-xl p-8 min-h-48 flex flex-col items-center justify-center text-center gap-2">
@@ -953,8 +941,6 @@ function TrainerSchedule() {
         </div>
       ) : (
 
-        /* SCHEDULE CARDS */
-
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
           {schedules.map((item) => {
@@ -965,8 +951,8 @@ function TrainerSchedule() {
             const studentsBooked =
               Number(
                 item.studentsBooked ??
-                item.bookedSeats ??
-                0
+                  item.bookedSeats ??
+                  0
               );
 
             const remainingSeats =
@@ -983,123 +969,131 @@ function TrainerSchedule() {
 
                 {/* TOP */}
 
-                <div className="flex flex-col gap-4">
+                <div className="flex items-start justify-between gap-4">
 
-                  <div className="flex items-start justify-between gap-4">
+                  <div className="flex flex-col gap-2">
 
-                    <div className="flex flex-col gap-2">
+                    <h2 className="text-2xl font-bold text-gray-800">
+                      {item.title ||
+                        item.className ||
+                        "Fitness Class"}
+                    </h2>
 
-                      <h2 className="text-2xl font-bold text-gray-800">
-                        {item.title ||
-                          item.className ||
-                          "Fitness Class"}
-                      </h2>
-
-                      <span className="text-sm font-semibold text-blue-600">
-                        {item.category ||
-                          "Fitness"}
-                      </span>
-
-                    </div>
-
-                    <span className="bg-green-100 text-green-700 rounded-full text-sm font-semibold px-4 py-1.5">
-                      Active
+                    <span className="text-sm font-semibold text-blue-600">
+                      {item.category || "Fitness"}
                     </span>
 
                   </div>
 
-                  {/* INFORMATION */}
+                  <span className="bg-green-100 text-green-700 rounded-full text-sm font-semibold px-4 py-1.5">
+                    Active
+                  </span>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 text-gray-600">
+                </div>
 
-                    {/* DATE */}
+                {/* INFORMATION */}
 
-                    <div className="flex flex-col gap-1">
-                      <span className="text-sm font-semibold text-gray-400">
-                        Date
-                      </span>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 text-gray-600">
 
-                      <span className="font-medium">
-                        {item.date
-                          ? new Date(
-                              item.date
-                            ).toLocaleDateString(
-                              "en-GB"
-                            )
-                          : "Not Available"}
-                      </span>
-                    </div>
+                  {/* DATE */}
 
-                    {/* TIME */}
+                  <div className="flex flex-col gap-1">
 
-                    <div className="flex flex-col gap-1">
-                      <span className="text-sm font-semibold text-gray-400">
-                        Time
-                      </span>
+                    <span className="text-sm font-semibold text-gray-400">
+                      Date
+                    </span>
 
-                      <span className="font-medium">
-                        {item.time ||
-                          item.timeSlots?.[0] ||
-                          "Not Available"}
-                      </span>
-                    </div>
-
-                    {/* DURATION */}
-
-                    <div className="flex flex-col gap-1">
-                      <span className="text-sm font-semibold text-gray-400">
-                        Duration
-                      </span>
-
-                      <span className="font-medium">
-                        {item.duration ||
-                          "Not Available"}
-                      </span>
-                    </div>
-
-                    {/* MAXIMUM SEATS */}
-
-                    <div className="flex flex-col gap-1">
-                      <span className="text-sm font-semibold text-gray-400">
-                        Maximum Seats
-                      </span>
-
-                      <span className="font-bold text-blue-600">
-                        {maximumSeats}
-                      </span>
-                    </div>
-
-                    {/* STUDENTS BOOKED */}
-
-                    <div className="flex flex-col gap-1">
-                      <span className="text-sm font-semibold text-gray-400">
-                        Students Booked
-                      </span>
-
-                      <span className="font-bold text-green-600">
-                        {studentsBooked}
-                      </span>
-                    </div>
-
-                    {/* REMAINING */}
-
-                    <div className="flex flex-col gap-1">
-                      <span className="text-sm font-semibold text-gray-400">
-                        Seats Remaining
-                      </span>
-
-                      <span
-                        className={`font-bold ${
-                          remainingSeats > 0
-                            ? "text-green-600"
-                            : "text-red-600"
-                        }`}
-                      >
-                        {remainingSeats}
-                      </span>
-                    </div>
+                    <span className="font-medium">
+                      {item.date
+                        ? new Date(
+                            item.date
+                          ).toLocaleDateString(
+                            "en-GB"
+                          )
+                        : "Not Available"}
+                    </span>
 
                   </div>
+
+                  {/* TIME */}
+
+                  <div className="flex flex-col gap-1">
+
+                    <span className="text-sm font-semibold text-gray-400">
+                      Time
+                    </span>
+
+                    <span className="font-medium">
+                      {item.time ||
+                        item.timeSlots?.[0] ||
+                        "Not Available"}
+                    </span>
+
+                  </div>
+
+                  {/* DURATION */}
+
+                  <div className="flex flex-col gap-1">
+
+                    <span className="text-sm font-semibold text-gray-400">
+                      Duration
+                    </span>
+
+                    <span className="font-medium">
+                      {item.duration ||
+                        "Not Available"}
+                    </span>
+
+                  </div>
+
+                  {/* MAXIMUM SEATS */}
+
+                  <div className="flex flex-col gap-1">
+
+                    <span className="text-sm font-semibold text-gray-400">
+                      Maximum Seats
+                    </span>
+
+                    <span className="font-bold text-blue-600">
+                      {maximumSeats}
+                    </span>
+
+                  </div>
+
+                  {/* STUDENTS BOOKED */}
+
+                  <div className="flex flex-col gap-1">
+
+                    <span className="text-sm font-semibold text-gray-400">
+                      Students Booked
+                    </span>
+
+                    <span className="font-bold text-green-600">
+                      {studentsBooked}
+                    </span>
+
+                  </div>
+
+                  {/* REMAINING */}
+
+                  <div className="flex flex-col gap-1">
+
+                    <span className="text-sm font-semibold text-gray-400">
+                      Seats Remaining
+                    </span>
+
+                    <span
+                      className={`font-bold ${
+                        remainingSeats > 0
+                          ? "text-green-600"
+                          : "text-red-600"
+                      }`}
+                    >
+                      {remainingSeats}
+                    </span>
+
+                  </div>
+
                 </div>
 
                 {/* BOTTOM */}
@@ -1107,14 +1101,15 @@ function TrainerSchedule() {
                 <div className="border-t border-gray-100 pt-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
 
                   <div className="flex flex-col gap-1">
+
                     <span className="text-sm text-gray-400">
                       Booking Status
                     </span>
 
                     <span className="font-bold text-gray-800">
-                      {studentsBooked} /{" "}
-                      {maximumSeats} booked
+                      {studentsBooked} / {maximumSeats} booked
                     </span>
+
                   </div>
 
                   <div className="flex flex-col sm:flex-row gap-3">
@@ -1123,9 +1118,7 @@ function TrainerSchedule() {
 
                     <button
                       type="button"
-                      onClick={() =>
-                        handleEdit(item)
-                      }
+                      onClick={() => handleEdit(item)}
                       className="px-5 py-2.5 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition"
                     >
                       Update
@@ -1136,9 +1129,7 @@ function TrainerSchedule() {
                     <button
                       type="button"
                       onClick={() =>
-                        deleteSchedule(
-                          item._id
-                        )
+                        deleteSchedule(item._id)
                       }
                       className="px-5 py-2.5 bg-red-600 text-white rounded-lg font-semibold hover:bg-red-700 transition"
                     >
@@ -1155,8 +1146,10 @@ function TrainerSchedule() {
 
         </div>
       )}
+
     </div>
   );
 }
 
 export default TrainerSchedule;
+
