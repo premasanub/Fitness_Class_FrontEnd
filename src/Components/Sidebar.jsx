@@ -91,7 +91,7 @@ function Sidebar() {
             </NavLink>
           </li>
 
-          <li>
+          {/* <li>
             <NavLink
               to="/dashboard/payments"
               className={getNavClass}
@@ -109,7 +109,7 @@ function Sidebar() {
               <FaStar />
               <span>Feedback</span>
             </NavLink>
-          </li>
+          </li> */}
 
           <li>
             <NavLink
