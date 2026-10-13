@@ -91,25 +91,7 @@ function Sidebar() {
             </NavLink>
           </li>
 
-          {/* <li>
-            <NavLink
-              to="/dashboard/payments"
-              className={getNavClass}
-            >
-              <FaCreditCard />
-              <span>Payments</span>
-            </NavLink>
-          </li>
-
-          <li>
-            <NavLink
-              to="/dashboard/feedback"
-              className={getNavClass}
-            >
-              <FaStar />
-              <span>Feedback</span>
-            </NavLink>
-          </li> */}
+          
 
           <li>
             <NavLink

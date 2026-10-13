@@ -7,7 +7,7 @@ import Home from './Pages/Home';
 import About from './Pages/About';
 import Contact from './Pages/Contact';
 
-import Footer from './Components/Footer';
+
 import Login from './Pages/Login';
 import Register from './Pages/Register';
 import ForgotPassword from '../src/Pages/ForgotPassword';

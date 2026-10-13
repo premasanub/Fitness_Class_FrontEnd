@@ -1,4 +1,4 @@
-import { NavLink, Outlet } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 
 import {
   FaHome,
@@ -7,9 +7,21 @@ import {
   FaBook,
   FaUsers,
   FaStar,
+  FaSignOutAlt,
 } from "react-icons/fa";
+import { useAuth } from "../../context/AuthContext";
+import { NavLink, useNavigate } from "react-router-dom";
 
 function TrainerDashboardLayout() {
+
+ const { logout } = useAuth();
+ const navigate = useNavigate();
+
+const handleLogout = () => {
+    logout();
+    navigate("/");
+  };
+
   const getNavClass = ({ isActive }) =>
     `flex items-center gap-3 rounded-lg px-4 py-3 transition ${
       isActive
@@ -105,6 +117,22 @@ function TrainerDashboardLayout() {
                 <span>Add Class</span>
               </NavLink>
             </li>
+            
+         
+       
+
+        
+          
+             <li className="pt-2">
+            <button
+              type="button"
+              onClick={handleLogout}
+              className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-gray-300 hover:text-red-400 hover:bg-gray-800 transition text-left"
+            >
+              <FaSignOutAlt />
+              <span>Logout</span>
+            </button>
+          </li>
           </ul>
         </nav>
       </aside>
