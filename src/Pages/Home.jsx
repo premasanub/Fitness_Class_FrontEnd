@@ -1,4 +1,6 @@
-
+import React from "react";
+import navbar from "../Components/Navbar";
+import Footer from "../Components/Footer";
 
 import Hero from "../Components/Hero";
 import PopularClasses from "../Components/PopularClasses";
@@ -11,6 +13,7 @@ import Pricing from "../Components/Pricing";
 function Home() {
   return (
      <div className="w-full min-h-screen overflow-x-hidden">
+      <navbar />
       <Hero />
       <PopularClasses />
       <TopTrainers />
@@ -18,6 +21,7 @@ function Home() {
       <StatsCounter />
       <Testimonials />
       <Pricing />
+      <Footer />
     </div>
   );
 }
