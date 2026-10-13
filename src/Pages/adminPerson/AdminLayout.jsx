@@ -1,4 +1,7 @@
-import { Outlet, NavLink } from "react-router-dom";
+
+import { useState } from "react";
+import { Outlet, NavLink, useNavigate } from "react-router-dom";
+
 import {
   FaTachometerAlt,
   FaUsers,
@@ -10,10 +13,10 @@ import {
   FaTimes,
   FaGift,
 } from "react-icons/fa";
-import { useState } from "react";
 
 function AdminLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const navigate = useNavigate();
 
   const menuItems = [
     {
@@ -53,68 +56,69 @@ function AdminLayout() {
     localStorage.removeItem("user");
     localStorage.removeItem("role");
 
-    window.location.href = "/";
+    setSidebarOpen(false);
+    navigate("/");
+  };
+
+  const handleNavClick = () => {
+    setSidebarOpen(false);
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex">
-      {/* Mobile Button */}
-      <button
-        type="button"
-        onClick={() => setSidebarOpen((prev) => !prev)}
-        className="fixed top-4 left-4 z-50 w-11 h-11 bg-blue-600 text-white rounded-lg md:hidden shadow-lg flex items-center justify-center"
-        aria-label="Toggle admin menu"
-      >
-        {sidebarOpen ? <FaTimes /> : <FaBars />}
-      </button>
+    <div className="flex min-h-screen bg-gray-100">
 
-      {/* Overlay */}
+      {/* MOBILE OVERLAY */}
       {sidebarOpen && (
         <button
           type="button"
+          aria-label="Close sidebar"
           onClick={() => setSidebarOpen(false)}
-          className="fixed inset-0 bg-black/40 z-30 md:hidden"
-          aria-label="Close menu"
+          className="fixed inset-0 z-40 bg-black/50 md:hidden"
         />
       )}
 
-      {/* Sidebar */}
+      {/* SIDEBAR */}
       <aside
         className={`
-          fixed md:static
-          top-0 left-0
-          z-40
-          w-64
-          h-screen
-          bg-gray-900
-          text-white
-          flex flex-col
-          shadow-xl
-          transition-transform duration-300
+          fixed inset-y-0 left-0 z-50
+          flex w-64 max-w-[85vw] flex-col
+          overflow-y-auto bg-gray-900 text-white shadow-xl
+          transition-transform duration-300 ease-in-out
+          md:sticky md:top-0 md:h-screen md:translate-x-0
+          md:shrink-0
           ${
             sidebarOpen
               ? "translate-x-0"
-              : "-translate-x-full md:translate-x-0"
+              : "-translate-x-full"
           }
         `}
       >
-        {/* Logo */}
-        <div className="h-20 px-6 flex items-center justify-center border-b border-gray-700">
-          <h1 className="text-2xl font-bold">
+        {/* LOGO */}
+        <div className="flex min-h-20 items-center justify-between border-b border-gray-700 px-5 sm:px-6">
+          <h1 className="text-xl font-bold sm:text-2xl">
             Fit<span className="text-blue-400">Admin</span>
           </h1>
+
+          {/* MOBILE CLOSE BUTTON */}
+          <button
+            type="button"
+            aria-label="Close menu"
+            onClick={() => setSidebarOpen(false)}
+            className="rounded-lg p-2 text-gray-300 transition hover:bg-gray-800 hover:text-white md:hidden"
+          >
+            <FaTimes size={20} />
+          </button>
         </div>
 
-        {/* Admin Info */}
-        <div className="px-5 py-6 border-b border-gray-700">
+        {/* ADMIN INFO */}
+        <div className="border-b border-gray-700 px-5 py-5">
           <div className="flex items-center gap-3">
-            <div className="w-11 h-11 rounded-full bg-blue-600 flex items-center justify-center shrink-0">
+            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-blue-600">
               <FaUserTie className="text-xl" />
             </div>
 
-            <div className="flex flex-col gap-1">
+            <div className="min-w-0">
               <p className="font-semibold">Admin</p>
-
               <p className="text-sm text-gray-400">
                 Administrator
               </p>
@@ -122,96 +126,102 @@ function AdminLayout() {
           </div>
         </div>
 
-        {/* Navigation */}
-        <nav className="flex-1 flex flex-col gap-2 px-4 py-6 overflow-y-auto">
+        {/* NAVIGATION */}
+        <nav className="flex flex-1 flex-col gap-2 overflow-y-auto px-3 py-5 sm:px-4">
           {menuItems.map((item) => (
             <NavLink
               key={item.path}
               to={item.path}
               end={item.path === "/admin"}
-              onClick={() => setSidebarOpen(false)}
+              onClick={handleNavClick}
               className={({ isActive }) =>
-                `
-                w-full
-                min-h-12
-                px-4
-                py-3
-                flex items-center gap-4
-                rounded-lg
-                font-medium
-                transition
-                ${
+                `flex min-h-12 w-full items-center gap-4 rounded-lg px-4 py-3 font-medium transition-colors duration-200 ${
                   isActive
                     ? "bg-blue-600 text-white shadow-sm"
                     : "text-gray-300 hover:bg-gray-800 hover:text-white"
-                }
-                `
+                }`
               }
             >
-              <span className="w-5 flex items-center justify-center text-lg">
+              <span className="flex w-5 shrink-0 items-center justify-center text-lg">
                 {item.icon}
               </span>
 
-              <span>{item.name}</span>
+              <span className="break-words">
+                {item.name}
+              </span>
             </NavLink>
           ))}
         </nav>
 
-        {/* Logout */}
-        <div className="px-4 py-5 border-t border-gray-700">
+        {/* LOGOUT */}
+        <div className="border-t border-gray-700 px-3 py-4 sm:px-4">
           <button
             type="button"
             onClick={handleLogout}
-            className="w-full min-h-11 px-4 py-3 flex items-center gap-4 rounded-lg text-red-400 hover:bg-red-500 hover:text-white transition"
+            className="flex min-h-12 w-full items-center gap-4 rounded-lg px-4 py-3 text-left text-red-400 transition hover:bg-red-500 hover:text-white"
           >
             <FaSignOutAlt />
-
             <span>Logout</span>
           </button>
         </div>
       </aside>
 
-      {/* Main */}
-      <main className="flex-1 min-w-0">
-        {/* Header */}
-        <header className="min-h-20 bg-white shadow-sm px-6 md:px-8 py-4">
-          <div className="flex items-center justify-between gap-6">
-            <div className="flex flex-col gap-1 ml-12 md:ml-0">
-              <h2 className="text-xl font-bold text-gray-800">
+      {/* MAIN CONTENT */}
+      <div className="flex min-h-screen min-w-0 flex-1 flex-col">
+
+        {/* HEADER */}
+        <header className="sticky top-0 z-30 flex min-h-20 items-center justify-between gap-3 border-b border-gray-200 bg-white px-4 py-4 shadow-sm sm:px-6 md:static md:px-8">
+          <div className="flex min-w-0 items-center gap-3">
+
+            {/* MOBILE HAMBURGER */}
+            <button
+              type="button"
+              aria-label="Open admin menu"
+              aria-expanded={sidebarOpen}
+              onClick={() => setSidebarOpen(true)}
+              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-blue-600 text-white shadow-sm transition hover:bg-blue-700 md:hidden"
+            >
+              <FaBars size={20} />
+            </button>
+
+            <div className="min-w-0">
+              <h2 className="truncate text-lg font-bold text-gray-800 sm:text-xl">
                 Admin Panel
               </h2>
 
-              <p className="text-sm text-gray-500">
+              <p className="hidden text-sm text-gray-500 sm:block">
                 Manage your fitness platform
               </p>
             </div>
+          </div>
 
-            <div className="hidden sm:flex items-center gap-3">
-              <div className="flex flex-col gap-1 text-right">
-                <p className="font-semibold text-gray-800">
-                  Admin
-                </p>
+          {/* DESKTOP ADMIN INFO */}
+          <div className="hidden shrink-0 items-center gap-3 sm:flex">
+            <div className="text-right">
+              <p className="font-semibold text-gray-800">
+                Admin
+              </p>
+              <p className="text-xs text-gray-500">
+                Administrator
+              </p>
+            </div>
 
-                <p className="text-xs text-gray-500">
-                  Administrator
-                </p>
-              </div>
-
-              <div className="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center">
-                <FaUserTie />
-              </div>
+            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-600 text-white">
+              <FaUserTie />
             </div>
           </div>
         </header>
 
-        {/* Content */}
-        <section className="w-full max-w-[1600px] mx-auto px-5 md:px-8 py-8 md:py-10">
-          <Outlet />
-        </section>
-      </main>
+        {/* PAGE CONTENT */}
+        <main className="min-w-0 flex-1 overflow-x-hidden">
+          <section className="mx-auto w-full max-w-[1600px] px-3 py-5 sm:px-5 sm:py-6 md:px-8 md:py-8">
+            <Outlet />
+          </section>
+        </main>
+
+      </div>
     </div>
   );
 }
 
 export default AdminLayout;
-

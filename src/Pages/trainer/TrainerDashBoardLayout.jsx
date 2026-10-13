@@ -1,5 +1,6 @@
-import { Outlet } from "react-router-dom";
 
+import { useState } from "react";
+import { Outlet, NavLink, useNavigate } from "react-router-dom";
 import {
   FaHome,
   FaUser,
@@ -8,49 +9,96 @@ import {
   FaUsers,
   FaStar,
   FaSignOutAlt,
+  FaBars,
+  FaTimes,
 } from "react-icons/fa";
+
 import { useAuth } from "../../context/AuthContext";
-import { NavLink, useNavigate } from "react-router-dom";
 
 function TrainerDashboardLayout() {
+  const { logout } = useAuth();
+  const navigate = useNavigate();
 
- const { logout } = useAuth();
- const navigate = useNavigate();
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-const handleLogout = () => {
+  const handleLogout = () => {
+    setIsSidebarOpen(false);
     logout();
     navigate("/");
   };
 
+  const handleNavClick = () => {
+    setIsSidebarOpen(false);
+  };
+
   const getNavClass = ({ isActive }) =>
-    `flex items-center gap-3 rounded-lg px-4 py-3 transition ${
+    `flex items-center gap-3 rounded-lg px-4 py-3 transition-colors duration-200 ${
       isActive
-        ? "bg-yellow-500 text-gray-900"
+        ? "bg-yellow-500 text-gray-900 font-semibold"
         : "text-gray-300 hover:bg-gray-800 hover:text-yellow-400"
     }`;
 
   return (
     <div className="flex min-h-screen bg-gray-100">
-      {/* SIDEBAR */}
-      <aside className="w-72 min-h-screen bg-gray-900 text-white flex flex-col shrink-0">
-        {/* HEADER */}
-        <div className="px-6 py-7 border-b border-gray-800">
-          <h2 className="text-2xl font-bold">
-            Trainer Panel
-          </h2>
 
-          <p className="text-sm text-gray-400 mt-1">
-            Manage your classes
-          </p>
+      {/* MOBILE OVERLAY */}
+      {isSidebarOpen && (
+        <button
+          type="button"
+          aria-label="Close sidebar"
+          onClick={() => setIsSidebarOpen(false)}
+          className="fixed inset-0 z-40 bg-black/50 md:hidden"
+        />
+      )}
+
+      {/* SIDEBAR */}
+      <aside
+        className={`
+          fixed inset-y-0 left-0 z-50
+          flex w-72 max-w-[85vw] flex-col
+          overflow-y-auto bg-gray-900 text-white
+          transition-transform duration-300 ease-in-out
+          md:sticky md:top-0 md:h-screen md:translate-x-0
+          md:shrink-0
+          ${
+            isSidebarOpen
+              ? "translate-x-0"
+              : "-translate-x-full"
+          }
+        `}
+      >
+        {/* SIDEBAR HEADER */}
+        <div className="flex items-center justify-between border-b border-gray-800 px-5 py-6 sm:px-6">
+          <div>
+            <h2 className="text-xl font-bold sm:text-2xl">
+              Trainer Panel
+            </h2>
+
+            <p className="mt-1 text-sm text-gray-400">
+              Manage your classes
+            </p>
+          </div>
+
+          {/* MOBILE CLOSE BUTTON */}
+          <button
+            type="button"
+            aria-label="Close menu"
+            onClick={() => setIsSidebarOpen(false)}
+            className="rounded-lg p-2 text-gray-300 hover:bg-gray-800 hover:text-yellow-400 md:hidden"
+          >
+            <FaTimes size={20} />
+          </button>
         </div>
 
         {/* NAVIGATION */}
-        <nav className="px-4 py-6">
+        <nav className="flex-1 px-3 py-5 sm:px-4">
           <ul className="flex flex-col gap-2">
+
             <li>
               <NavLink
                 to="/trainer"
                 end
+                onClick={handleNavClick}
                 className={getNavClass}
               >
                 <FaHome />
@@ -61,6 +109,7 @@ const handleLogout = () => {
             <li>
               <NavLink
                 to="/trainer/profile"
+                onClick={handleNavClick}
                 className={getNavClass}
               >
                 <FaUser />
@@ -71,6 +120,7 @@ const handleLogout = () => {
             <li>
               <NavLink
                 to="/trainer/schedule"
+                onClick={handleNavClick}
                 className={getNavClass}
               >
                 <FaCalendarAlt />
@@ -81,6 +131,7 @@ const handleLogout = () => {
             <li>
               <NavLink
                 to="/trainer/bookings"
+                onClick={handleNavClick}
                 className={getNavClass}
               >
                 <FaBook />
@@ -91,6 +142,7 @@ const handleLogout = () => {
             <li>
               <NavLink
                 to="/trainer/students"
+                onClick={handleNavClick}
                 className={getNavClass}
               >
                 <FaUsers />
@@ -101,6 +153,7 @@ const handleLogout = () => {
             <li>
               <NavLink
                 to="/trainer/reviews"
+                onClick={handleNavClick}
                 className={getNavClass}
               >
                 <FaStar />
@@ -111,38 +164,61 @@ const handleLogout = () => {
             <li>
               <NavLink
                 to="/trainer/add-class"
+                onClick={handleNavClick}
                 className={getNavClass}
               >
                 <FaBook />
                 <span>Add Class</span>
               </NavLink>
             </li>
-            
-         
-       
 
-        
-          
-             <li className="pt-2">
-            <button
-              type="button"
-              onClick={handleLogout}
-              className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-gray-300 hover:text-red-400 hover:bg-gray-800 transition text-left"
-            >
-              <FaSignOutAlt />
-              <span>Logout</span>
-            </button>
-          </li>
+            {/* LOGOUT */}
+            <li className="pt-2">
+              <button
+                type="button"
+                onClick={handleLogout}
+                className="flex w-full items-center gap-3 rounded-lg px-4 py-3 text-left text-gray-300 transition hover:bg-gray-800 hover:text-red-400"
+              >
+                <FaSignOutAlt />
+                <span>Logout</span>
+              </button>
+            </li>
+
           </ul>
         </nav>
       </aside>
 
       {/* MAIN CONTENT */}
-      <main className="flex-1 bg-gray-100 min-w-0 overflow-x-hidden">
-        <div className="w-full min-h-screen">
+      <div className="flex min-h-screen min-w-0 flex-1 flex-col">
+
+        {/* MOBILE TOPBAR */}
+        <header className="sticky top-0 z-30 flex items-center gap-3 border-b border-gray-200 bg-white px-4 py-3 shadow-sm md:hidden">
+          <button
+            type="button"
+            aria-label="Open menu"
+            aria-expanded={isSidebarOpen}
+            onClick={() => setIsSidebarOpen(true)}
+            className="rounded-lg bg-gray-900 p-3 text-white transition hover:bg-gray-800"
+          >
+            <FaBars size={20} />
+          </button>
+
+          <div className="min-w-0">
+            <h2 className="truncate text-lg font-bold text-gray-900">
+              Trainer Panel
+            </h2>
+            <p className="text-xs text-gray-500">
+              Manage your classes
+            </p>
+          </div>
+        </header>
+
+        {/* PAGE CONTENT */}
+        <main className="min-w-0 flex-1 overflow-x-hidden bg-gray-100">
           <Outlet />
-        </div>
-      </main>
+        </main>
+
+      </div>
     </div>
   );
 }
