@@ -55,9 +55,9 @@ const App = () => {
       <div>
         <BrowserRouter>
           
-          <div>
+          {/* <div>
           <Navbar />
-        </div>
+        </div> */}
          
          <div>
         <Routes>
@@ -172,9 +172,9 @@ const App = () => {
 
         </div>
 
-       <div>  
+       {/* <div>  
         <Footer />
-       </div>
+       </div> */}
         </BrowserRouter>
       </div>
     </div>
