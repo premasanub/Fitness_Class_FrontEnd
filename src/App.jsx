@@ -6,7 +6,7 @@ import ProtectedRoute from "./Components/ProtectedRoute";
 import Home from './Pages/Home';
 import About from './Pages/About';
 import Contact from './Pages/Contact';
-import Navbar from './Components/Navbar';
+
 import Footer from './Components/Footer';
 import Login from './Pages/Login';
 import Register from './Pages/Register';
