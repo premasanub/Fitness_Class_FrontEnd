@@ -226,31 +226,15 @@ function Profile() {
 
           {/* PROFILE HEADER */}
           <div className="px-6 sm:px-8 lg:px-10">
-            <div className="flex flex-col sm:flex-row sm:items-end gap-5 -mt-12 pb-7">
-              <div className="w-24 h-24 shrink-0 rounded-full bg-white border-4 border-white shadow-xl overflow-hidden flex items-center justify-center">
-                {user.profileImage ? (
-                  <img
-                    src={user.profileImage}
-                    alt="Profile"
-                    className="w-full h-full object-cover"
-                    onError={(e) => {
-                      e.currentTarget.style.display =
-                        "none";
-                    }}
-                  />
-                ) : (
-                  <div className="w-full h-full bg-gray-100 flex items-center justify-center">
-                    <FaUser className="text-4xl text-gray-700" />
-                  </div>
-                )}
-              </div>
+            <div className="flex flex-col sm:flex-row sm:items-end gap-5 -mt-15 pb-7">
+             
 
               <div className="min-w-0 pb-1">
                 <h2 className="text-2xl font-bold text-gray-900 truncate">
                   {user.name || "User"}
                 </h2>
 
-                <p className="text-gray-500 truncate mt-1">
+                <p className="text-gray-500 truncate mb-1">
                   {user.email || "No email"}
                 </p>
               </div>
