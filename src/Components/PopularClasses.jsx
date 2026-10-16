@@ -13,6 +13,20 @@ function PopularClasses() {
   return (
     <section className="w-full bg-gray-50 px-5 sm:px-8 lg:px-12 py-16">
       <div className="w-full max-w-7xl mx-auto flex flex-col gap-10">
+
+
+{/* Back to Home Button */}
+<div>
+  <button
+    type="button"
+    onClick={() => navigate("/")}
+    className="inline-flex items-center gap-2 px-5 py-3 bg-white border border-gray-300 text-gray-700 font-semibold rounded-lg hover:bg-gray-100 transition duration-200"
+  >
+    ← Back to Home
+  </button>
+</div>
+
+
         <div className="text-center flex flex-col gap-3">
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900">
             Popular Classes
