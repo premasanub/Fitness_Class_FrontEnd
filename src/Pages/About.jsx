@@ -1,3 +1,5 @@
+import React from "react";
+import Navbar from "../Components/Navbar";
 function About() {
   const features = [
     {
@@ -24,6 +26,7 @@ function About() {
 
   return (
     <div className="w-full min-h-screen bg-gray-50 flex flex-col">
+        <Navbar />
       {/* Hero */}
       <section className="w-full bg-black text-white px-6 py-16 md:py-20">
         <div className="w-full max-w-6xl mx-auto text-center">
