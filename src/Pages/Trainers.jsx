@@ -28,17 +28,29 @@ function Trainers() {
   return (
     <div className="w-full min-h-screen bg-gray-50 px-4 sm:px-6 lg:px-8 py-10 lg:py-14">
       <div className="w-full max-w-7xl mx-auto">
-        {/* Heading */}
-        <div className="text-center px-4 py-6 mb-8">
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-            Our Trainers
-          </h1>
+       
+{/* Heading */}
+<div className="mb-8">
+  <button
+    type="button"
+    onClick={() => navigate("/")}
+    className="mb-6 inline-flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-5 py-3 font-semibold text-gray-700 transition hover:bg-gray-100"
+  >
+    ← Back to Home
+  </button>
 
-          <p className="max-w-2xl mx-auto text-gray-600 leading-7">
-            Meet our experienced fitness trainers and find the right
-            professional to support your fitness journey.
-          </p>
-        </div>
+  <div className="text-center px-4 py-6">
+    <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+      Our Trainers
+    </h1>
+
+    <p className="max-w-2xl mx-auto text-gray-600 leading-7">
+      Meet our experienced fitness trainers and find the right
+      professional to support your fitness journey.
+    </p>
+  </div>
+</div>
+
 
         {/* Loading */}
         {loading && (
