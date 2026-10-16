@@ -1,8 +1,11 @@
 import { FaEnvelope, FaPhone, FaMapMarkerAlt } from "react-icons/fa";
+import Navbar from "../Components/Navbar";
 
 function Contact() {
   return (
     <div className="w-full min-h-screen bg-gray-50 flex flex-col">
+      <Navbar />
+
       {/* Heading */}
       <section className="w-full px-4 sm:px-6 lg:px-8 py-12">
         <div className="w-full max-w-6xl mx-auto text-center">
