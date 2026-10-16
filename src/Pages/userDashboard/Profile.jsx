@@ -16,7 +16,7 @@ import {
 import { toast } from "react-toastify";
 import api from "../../Service/api";
 
-const [fieldErrors, setFieldErrors] = useState({});
+
 const getFormData = (userData) => ({
   name: userData?.name || "",
   email: userData?.email || "",
@@ -30,6 +30,7 @@ const getFormData = (userData) => ({
 });
 
 function Profile() {
+  const [fieldErrors, setFieldErrors] = useState({});
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [editing, setEditing] = useState(false);
@@ -104,16 +105,15 @@ const handleChange = (e) => {
   setEditing(false);
 };
 
+
   const handleUpdate = async (e) => {
     e.preventDefault();
+    setFieldErrors({});
 
     try {
       setSaving(true);
 
-      const response = await api.put(
-        "/user/profile",
-        formData
-      );
+      const response = await api.put("/user/profile", formData);
 
       const updatedUser =
         response.data?.user || response.data;
@@ -125,6 +125,8 @@ const handleChange = (e) => {
 
       setUser(updatedUser);
       setFormData(getFormData(updatedUser));
+      setFieldErrors({});
+      setEditing(false);
 
       const storedUser = localStorage.getItem("user");
 
@@ -139,22 +141,28 @@ const handleChange = (e) => {
               ...updatedUser,
             })
           );
-        } 
-        catch (error) {
-  const errors = error.response?.data?.errors;
+        } catch (storageError) {
+          console.error("Failed to update local storage", storageError);
+        }
+      }
 
-  if (errors && Object.keys(errors).length > 0) {
-    setFieldErrors(errors);
-  } else {
-    toast.error(
-      error.response?.data?.message ||
-        "Failed to update profile"
-    );
-  }
-} finally {
-  setSaving(false);
-}
+      toast.success("Profile updated successfully");
+    } catch (error) {
+      const errors = error.response?.data?.errors;
+
+      if (errors && Object.keys(errors).length > 0) {
+        setFieldErrors(errors);
+      } else {
+        toast.error(
+          error.response?.data?.message ||
+            "Failed to update profile"
+        );
+      }
+    } finally {
+      setSaving(false);
+    }
   };
+
 
   if (loading) {
     return (
@@ -390,30 +398,45 @@ const handleChange = (e) => {
               </div>
             </div>
 
-            {/* ADDRESS */}
-            <div className="border-t border-gray-200 pt-7">
-              <div className="flex flex-col gap-3">
-                <FieldLabel
-                  icon={<FaMapMarkerAlt />}
-                  label="Address"
-                />
+           
+{/* ADDRESS */}
+<div className="border-t border-gray-200 pt-7">
+  <div className="flex flex-col gap-3">
+    <FieldLabel
+      icon={<FaMapMarkerAlt />}
+      label="Address"
+    />
 
-                {editing ? (
-                  <textarea
-                    name="address"
-                    value={formData.address}
-                    onChange={handleChange}
-                    rows={4}
-                    placeholder="Enter your address"
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl text-gray-900 font-medium outline-none resize-none focus:border-red-500 focus:ring-2 focus:ring-red-100"
-                  />
-                ) : (
-                  <div className="min-h-14 flex items-center px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 font-medium">
-                    {user.address || "Not provided"}
-                  </div>
-                )}
-              </div>
-            </div>
+    {editing ? (
+      <>
+        <textarea
+          name="address"
+          value={formData.address}
+          onChange={handleChange}
+          rows={4}
+          placeholder="Enter your address"
+          aria-invalid={Boolean(fieldErrors.address)}
+          className={`w-full px-4 py-3 border rounded-xl text-gray-900 font-medium outline-none resize-none focus:ring-2 focus:ring-red-100 ${
+            fieldErrors.address
+              ? "border-red-500 focus:border-red-500"
+              : "border-gray-300 focus:border-red-500"
+          }`}
+        />
+
+        {fieldErrors.address && (
+          <p className="text-sm text-red-600" role="alert">
+            {fieldErrors.address}
+          </p>
+        )}
+      </>
+    ) : (
+      <div className="min-h-14 flex items-center px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 font-medium">
+        {user.address || "Not provided"}
+      </div>
+    )}
+  </div>
+</div>
+
 
             {/* ACTIONS */}
             {editing && (
@@ -457,6 +480,7 @@ function FieldLabel({ icon, label }) {
   );
 }
 
+
 function InputField({
   label,
   name,
@@ -465,6 +489,7 @@ function InputField({
   onChange,
   icon,
   editing,
+  error,
 }) {
   return (
     <div className="w-full flex flex-col gap-2">
@@ -481,16 +506,27 @@ function InputField({
           value={value ?? ""}
           onChange={onChange}
           disabled={!editing}
+          aria-invalid={Boolean(error)}
           className={`w-full h-12 px-4 pl-11 rounded-xl border font-medium outline-none transition ${
-            editing
-              ? "bg-white border-gray-300 text-gray-900 focus:border-red-500 focus:ring-2 focus:ring-red-100"
-              : "bg-gray-50 border-gray-200 text-gray-900 cursor-not-allowed"
+            error
+              ? "border-red-500 bg-white"
+              : editing
+                ? "bg-white border-gray-300 text-gray-900 focus:border-red-500 focus:ring-2 focus:ring-red-100"
+                : "bg-gray-50 border-gray-200 text-gray-900 cursor-not-allowed"
           }`}
         />
       </div>
+
+      {error && (
+        <p className="text-sm text-red-600" role="alert">
+          {error}
+        </p>
+      )}
     </div>
   );
 }
+
+
 
 function SelectField({
   label,
@@ -500,6 +536,7 @@ function SelectField({
   icon,
   editing,
   options,
+  error,
 }) {
   return (
     <div className="w-full flex flex-col gap-2">
@@ -515,28 +552,33 @@ function SelectField({
           value={value ?? ""}
           onChange={onChange}
           disabled={!editing}
+          aria-invalid={Boolean(error)}
           className={`w-full h-12 px-4 pl-11 rounded-xl border font-medium outline-none transition ${
-            editing
-              ? "bg-white border-gray-300 text-gray-900 focus:border-red-500 focus:ring-2 focus:ring-red-100 cursor-pointer"
-              : "bg-gray-50 border-gray-200 text-gray-900 cursor-not-allowed"
+            error
+              ? "border-red-500 bg-white"
+              : editing
+                ? "bg-white border-gray-300 text-gray-900 focus:border-red-500 focus:ring-2 focus:ring-red-100 cursor-pointer"
+                : "bg-gray-50 border-gray-200 text-gray-900 cursor-not-allowed"
           }`}
         >
-          <option value="">
-            Select {label}
-          </option>
+          <option value="">Select {label}</option>
 
           {options.map((option) => (
-            <option
-              key={option.value}
-              value={option.value}
-            >
+            <option key={option.value} value={option.value}>
               {option.label}
             </option>
           ))}
         </select>
       </div>
+
+      {error && (
+        <p className="text-sm text-red-600" role="alert">
+          {error}
+        </p>
+      )}
     </div>
   );
 }
+
 
 export default Profile;
