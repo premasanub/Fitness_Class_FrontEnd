@@ -16,6 +16,7 @@ import {
 import { toast } from "react-toastify";
 import api from "../../Service/api";
 
+const [fieldErrors, setFieldErrors] = useState({});
 const getFormData = (userData) => ({
   name: userData?.name || "",
   email: userData?.email || "",
@@ -75,26 +76,33 @@ function Profile() {
 
     fetchProfile();
   }, []);
+const handleChange = (e) => {
+  const { name, value } = e.target;
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
+  setFormData((prev) => ({
+    ...prev,
+    [name]: value,
+  }));
 
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
+  // Clear error when the user edits that field
+  setFieldErrors((prev) => ({
+    ...prev,
+    [name]: "",
+  }));
+};
 
   const handleEdit = () => {
-    setEditing(true);
-  };
+  setFieldErrors({});
+  setEditing(true);
+};
 
-  const handleCancel = () => {
-    if (!user) return;
+ const handleCancel = () => {
+  if (!user) return;
 
-    setFormData(getFormData(user));
-    setEditing(false);
-  };
+  setFormData(getFormData(user));
+  setFieldErrors({});
+  setEditing(false);
+};
 
   const handleUpdate = async (e) => {
     e.preventDefault();
@@ -131,25 +139,21 @@ function Profile() {
               ...updatedUser,
             })
           );
-        } catch {
-          localStorage.setItem(
-            "user",
-            JSON.stringify(updatedUser)
-          );
-        }
-      }
+        } 
+        catch (error) {
+  const errors = error.response?.data?.errors;
 
-      setEditing(false);
-
-      toast.success("Profile updated successfully!");
-    } catch (error) {
-      toast.error(
-        error.response?.data?.message ||
-          "Failed to update profile"
-      );
-    } finally {
-      setSaving(false);
-    }
+  if (errors && Object.keys(errors).length > 0) {
+    setFieldErrors(errors);
+  } else {
+    toast.error(
+      error.response?.data?.message ||
+        "Failed to update profile"
+    );
+  }
+} finally {
+  setSaving(false);
+}
   };
 
   if (loading) {
@@ -272,7 +276,10 @@ function Profile() {
                   onChange={handleChange}
                   icon={<FaUser />}
                   editing={editing}
+                  error={fieldErrors.name}
                 />
+
+                
 
                 <InputField
                   label="Email Address"
@@ -282,6 +289,7 @@ function Profile() {
                   onChange={handleChange}
                   icon={<FaEnvelope />}
                   editing={editing}
+                  error={fieldErrors.email}
                 />
 
                 <InputField
@@ -292,6 +300,7 @@ function Profile() {
                   onChange={handleChange}
                   icon={<FaPhone />}
                   editing={editing}
+                  error={fieldErrors.phone}
                 />
 
                 <InputField
@@ -302,6 +311,7 @@ function Profile() {
                   onChange={handleChange}
                   icon={<FaBirthdayCake />}
                   editing={editing}
+                  error={fieldErrors.age}
                 />
 
                 <SelectField
@@ -311,6 +321,7 @@ function Profile() {
                   onChange={handleChange}
                   icon={<FaVenusMars />}
                   editing={editing}
+                  error={fieldErrors.gender}
                   options={[
                     {
                       value: "Male",
@@ -335,6 +346,7 @@ function Profile() {
                   onChange={handleChange}
                   icon={<FaRulerVertical />}
                   editing={editing}
+                  error={fieldErrors.height}
                 />
 
                 <InputField
@@ -345,6 +357,7 @@ function Profile() {
                   onChange={handleChange}
                   icon={<FaWeight />}
                   editing={editing}
+                  error={fieldErrors.weight}
                 />
 
                 <SelectField
@@ -354,6 +367,7 @@ function Profile() {
                   onChange={handleChange}
                   icon={<FaBullseye />}
                   editing={editing}
+                  error={fieldErrors.goal}
                   options={[
                     {
                       value: "Weight Loss",
